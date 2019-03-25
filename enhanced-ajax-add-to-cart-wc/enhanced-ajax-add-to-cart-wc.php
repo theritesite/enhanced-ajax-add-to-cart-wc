@@ -3,11 +3,6 @@
 /**
  * The plugin bootstrap file
  *
- * This file is read by WordPress to generate the plugin information in the plugin
- * admin area. This file also includes all of the dependencies used by the plugin,
- * registers the activation and deactivation functions, and defines a function
- * that starts the plugin.
- *
  * @link              www.theritesites.com
  * @since             1.0.0
  * @package           Enhanced_Ajax_Add_To_Cart_Wc
@@ -16,15 +11,15 @@
  * Plugin Name:       Enhanced AJAX Add to Cart for WooCommerce
  * Plugin URI:        https://www.theritesites.com/plugins/enhanced-ajax-add-to-cart-wc
  * Description:       Creates a shortcode for you to be able to add an AJAX button with an associated quantity for you WooCommerce Product
- * Version:           1.1.1
+ * Version:           1.2.0
  * Author:            TheRiteSites
  * Author URI:        https://www.theritesites.com
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       enhanced-ajax-add-to-cart-wc
  * Domain Path:       /languages
- * WC tested up to: 3.4.4
- * WC requires at least: 2.6
+ * WC tested up to: 3.5.7
+ * WC requires at least: 3.0
  */
 
 // If this file is called directly, abort.
@@ -37,11 +32,11 @@ if ( ! function_exists( 'is_woocommerce_active' ) ) {
 }
 
 /**
- * Currently plugin version.
+ * Current plugin version.
  * Start at version 1.0.0 and use SemVer - https://semver.org
- * Rename this for your plugin and update it as you release new versions.
  */
-define( 'ENHANCED_AJAX_ADD_TO_CART', '1.1.1' );
+define( 'ENHANCED_AJAX_ADD_TO_CART', '1.2.0' );
+define( 'EAA2C_DEBUG', false );
 
 /**
  * The code that runs during plugin activation.

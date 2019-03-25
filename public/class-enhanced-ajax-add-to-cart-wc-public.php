@@ -61,18 +61,6 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Public {
 	 */
 	public function enqueue_styles() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Enhanced_Ajax_Add_To_Cart_Wc_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Enhanced_Ajax_Add_To_Cart_Wc_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
 		// wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/enhanced-ajax-add-to-cart-wc-public.css', array(), $this->version, 'all' );
 
 	}
@@ -84,22 +72,25 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Public {
 	 */
 	public function enqueue_scripts() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Enhanced_Ajax_Add_To_Cart_Wc_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Enhanced_Ajax_Add_To_Cart_Wc_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
+		$plugin = $this->plugin_name;
+		$js_file = '';
+		$path = realpath(dirname(__FILE__));
+		if ( file_exists( $path . '/js/enhanced-ajax-add-to-cart-wc.min.js' ) && !( EAA2C_DEBUG || WP_DEBUG ) ) {
+			$js_file =  plugin_dir_url( __FILE__ ) . 'js/enhanced-ajax-add-to-cart-wc.min.js';
+		}
+		else
+			$js_file =  plugin_dir_url( __FILE__ ) . 'js/enhanced-ajax-add-to-cart-wc-public.js';
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/enhanced-ajax-add-to-cart-wc-public.js', array( 'jquery' ), $this->version, false );
-		$vars = array( 'ajax_url' => admin_url( 'admin-ajax.php' ) );
-		wp_localize_script( $this->plugin_name, 'ENHANCED_VARIABLE_A2C', $vars );
+		if( !empty( $js_file ) ) {
 
+			wp_register_script( $plugin . '-js-bundle' , $js_file, array( 'jquery' ), $this->version, false );
+			
+			wp_localize_script( $plugin . '-js-bundle', 'EAA2C', array(
+				'ajax_url'	=> admin_url( 'admin-ajax.php' ),
+				'nonce' => wp_create_nonce('eaa2c-security'),
+				'debug' => EAA2C_DEBUG,
+			));
+			wp_enqueue_script( $plugin . '-js-bundle' );
+		}
 	}
-
 }

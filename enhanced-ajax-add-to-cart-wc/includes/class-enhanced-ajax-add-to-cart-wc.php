@@ -6,23 +6,13 @@
  * A class definition that includes attributes and functions used across both the
  * public-facing side of the site and the admin area.
  *
- * @link       www.theritesites.com
- * @since      1.0.0
- *
- * @package    Enhanced_Ajax_Add_To_Cart_Wc
- * @subpackage Enhanced_Ajax_Add_To_Cart_Wc/includes
- */
-
-/**
- * The core plugin class.
- *
  * This is used to define internationalization, admin-specific hooks, and
  * public-facing site hooks.
  *
  * Also maintains the unique identifier of this plugin as well as the current
  * version of the plugin.
  *
- * @since      1.0.0
+ * @link       www.theritesites.com
  * @package    Enhanced_Ajax_Add_To_Cart_Wc
  * @subpackage Enhanced_Ajax_Add_To_Cart_Wc/includes
  * @author     TheRiteSites <contact@theritesites.com>
@@ -90,7 +80,8 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 	 * - Enhanced_Ajax_Add_To_Cart_Wc_i18n. Defines internationalization functionality.
 	 * - Enhanced_Ajax_Add_To_Cart_Wc_Admin. Defines all hooks for the admin area.
 	 * - Enhanced_Ajax_Add_To_Cart_Wc_Public. Defines all hooks for the public side of the site.
-	 *
+	 * - Enhanced_Ajax_Add_To_Cart_Wc_AJAX. Defines all the callback functions for AJAX functionality.
+	 * 
 	 * Create an instance of the loader which will be used to register the hooks
 	 * with WordPress.
 	 *
@@ -110,6 +101,12 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 		 * of the plugin.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-enhanced-ajax-add-to-cart-wc-i18n.php';
+
+		/**
+		 * The class responsible for listening for AJAX actions and kicking off
+		 * the functions for the respective action.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-enhanced-ajax-add-to-cart-wc-ajax.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
@@ -154,8 +151,8 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 
 		$plugin_admin = new Enhanced_Ajax_Add_To_Cart_Wc_Admin( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		// $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
+		// $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
 	}
 
@@ -170,7 +167,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 
 		$plugin_public = new Enhanced_Ajax_Add_To_Cart_Wc_Public( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
+		// $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
 	}

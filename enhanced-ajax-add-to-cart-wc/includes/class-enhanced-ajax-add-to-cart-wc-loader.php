@@ -3,20 +3,12 @@
 /**
  * Register all actions and filters for the plugin
  *
- * @link       www.theritesites.com
- * @since      1.0.0
- *
- * @package    Enhanced_Ajax_Add_To_Cart_Wc
- * @subpackage Enhanced_Ajax_Add_To_Cart_Wc/includes
- */
-
-/**
- * Register all actions and filters for the plugin.
- *
  * Maintain a list of all hooks that are registered throughout
  * the plugin, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
  *
+ * @link       www.theritesites.com
+ * @since      1.0.0
  * @package    Enhanced_Ajax_Add_To_Cart_Wc
  * @subpackage Enhanced_Ajax_Add_To_Cart_Wc/includes
  * @author     TheRiteSites <contact@theritesites.com>

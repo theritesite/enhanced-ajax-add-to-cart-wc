@@ -11,12 +11,17 @@ jQuery( function( $ ) {
 	 * AddToCartHandler class.
 	 */
 	var AddToCartHandler = function() {
+		var self = this;
+
+		self.showNotices = self.showNotices.bind( self );
+		self.scrollToNotices = self.scrollToNotices.bind( self );
 		$( document.body )
 			.on( 'click', '.variable_add_to_cart_button', this.onAddVariableToCart )
 			.on( 'click', '.simple_add_to_cart_button', this.onAddSimpleToCart )
 			.on( 'added_to_cart', this.updateButton )
 			.on( 'added_to_cart', this.updateCartPage )
-			.on( 'added_to_cart', this.updateFragments );
+			.on( 'added_to_cart', this.updateFragments )
+			.on( 'notices_received', this.showNotices );
 	};
 
 	/**
@@ -24,7 +29,7 @@ jQuery( function( $ ) {
 	 */
 	AddToCartHandler.prototype.onAddVariableToCart = function( e ) {
 		var $thisbutton = $( this );
-		// e.preventDefault();
+		e.preventDefault();
 
 		$thisbutton.removeClass("added");
 		$thisbutton.addClass("loading");
@@ -42,26 +47,31 @@ jQuery( function( $ ) {
 		$( document.body ).trigger( 'adding_to_cart', [ $thisbutton, data ] );
 
 		$.ajax({
-			url: ENHANCED_VARIABLE_A2C.ajax_url,
+			url: EAA2C.ajax_url,
 			type: "POST",
 			data:{
 				product: data['pid'],
 				variable: data['vid'],
 				quantity: data['qty'],
-				action: 'variable_add_to_cart'
+				action: 'variable_add_to_cart',
+				security: EAA2C.nonce
 			},
 			success: function(response){
-				  console.log(data['pid'] + " oh " + data['vid'] + " " + data['qty']);
+				if( EAA2C.debug ) {
+					console.log( "product id: " + data['pid'] + " quantity: " + data['qty']);
+				}
 				$( document.body ).trigger( 'added_to_cart', [ response.fragments, response.cart_hash, $thisbutton ] );
+				if(response.html) {
+					$( document.body ).trigger( 'notices_received', [response.html] );
+				}
 			},
 			error: function(){
-				  console.error("failure!");
-				  console.log(data['pid'] + " oh " + data['vid'] + " " + data['qty']);
-				  
+				console.error("failure!");
+				if( EAA2C.debug ) {
+					console.log( "product id: " + data['pid'] + " quantity: " + data['qty']);
+				}
 			},
-			
 		});
-
 	};
 
 	/**
@@ -69,7 +79,7 @@ jQuery( function( $ ) {
 	 */
 	AddToCartHandler.prototype.onAddSimpleToCart = function( e ) {
 		var $thisbutton = $( this );
-		// e.preventDefault();
+		e.preventDefault();
 
 		$thisbutton.removeClass("added");
 		$thisbutton.addClass("loading");
@@ -87,25 +97,30 @@ jQuery( function( $ ) {
 		$( document.body ).trigger( 'adding_to_cart', [ $thisbutton, data ] );
 
 		$.ajax({
-			url: ENHANCED_VARIABLE_A2C.ajax_url,
+			url: EAA2C.ajax_url,
 			type: "POST",
 			data:{
 				product: data['pid'],
 				quantity: data['qty'],
-				action: 'simple_add_to_cart'
+				action: 'simple_add_to_cart',
+				security: EAA2C.nonce
 			},
 			success: function(response){
-				  console.log(data['pid'] + " oh " + data['qty']);
+				if( EAA2C.debug ) {
+					console.log( "product id: " + data['pid'] + " quantity: " + data['qty']);
+				}
 				$( document.body ).trigger( 'added_to_cart', [ response.fragments, response.cart_hash, $thisbutton ] );
+				if(response.html) {
+					$( document.body ).trigger( 'notices_received', [response.html] );
+				}
 			},
 			error: function(){
-				  console.error("failure!");
-				  console.log(data['pid'] + " oh " + data['qty']);
-				  
+				console.error("failure!");
+				if( EAA2C.debug ) {
+					console.log( "product id: " + data['pid'] + " quantity: " + data['qty']);
+				}
 			},
-			
 		});
-
 	};
 
 	/**
@@ -170,6 +185,35 @@ jQuery( function( $ ) {
 			$( document.body ).trigger( 'wc_fragments_loaded' );
 		}
 	};
+
+	AddToCartHandler.prototype.showNotices = function( element, target ) {
+		$('.woocommerce-error, .woocommerce-message').remove();
+		var domTarget = $('.content-area');
+
+		domTarget.before( target );
+		this.scrollToNotices();
+	}
+
+	AddToCartHandler.prototype.scrollToNotices = function( e ) {
+		var scrollElement = $('.woocommerce-error, .woocommerce-message');
+		var isSmoothScrollSupported = 'scrollBehavior' in document.documentElement.style;
+
+		if(!scrollElement.length) {
+		}
+
+		if(scrollElement.length) {
+			if(isSmoothScrollSupported) {
+				scrollElement[0].scrollIntoView({
+					behavior: 'smooth'
+				});
+			}
+			else {
+				$('html, body').animate( {
+					scrollTop: (scrollElement.offset().top - 100),
+				}, 1000);
+			}
+		}
+	}
 
 	/**
 	 * Init AddToCartHandler.

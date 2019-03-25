@@ -3,18 +3,9 @@
 /**
  * Fired during plugin activation
  *
- * @link       www.theritesites.com
- * @since      1.0.0
- *
- * @package    Enhanced_Ajax_Add_To_Cart_Wc
- * @subpackage Enhanced_Ajax_Add_To_Cart_Wc/includes
- */
-
-/**
- * Fired during plugin activation.
- *
  * This class defines all code necessary to run during the plugin's activation.
  *
+ * @link       www.theritesites.com
  * @since      1.0.0
  * @package    Enhanced_Ajax_Add_To_Cart_Wc
  * @subpackage Enhanced_Ajax_Add_To_Cart_Wc/includes

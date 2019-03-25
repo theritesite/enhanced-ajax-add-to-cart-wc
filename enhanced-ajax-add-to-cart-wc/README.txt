@@ -3,8 +3,8 @@ Contributors: theritesites
 Donate link: https://www.theritesites.com
 Tags: ajax button, add to cart, AJAX add to cart, shortcode, woocommerce, quantity, wc, AJAX, variable, variable product, theritesites, The Rite Sites
 Requires at least: 4.8.1
-Tested up to:      4.9.8
-Requires PHP:      5.6
+Tested up to:      5.1.1
+Requires PHP:      5.6+
 Stable tag:        trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -93,6 +93,15 @@ At this point, no. This is designed to supplement your store to let the buttons 
 4. No title for quantity and button inputs
 
 == Changelog ==
+
+= 1.2.0 =
+* Added some debugging tools and constant
+* Added notices to show if and why a product could not be added to cart
+* Added minimized JavaScript files and enqueued if file exists
+* Fixed bug where on some browsers the event of clicking a button would trigger a page reload
+* Tweaked how AJAX is enqueued in the plugin
+* Tweaked files to take out unnecessary lines and repeated words
+* Tested for new versions of WooCommerce and WordPress
 
 = 1.1.1 =
 * Fixed bug that unnecessarily changed the global product on variable product pages
