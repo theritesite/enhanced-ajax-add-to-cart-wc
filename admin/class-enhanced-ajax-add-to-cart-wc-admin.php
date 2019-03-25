@@ -3,116 +3,11 @@
 /**
  * The admin-specific functionality of the plugin.
  *
- * @link       www.theritesites.com
- * @since      1.0.0
- *
- * @package    Enhanced_Ajax_Add_To_Cart_Wc
- * @subpackage Enhanced_Ajax_Add_To_Cart_Wc/admin
- */
-
-
-/**
- * The server side callback when the button is pressed to verify and add the variable product to the current cart
- * 
- * @since 1.0.0
- */
-function variable_add_to_cart_callback() {
-
-	ob_start();
-	$data = array();
-
-	if( !empty( $_POST['product'] ) && !empty( $_POST['variable'] ) && !empty( $_POST['quantity'] ) ) {
-		try {
-			$product_id = $_POST['product'] ;
-			$variation_id = $_POST['variable'];
-			$quantity = $_POST['quantity'];
-			$product = wc_get_product( $variation_id );
-			// No variations needed since there are none for crank?
-			// $variations = array();
-			$variations = $variation_id ? $product->get_variation_attributes( $variation_id ) : null;
-			$product_status    = get_post_status( $product_id );
-			$passed_validation =  apply_filters( 'woocommerce_add_to_cart_validation', true, $variation_id, $quantity );
-
-			if( $passed_validation && WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variations, $cart_item_data ) && 'publish' === $product_status ) {
-				do_action( 'woocommerce_ajax_added_to_cart', $product_id );
-				WC_AJAX::get_refreshed_fragments();
-				// $data['product_id'] = $product_id;
-				// wp_send_json( $data );
-
-			} else {
-
-				$data = array(
-					'error' => true
-				);
-			}
-			// return $res;
-
-		} catch (Exception $e) {
-			return new WP_Error('add_to_cart_error', $e->getMessage(), array('status' => 500));
-		}
-	}
-	else{
-		$data['error'] = "no product received";
-	}
-	wp_send_json( $data );
-
-	die();
-}
-add_action( 'wp_ajax_variable_add_to_cart', 'variable_add_to_cart_callback' );
-add_action( 'wp_ajax_nopriv_variable_add_to_cart', 'variable_add_to_cart_callback' );
-
-/**
- * The server side callback when the button is pressed to verify and add the simple product to the current cart
- * 
- * @since 1.0.0
- */
-function simple_add_to_cart_callback() {
-
-	ob_start();
-	$data = array();
-
-	if( !empty( $_POST['product'] ) && !empty( $_POST['quantity'] ) ) {
-		try {
-			$product_id = $_POST['product'] ;
-			$quantity = $_POST['quantity'];
-			$product = wc_get_product( $product_id );
-			$product_status    = get_post_status( $product_id );
-			$passed_validation =  apply_filters( 'woocommerce_add_to_cart_validation', true, $product_id, $quantity );
-
-			if( $passed_validation && WC()->cart->add_to_cart( $product_id, $quantity, null, null, $cart_item_data ) && 'publish' === $product_status ) {
-				do_action( 'woocommerce_ajax_added_to_cart', $product_id );
-				WC_AJAX::get_refreshed_fragments();
-				// $data['product_id'] = $product_id;
-				// wp_send_json( $data );
-
-			} else {
-
-				$data = array(
-					'error' => true
-				);
-			}
-			// return $res;
-
-		} catch (Exception $e) {
-			return new WP_Error('add_to_cart_error', $e->getMessage(), array('status' => 500));
-		}
-	}
-	else{
-		$data['error'] = "no product received";
-	}
-	wp_send_json( $data );
-
-	die();
-}
-add_action( 'wp_ajax_simple_add_to_cart', 'simple_add_to_cart_callback' );
-add_action( 'wp_ajax_nopriv_simple_add_to_cart', 'simple_add_to_cart_callback' );
-
-
-/**
- * The admin-specific functionality of the plugin.
- *
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
+ *
+ * @link       www.theritesites.com
+ * @since      1.0.0
  *
  * @package    Enhanced_Ajax_Add_To_Cart_Wc
  * @subpackage Enhanced_Ajax_Add_To_Cart_Wc/admin
@@ -223,8 +118,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 		$product_id = $att_array['product'];
 		$title = $att_array['title'];
 
-		$_pf = new WC_Product_Factory();
-		$product = $_pf->get_product($product_id);
+		$product = wc_get_product( $product_id );
 		
 		if( $att_array['variation'] != '' ) {
 			$variation_id = $att_array['variation'];

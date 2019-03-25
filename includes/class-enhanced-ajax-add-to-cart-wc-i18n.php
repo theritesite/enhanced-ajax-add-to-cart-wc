@@ -8,18 +8,6 @@
  *
  * @link       www.theritesites.com
  * @since      1.0.0
- *
- * @package    Enhanced_Ajax_Add_To_Cart_Wc
- * @subpackage Enhanced_Ajax_Add_To_Cart_Wc/includes
- */
-
-/**
- * Define the internationalization functionality.
- *
- * Loads and defines the internationalization files for this plugin
- * so that it is ready for translation.
- *
- * @since      1.0.0
  * @package    Enhanced_Ajax_Add_To_Cart_Wc
  * @subpackage Enhanced_Ajax_Add_To_Cart_Wc/includes
  * @author     TheRiteSites <contact@theritesites.com>
@@ -41,7 +29,4 @@ class Enhanced_Ajax_Add_To_Cart_Wc_i18n {
 		);
 
 	}
-
-
-
 }
