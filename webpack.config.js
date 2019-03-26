@@ -18,7 +18,7 @@ module.exports = {
 	],
 	output: {
 		filename: pluginSlug + '.min.js',
-		path: path.resolve( buildFolder, 'public/js' ),
+		path: path.resolve( __dirname, 'public/js' ),
 		// path: path.resolve( __dirname, 'build' ),
 		publicPath: '/'
 	},
