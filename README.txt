@@ -95,9 +95,10 @@ At this point, no. This is designed to supplement your store to let the buttons 
 == Changelog ==
 
 = 1.2.0 =
-* Added some debugging tools and constant
 * Added notices to show if and why a product could not be added to cart
 * Added minimized JavaScript files and enqueued if file exists
+* Added some debugging tools and constant
+* Added security nonces
 * Fixed bug where on some browsers the event of clicking a button would trigger a page reload
 * Tweaked how AJAX is enqueued in the plugin
 * Tweaked files to take out unnecessary lines and repeated words
