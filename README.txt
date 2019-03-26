@@ -94,6 +94,9 @@ At this point, no. This is designed to supplement your store to let the buttons 
 
 == Changelog ==
 
+= 1.2.1 =
+* Fixed bug where minimized javascript entry point was using the wrong location
+
 = 1.2.0 =
 * Added notices to show if and why a product could not be added to cart
 * Added minimized JavaScript files and enqueued if file exists
