@@ -14,7 +14,7 @@ const endFolder = endPath + '/' + pluginSlug;
 
 module.exports = {
 	entry: [
-		path.resolve(__dirname, 'public/js', 'index.js')
+		path.resolve(__dirname, 'public/js', pluginSlug + '-public.js')
 	],
 	output: {
 		filename: pluginSlug + '.min.js',
