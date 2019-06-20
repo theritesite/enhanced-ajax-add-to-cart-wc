@@ -10,6 +10,8 @@
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.4",
     "babel-preset-es2016": "^6.24.1",
+    "browser-sync": "^2.26.7",
+    "browser-sync-webpack-plugin": "^2.2.2",
     "copy-webpack-plugin": "^4.5.2",
     "css-loader": "^0.28.11",
     "style-loader": "^0.21.0",
@@ -18,7 +20,9 @@
     "webpack-zip-plugin": "^0.1.6"
   },
   "scripts": {
-    "build": "./node_modules/.bin/webpack -p",
-    "start": "./node_modules/.bin/webpack --mode=development --watch"
+    "start-c": "webpack --mode=development --env.NODE_ENV=development --env.LOC=corsair --watch",
+    "start-m": "webpack --mode=development --env.NODE_ENV=development --env.LOC=mac --watch",
+    "build-c": "webpack --mode=production --env.NODE_ENV=production --env.LOC=corsair",
+    "build-m": "webpack --mode=production --env.NODE_ENV=production --env.LOC=mac"
   }
 }

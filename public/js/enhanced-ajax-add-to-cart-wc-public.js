@@ -54,7 +54,6 @@ jQuery( function( $ ) {
 				variable: data['vid'],
 				quantity: data['qty'],
 				action: 'variable_add_to_cart',
-				security: EAA2C.nonce
 			},
 			success: function(response){
 				if( EAA2C.debug ) {
@@ -102,8 +101,7 @@ jQuery( function( $ ) {
 			data:{
 				product: data['pid'],
 				quantity: data['qty'],
-				action: 'simple_add_to_cart',
-				security: EAA2C.nonce
+				action: 'simple_add_to_cart'
 			},
 			success: function(response){
 				if( EAA2C.debug ) {
