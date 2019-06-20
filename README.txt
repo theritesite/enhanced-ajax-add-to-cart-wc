@@ -3,7 +3,7 @@ Contributors: theritesites
 Donate link: https://www.theritesites.com
 Tags: ajax button, add to cart, AJAX add to cart, shortcode, woocommerce, quantity, wc, AJAX, variable, variable product, theritesites, The Rite Sites
 Requires at least: 4.8.1
-Tested up to:      5.2.2
+Tested up to:      5.2
 Requires PHP:      5.6+
 Stable tag:        trunk
 License: GPLv2 or later
