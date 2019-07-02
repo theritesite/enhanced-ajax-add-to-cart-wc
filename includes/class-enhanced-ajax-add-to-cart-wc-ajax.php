@@ -30,11 +30,6 @@ class Enhanced_Ajax_Add_To_Cart_Wc_AJAX {
      */
     public static function variable_add_to_cart_callback() {
 
-        if(!check_ajax_referer('eaa2c-security', 'security')) {
-            wp_send_json();
-            wp_die();
-        }
-
         ob_start();
         $data = array();
 
@@ -83,20 +78,15 @@ class Enhanced_Ajax_Add_To_Cart_Wc_AJAX {
      */
     public static function simple_add_to_cart_callback() {
 
-        if(!check_ajax_referer('eaa2c-security', 'security')) {
-            wp_send_json();
-            wp_die();
-        }
-
         ob_start();
 
         $data = array();
 
-        if( !empty( $_POST['product'] ) && !empty( $_POST['quantity'] ) ) {
+        if ( ! empty( $_POST['product'] ) && ! empty( $_POST['quantity'] ) ) {
             try {
                 $product_id = $_POST['product'] ;
-                $quantity = $_POST['quantity'];
-                $product = wc_get_product( $product_id );
+                $quantity   = $_POST['quantity'];
+                $product    = wc_get_product( $product_id );
                 $product_status    = get_post_status( $product_id );
                 $passed_validation =  apply_filters( 'woocommerce_add_to_cart_validation', true, $product_id, $quantity );
 
@@ -115,7 +105,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc_AJAX {
                 return new WP_Error('add_to_cart_error', $e->getMessage(), array('status' => 500));
             }
         }
-        else{
+        else {
             $data['error'] = "no product received";
         }
 
