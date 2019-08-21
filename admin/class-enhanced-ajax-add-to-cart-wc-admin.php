@@ -89,7 +89,8 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 			'variation'		=> '',
 			'title'			=> '',
 			'quantity'		=> '', // Added in version 1.1.0
-			'show_quantity' => ''  // Added in version 1.1.0
+			'show_quantity' => '', // Added in version 1.1.0
+			'price'			=> '', // Added in version 1.3.0
 		), $atts);
 
 		if( !empty( $att_array['product'] ) )
@@ -114,9 +115,11 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 		$product_id = false;
 		$variation = false;
 		$variation_id = false;
+		$price = false;
 
 		$product_id = $att_array['product'];
 		$title = $att_array['title'];
+		$price = $att_array['price'];
 
 		$product = wc_get_product( $product_id );
 		
@@ -127,24 +130,42 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 
 		if( !is_null($product) ){
 
-			if( $variation_id != false )
+			if ( false != $variation_id )
 				$a2c_html .= '<div class="woocommerce-variation-add-to-cart variations_button">';
 			else
 				$a2c_html .= '<div class="woocommerce-simple-add-to-cart simple_button">';
+			
+			
+			
 			/** Added conditional to display title of ajax button and quantity or not based on "title" attribute
 			 *  if title=attributes then display only the attributes/variation qualifiers
 			 *  if title=none dont display anything
 			 *  else display the full variation name
 			 *  @since 1.1.0
 			 */
+			$title = '';
+			if ( strpos( $price, 'b' ) !== false ) {
+				$title .= get_woocommerce_currency_symbol() . $product->get_price() . ' - ';
+			}
 			if( $title == 'attributes' || $title == 'attribute' || $title == 'att' ){
-				$att_title = '';
+				if ( strpos( $price, 'b' ) !== false ) {
+					$title .= get_woocommerce_currency_symbol() . $product->get_price() . ' - ';
+				}
 				foreach($variation->get_variation_attributes() as $key => $attribute)
-					$att_title .= $attribute . ' ';
-				$a2c_html .= '<span style="float:left; margin-right:0.72em; padding: 8px 0;">' . $att_title . '</span>';
+					$title .= $attribute . ' ';
+
+				if ( strpos( $price, 'a' ) !== false ) {
+					$title .= ' - ' . get_woocommerce_currency_symbol() . $product->get_price() . ' ';
+				}
+				$a2c_html .= '<span style="float:left; margin-right:0.72em; padding: 8px 0;">' . $title . '</span>';
 			}
 			elseif( $title != 'none' ) {
-				$a2c_html .= '<span style="float:left; margin-right:0.72em; padding: 8px 0;">' . ($variation ? $variation->get_name() : $product->get_name()) . '</span>';
+
+				$title .= ( $variation ? $variation->get_name() : $product->get_name() );
+				if ( strpos( $price, 'a' ) !== false ) {
+					$title .= ' - ' . get_woocommerce_currency_symbol() . $product->get_price() . ' ';
+				}
+				$a2c_html .= '<span style="float:left; margin-right:0.72em; padding: 8px 0;">' . $title . '</span>';
 			}
 
 			$a2c_html .= '<span style="float:left; margin-right:0.72em;">';
@@ -194,6 +215,11 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 				$a2c_html .= '<button type="submit" class="simple_add_to_cart_button button alt" data-pid="' . absint( $product->get_id() ) . '">' .
 							esc_html( $product->single_add_to_cart_text() ) . '</button>';
 			}
+
+			if ( strpos( $price, 'r' ) !== false && strpos( $price, 'e' ) === false ) {
+				$a2c_html .= ' <span> - ' . get_woocommerce_currency_symbol() . $product->get_price() . '</span>';
+			}
+
 			$a2c_html .= '</div>';
 		}
 
