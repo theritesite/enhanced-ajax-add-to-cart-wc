@@ -142,7 +142,6 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 			 *  else display the full variation name
 			 *  @since 1.1.0
 			 */
-			// $title = '';
 			if( $title == 'attributes' || $title == 'attribute' || $title == 'att' ){
 				if ( strpos( $show_price, 'b' ) !== false ) {
 					$title .= get_woocommerce_currency_symbol() . $product->get_price() . ' - ';
@@ -164,10 +163,10 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 				}
 				
 				if ( $variation instanceof WC_Product ) {
-					$name = $variation->get_name();
+					$name .= $variation->get_name();
 				}
 				elseif ( $product instanceof WC_Product ) {
-					$name = $product->get_name();
+					$name .= $product->get_name();
 				}
 				if ( strpos( $show_price, 'a' ) !== false ) {
 					$name .= ' - ' . get_woocommerce_currency_symbol() . $product->get_price() . ' ';
