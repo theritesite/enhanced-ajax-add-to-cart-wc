@@ -117,6 +117,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 		$product_id = false;
 		$variation = false;
 		$variation_id = false;
+		$price = false;
 
 		$product_id = $att_array['product'];
 		$title = $att_array['title'];
@@ -133,10 +134,13 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 
 			$price_display = get_woocommerce_currency_symbol() . $product->get_price();
 
-			if( $variation_id != false )
+			if ( false != $variation_id )
 				$a2c_html .= '<div class="woocommerce-variation-add-to-cart variations_button">';
 			else
 				$a2c_html .= '<div class="woocommerce-simple-add-to-cart simple_button">';
+			
+			
+			
 			/** Added conditional to display title of ajax button and quantity or not based on "title" attribute
 			 *  if title=attributes then display only the attributes/variation qualifiers
 			 *  if title=none dont display anything
