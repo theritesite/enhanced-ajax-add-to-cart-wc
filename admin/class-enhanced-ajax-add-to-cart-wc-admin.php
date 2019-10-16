@@ -117,7 +117,6 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 		$product_id = false;
 		$variation = false;
 		$variation_id = false;
-		$show_price = false;
 
 		$product_id = $att_array['product'];
 		$title = $att_array['title'];
@@ -132,6 +131,8 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 
 		if( !is_null( $product ) ){
 
+			$price_display = get_woocommerce_currency_symbol() . $product->get_price();
+
 			if( $variation_id != false )
 				$a2c_html .= '<div class="woocommerce-variation-add-to-cart variations_button">';
 			else
@@ -142,16 +143,18 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 			 *  else display the full variation name
 			 *  @since 1.1.0
 			 */
-			if( $title == 'attributes' || $title == 'attribute' || $title == 'att' ){
+			if( $title == 'attributes' || $title == 'attribute' || $title == 'att' ) {
+
+				$att_title = '';
 				if ( strpos( $show_price, 'b' ) !== false ) {
-					$title .= get_woocommerce_currency_symbol() . $product->get_price() . ' - ';
+					$att_title .= $price_display . ' - ';
 				}
 				if ( $variation instanceof WC_Product ) {
 					foreach ( $variation->get_variation_attributes() as $key => $attribute )
-						$title .= $attribute . ' ';
+						$att_title .= $attribute . ' ';
 				}
 				if ( strpos( $show_price, 'a' ) !== false ) {
-					$title .= ' - ' . get_woocommerce_currency_symbol() . $product->get_price() . ' ';
+					$att_title .= ' - ' . $price_display . ' ';
 				}
 				$a2c_html .= '<span style="float:left; margin-right:0.72em; padding: 8px 0;">' . $att_title . '</span>';
 			}
@@ -159,7 +162,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 				$name = '';
 
 				if ( strpos( $show_price, 'b' ) !== false ) {
-					$name .= get_woocommerce_currency_symbol() . $product->get_price() . ' - ';
+					$name .= $price_display . ' - ';
 				}
 				
 				if ( $variation instanceof WC_Product ) {
@@ -169,9 +172,15 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 					$name .= $product->get_name();
 				}
 				if ( strpos( $show_price, 'a' ) !== false ) {
-					$name .= ' - ' . get_woocommerce_currency_symbol() . $product->get_price() . ' ';
+					$name .= ' - ' . $price_display . ' ';
 				}
 				$a2c_html .= '<span style="float:left; margin-right:0.72em; padding: 8px 0;">' . $name . '</span>';
+			}
+			else {
+				if ( strpos( $show_price, 'b' ) !== false ) {
+					$name = $price_display . ' - ';
+					$a2c_html .= '<span style="float:left; margin-right:0.72em; padding: 8px 0;">' . $name . '</span>';
+				}
 			}
 
 			$a2c_html .= '<span style="float:left; margin-right:0.72em;">';
@@ -231,7 +240,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 			}
 
 			if ( strpos( $show_price, 'r' ) !== false && strpos( $show_price, 'e' ) === false ) {
-				$a2c_html .= ' <span> - ' . get_woocommerce_currency_symbol() . $product->get_price() . '</span>';
+				$a2c_html .= ' <span> - ' . $price_display . '</span>';
 			}
 
 			$a2c_html .= '</div>';
