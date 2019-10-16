@@ -16,13 +16,15 @@ Creates a shortcode for you to be able to add an AJAX button with an associated 
 This extension for [WooCommerce](https://www.woocommerce.com) allows you to render an AJAX button with an associated quantity field. Create effective and functional buttons to use for your or your customers convenience anywhere on your site you want!
 
 = Shortcode Documentation =
-The required field for every button is the product_id, with four optional fields:
+The required field for every button is the product_id, with six optional fields:
 - variation_id (used for variable products)
 - title (to reflect the label before the button)
 - quantity (sets the default quantity **AND hides the quantity checkbox**)
 - show_quantity (**if quantity is specified**, re-enables the checkbox)
+- show_price
+- button_text
 
-`[enh_ajax_add_to_cart_button product_id={pid} variation_id={vid} title={none|attributes|att|attribute} quantity={INTEGER} show_quantity={yes} ]`
+`[enh_ajax_add_to_cart_button product_id={pid} variation_id={vid} show_price={beginning|b|after|a|rear|r} button_text={STRING} title={none|attributes|att|attribute} quantity={INTEGER} show_quantity={yes} ]`
 
 
 SIMPLE PRODUCT: Use only the required parameters to make a quantity box and add to cart button for a simple product with the title to the left:
@@ -47,6 +49,23 @@ Use the product and variation parameters to make a quantity box and add to cart 
 
 `[enh_ajax_add_to_cart_button product=3312 variation=3313 title=none ]`
 Refer to screenshot 4 below to see the output
+
+Use the button_text parameter to change the text on the Add to Cart button! (Strips out HTML tags)
+
+`[ajax_add_to_cart product=3312 variation=3313 button_text=Add! ]`
+
+
+Use the show_price parameter to make a price field appear, with the options being before the title, after the title but before the quantity/add to cart button, or at the very rear of the line!
+
+Beginning
+`[ajax_add_to_cart product=3312 variation=3313 show_price=b ]`
+
+After Title
+`[ajax_add_to_cart product=3312 variation=3313 show_price=a ]`
+
+Rear (After Button)
+`[ajax_add_to_cart product=3312 variation=3313 show_price=r ]`
+
 
 
 == Installation ==
@@ -95,8 +114,9 @@ At this point, no. This is designed to supplement your store to let the buttons 
 == Changelog ==
 
 = 1.3.0 =
-* Added way to display price alongside button or quantity box
+* Added way to display price alongside button or quantity box or at the beginning of the line
 * Added shorter shortcode name
+* Added a way to change the text on the add to cart button
 
 = 1.2.2 =
 * Fixed bug where non-logged in users were not able to add multiple products to cart, especially on mobile.
