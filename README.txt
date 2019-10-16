@@ -94,6 +94,10 @@ At this point, no. This is designed to supplement your store to let the buttons 
 
 == Changelog ==
 
+= 1.3.0 =
+* Added way to display price alongside button or quantity box
+* Added shorter shortcode name
+
 = 1.2.2 =
 * Fixed bug where non-logged in users were not able to add multiple products to cart, especially on mobile.
 
