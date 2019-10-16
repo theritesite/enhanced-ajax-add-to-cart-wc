@@ -47,6 +47,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 		$this->version = $version;
 
 		add_shortcode( 'enh_ajax_add_to_cart_button', array( $this, 'enhanced_ajax_add_to_cart_shortcode' ) );
+		add_shortcode( 'ajax_add_to_cart', array( $this, 'enhanced_ajax_add_to_cart_shortcode' ) );
 
 	}
 
@@ -90,7 +91,8 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 			'title'			=> '',
 			'quantity'		=> '', // Added in version 1.1.0
 			'show_quantity' => '', // Added in version 1.1.0
-			'price'			=> '', // Added in version 1.3.0
+			'show_price'	=> '', // Added in version 1.3.0
+			'button_text'	=> ''  // Added in version 1.3.0
 		), $atts);
 
 		if( !empty( $att_array['product'] ) )
@@ -119,7 +121,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 
 		$product_id = $att_array['product'];
 		$title = $att_array['title'];
-		$price = $att_array['price'];
+		$show_price = $att_array['show_price'];
 
 		$product = wc_get_product( $product_id );
 		
@@ -128,7 +130,9 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 			$variation = wc_get_product( $variation_id );
 		}
 
-		if( !is_null($product) ){
+		if( !is_null( $product ) ){
+
+			$price_display = get_woocommerce_currency_symbol() . $product->get_price();
 
 			if ( false != $variation_id )
 				$a2c_html .= '<div class="woocommerce-variation-add-to-cart variations_button">';
@@ -143,35 +147,50 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 			 *  else display the full variation name
 			 *  @since 1.1.0
 			 */
-			$title = '';
-			if ( strpos( $price, 'b' ) !== false ) {
-				$title .= get_woocommerce_currency_symbol() . $product->get_price() . ' - ';
-			}
-			if( $title == 'attributes' || $title == 'attribute' || $title == 'att' ){
-				if ( strpos( $price, 'b' ) !== false ) {
-					$title .= get_woocommerce_currency_symbol() . $product->get_price() . ' - ';
-				}
-				foreach($variation->get_variation_attributes() as $key => $attribute)
-					$title .= $attribute . ' ';
+			if( $title == 'attributes' || $title == 'attribute' || $title == 'att' ) {
 
-				if ( strpos( $price, 'a' ) !== false ) {
-					$title .= ' - ' . get_woocommerce_currency_symbol() . $product->get_price() . ' ';
+				$att_title = '';
+				if ( strpos( $show_price, 'b' ) !== false ) {
+					$att_title .= $price_display . ' - ';
 				}
-				$a2c_html .= '<span style="float:left; margin-right:0.72em; padding: 8px 0;">' . $title . '</span>';
+				if ( $variation instanceof WC_Product ) {
+					foreach ( $variation->get_variation_attributes() as $key => $attribute )
+						$att_title .= $attribute . ' ';
+				}
+				if ( strpos( $show_price, 'a' ) !== false ) {
+					$att_title .= ' - ' . $price_display . ' ';
+				}
+				$a2c_html .= '<span style="float:left; margin-right:0.72em; padding: 8px 0;">' . $att_title . '</span>';
 			}
-			elseif( $title != 'none' ) {
+			elseif( $title !== 'none' ) {
+				$name = '';
 
-				$title .= ( $variation ? $variation->get_name() : $product->get_name() );
-				if ( strpos( $price, 'a' ) !== false ) {
-					$title .= ' - ' . get_woocommerce_currency_symbol() . $product->get_price() . ' ';
+				if ( strpos( $show_price, 'b' ) !== false ) {
+					$name .= $price_display . ' - ';
 				}
-				$a2c_html .= '<span style="float:left; margin-right:0.72em; padding: 8px 0;">' . $title . '</span>';
+				
+				if ( $variation instanceof WC_Product ) {
+					$name .= $variation->get_name();
+				}
+				elseif ( $product instanceof WC_Product ) {
+					$name .= $product->get_name();
+				}
+				if ( strpos( $show_price, 'a' ) !== false ) {
+					$name .= ' - ' . $price_display . ' ';
+				}
+				$a2c_html .= '<span style="float:left; margin-right:0.72em; padding: 8px 0;">' . $name . '</span>';
+			}
+			else {
+				if ( strpos( $show_price, 'b' ) !== false ) {
+					$name = $price_display . ' - ';
+					$a2c_html .= '<span style="float:left; margin-right:0.72em; padding: 8px 0;">' . $name . '</span>';
+				}
 			}
 
 			$a2c_html .= '<span style="float:left; margin-right:0.72em;">';
 			
 			// Input values for the number input box and related fields
-			$input_id    = 'product_' . ( $variation_id ? $variation_id : $product_id ). '_qty';
+			$input_id    = 'product_' . ( false !== $variation_id ? $variation_id : $product_id ). '_qty';
 			$input_name  = 'quantity';
 			
 			// Added version 1.1.0
@@ -207,17 +226,25 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 
 			$a2c_html .= '</span>';
 
-			if( $variation_id != false ) {
+			$button_text = '';
+			if ( '' !== $att_array['button_text'] ) {
+				$button_text = esc_html( wp_strip_all_tags( $att_array['button_text'] ) );
+			}
+			else {
+				$button_text = esc_html( $product->single_add_to_cart_text() );
+			}
+
+			if( $variation_id !== false ) {
 				$a2c_html .= '<button type="submit" class="variable_add_to_cart_button button alt" data-pid="' . absint( $product->get_id() ) .
-							'" data-vid="' . absint( $variation_id ) . '">' . esc_html( $product->single_add_to_cart_text() ) . '</button>';
+							'" data-vid="' . absint( $variation_id ) . '">' . $button_text . '</button>';
 			}
 			else {
 				$a2c_html .= '<button type="submit" class="simple_add_to_cart_button button alt" data-pid="' . absint( $product->get_id() ) . '">' .
-							esc_html( $product->single_add_to_cart_text() ) . '</button>';
+							$button_text . '</button>';
 			}
 
-			if ( strpos( $price, 'r' ) !== false && strpos( $price, 'e' ) === false ) {
-				$a2c_html .= ' <span> - ' . get_woocommerce_currency_symbol() . $product->get_price() . '</span>';
+			if ( strpos( $show_price, 'r' ) !== false && strpos( $show_price, 'e' ) === false ) {
+				$a2c_html .= ' <span> - ' . $price_display . '</span>';
 			}
 
 			$a2c_html .= '</div>';
