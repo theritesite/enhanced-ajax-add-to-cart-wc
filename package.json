@@ -15,6 +15,7 @@
     "copy-webpack-plugin": "^4.5.2",
     "css-loader": "^3.2.0",
     "lodash": "^4.17.15",
+    "serialize-javascript": "^2.1.1",
     "style-loader": "^0.21.0",
     "webpack": "^4.12.1",
     "webpack-cli": "^3.0.8",
@@ -25,5 +26,6 @@
     "start-m": "webpack --mode=development --env.NODE_ENV=development --env.LOC=mac --watch",
     "build-c": "webpack --mode=production --env.NODE_ENV=production --env.LOC=corsair",
     "build-m": "webpack --mode=production --env.NODE_ENV=production --env.LOC=mac"
-  }
+  },
+  "dependencies": {}
 }

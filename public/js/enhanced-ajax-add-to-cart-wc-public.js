@@ -40,7 +40,7 @@ jQuery( function( $ ) {
 			data[ key ] = value;
 		});
 
-		data['qty'] = $("#product_" + data['vid'] + "_qty").val();
+		data['qty'] = $( this ).siblings('.quantity-container').find('input').val();
 		data['action'] = 'variable_add_to_cart';
 
 		// Trigger event.
@@ -89,7 +89,7 @@ jQuery( function( $ ) {
 			data[ key ] = value;
 		});
 
-		data['qty'] = $("#product_" + data['pid'] + "_qty").val();
+		data['qty'] = $( this ).siblings('.quantity-container').find('input').val();
 		data['action'] = 'simple_add_to_cart';
 
 		// Trigger event.

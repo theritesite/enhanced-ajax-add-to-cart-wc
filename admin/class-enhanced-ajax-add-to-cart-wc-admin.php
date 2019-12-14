@@ -187,7 +187,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 				}
 			}
 
-			$a2c_html .= '<span style="float:left; margin-right:0.72em;">';
+			$a2c_html .= '<span class="quantity-container" style="float:left; margin-right:0.72em;">';
 			
 			// Input values for the number input box and related fields
 			$input_id    = 'product_' . ( false !== $variation_id ? $variation_id : $product_id ). '_qty';

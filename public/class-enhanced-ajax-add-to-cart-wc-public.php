@@ -83,7 +83,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Public {
 
 		if( !empty( $js_file ) ) {
 
-			wp_register_script( $plugin . '-js-bundle' , $js_file, array( 'jquery' ), $this->version, false );
+			wp_register_script( $plugin . '-js-bundle' , $js_file, array( 'jquery', 'wc-add-to-cart' ), $this->version, false );
 			
 			wp_localize_script( $plugin . '-js-bundle', 'EAA2C', array(
 				'ajax_url'	=> admin_url( 'admin-ajax.php' ),
