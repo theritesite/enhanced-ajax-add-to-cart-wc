@@ -88,11 +88,6 @@ Or...
 2. Activate WooCommerce Cost of Shipping through the 'Plugins' menu in WordPress.
 3. Enjoy the easy input of the flexible AJAX add to cart buttons on any page on your site!
 
-=== Manual Installation ===
-
-1. Upload the entire `/enhanced-ajax-add-to-cart-wc` directory to the `/wp-content/plugins/` directory.
-2. Activate WooCommerce Cost of Shipping through the 'Plugins' menu in WordPress.
-3. Enjoy the easy input of the flexible AJAX add to cart buttons on any page on your site!
 
 == Frequently Asked Questions ==
 
@@ -132,6 +127,7 @@ At this point, no. This is designed to supplement your store to let the buttons 
 * Added class names to spans around ajax button title lines to allow for better styling
 * Added new span around separator to allow for customized styling
 * Fixed minor bug in how javascript files are enqueued to support themes that selectively enqueue WooCommerce assets
+* Fixed bug when same product is on the same page, only one quantity field was working
 
 = 1.3.0 =
 * Added way to display price alongside button or quantity box or at the beginning of the line
