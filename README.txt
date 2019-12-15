@@ -3,7 +3,7 @@ Contributors: theritesites
 Donate link: https://www.theritesites.com
 Tags: ajax button, add to cart, AJAX add to cart, shortcode, woocommerce, quantity, wc, AJAX, variable, variable product, theritesites, The Rite Sites
 Requires at least: 4.8.1
-Tested up to:      5.2
+Tested up to:      5.3
 Requires PHP:      5.6+
 Stable tag:        trunk
 License: GPLv2 or later
@@ -16,6 +16,7 @@ Creates a shortcode for you to be able to add an AJAX button with an associated 
 This extension for [WooCommerce](https://www.woocommerce.com) allows you to render an AJAX button with an associated quantity field. Create effective and functional buttons to use for your or your customers convenience anywhere on your site you want!
 
 = Shortcode Documentation =
+**New Shorter Shortcode: ajax_add_to_cart is now an option for enh_ajax_add_to_cart_button**
 The required field for every button is the product_id, with six optional fields:
 - variation_id (used for variable products)
 - title (to reflect the label before the button)
@@ -58,12 +59,15 @@ Use the button_text parameter to change the text on the Add to Cart button! (Str
 Use the show_price parameter to make a price field appear, with the options being before the title, after the title but before the quantity/add to cart button, or at the very rear of the line!
 
 Beginning
+
 `[ajax_add_to_cart product=3312 variation=3313 show_price=b ]`
 
 After Title
+
 `[ajax_add_to_cart product=3312 variation=3313 show_price=a ]`
 
 Rear (After Button)
+
 `[ajax_add_to_cart product=3312 variation=3313 show_price=r ]`
 
 
@@ -92,6 +96,17 @@ Or...
 
 == Frequently Asked Questions ==
 
+= How can I change the separator between the price and the button or text? =
+
+There is a CSS selector available for changing the separator for the plugin as a whole. You can put this in your themes styles.css or "Additional CSS" section of theme customizer
+The default is shown below. To change the character, change the content value from " - " to whatever you see fit. Leave blank quotes for removing it all together (e.g. content: "";)
+
+`
+.ea-separator::before {
+    content: " - ";
+}
+`
+
 = Does this work for variable products? =
 
 Yes! To use variable products, you must specify both the product id and the variation id in the shortcode parameters.
@@ -112,6 +127,11 @@ At this point, no. This is designed to supplement your store to let the buttons 
 4. No title for quantity and button inputs
 
 == Changelog ==
+
+= 1.3.1 =
+* Added class names to spans around ajax button title lines to allow for better styling
+* Added new span around separator to allow for customized styling
+* Fixed minor bug in how javascript files are enqueued to support themes that selectively enqueue WooCommerce assets
 
 = 1.3.0 =
 * Added way to display price alongside button or quantity box or at the beginning of the line

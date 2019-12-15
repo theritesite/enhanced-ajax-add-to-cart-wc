@@ -151,22 +151,22 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 
 				$att_title = '';
 				if ( strpos( $show_price, 'b' ) !== false ) {
-					$att_title .= $price_display . ' - ';
+					$att_title .= '<span class="ea-price">' . $price_display .'</span><span class="ea-separator"></span>';
 				}
 				if ( $variation instanceof WC_Product ) {
 					foreach ( $variation->get_variation_attributes() as $key => $attribute )
 						$att_title .= $attribute . ' ';
 				}
 				if ( strpos( $show_price, 'a' ) !== false ) {
-					$att_title .= ' - ' . $price_display . ' ';
+					$att_title .= '<span class="ea-separator"></span><span class="ea-price"> ' . $price_display . ' </span>';
 				}
-				$a2c_html .= '<span style="float:left; margin-right:0.72em; padding: 8px 0;">' . $att_title . '</span>';
+				$a2c_html .= '<span class="ea-line ea-text">' . $att_title . '</span>';
 			}
 			elseif( $title !== 'none' ) {
 				$name = '';
 
 				if ( strpos( $show_price, 'b' ) !== false ) {
-					$name .= $price_display . ' - ';
+					$name .= '<span class="ea-price">' . $price_display . ' </span><span class="ea-separator"></span>';
 				}
 				
 				if ( $variation instanceof WC_Product ) {
@@ -176,18 +176,18 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 					$name .= $product->get_name();
 				}
 				if ( strpos( $show_price, 'a' ) !== false ) {
-					$name .= ' - ' . $price_display . ' ';
+					$name .= '<span class="ea-separator"></span><span class="ea-price"> ' . $price_display . ' </span>';
 				}
-				$a2c_html .= '<span style="float:left; margin-right:0.72em; padding: 8px 0;">' . $name . '</span>';
+				$a2c_html .= '<span class="ea-line ea-text">' . $name . '</span>';
 			}
 			else {
 				if ( strpos( $show_price, 'b' ) !== false ) {
-					$name = $price_display . ' - ';
-					$a2c_html .= '<span style="float:left; margin-right:0.72em; padding: 8px 0;">' . $name . '</span>';
+					$name = '<span class="ea-line ea-text">' . $price_display . ' </span>';
+					$a2c_html .= '<span class="ea-line">' . $name . '</span>';
 				}
 			}
 
-			$a2c_html .= '<span class="quantity-container" style="float:left; margin-right:0.72em;">';
+			$a2c_html .= '<span class="ea-line quantity-container">';
 			
 			// Input values for the number input box and related fields
 			$input_id    = 'product_' . ( false !== $variation_id ? $variation_id : $product_id ). '_qty';
@@ -244,7 +244,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 			}
 
 			if ( strpos( $show_price, 'r' ) !== false && strpos( $show_price, 'e' ) === false ) {
-				$a2c_html .= ' <span> - ' . $price_display . '</span>';
+				$a2c_html .= '<span class="ea-separator"></span><span class="ea-price"> ' . $price_display . '</span>';
 			}
 
 			$a2c_html .= '</div>';

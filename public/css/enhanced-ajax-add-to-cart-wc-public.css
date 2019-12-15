@@ -2,3 +2,16 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
  */
+.ea-line {
+    float: left;
+    margin-right: 0.72em;
+    /* padding: 8px 0; */
+}
+
+.ea-separator::before {
+    content: " - ";
+}
+
+.ea-text {
+    padding: 8px 0;
+}
