@@ -47,6 +47,8 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 	 */
 	protected $version;
 
+	protected $plugin_admin;
+
 	/**
 	 * Define the core functionality of the plugin.
 	 *
@@ -68,6 +70,11 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
+
+
+		add_action( 'init', array( $this, 'register_eaa2c' ), 9999 );
+		add_action( 'admin_notices', array( $this, 'register_app_rest' ) );
+		add_action( 'rest_api_init', array( $this, 'register_routes' ) );
 
 	}
 
@@ -119,8 +126,179 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-enhanced-ajax-add-to-cart-wc-public.php';
 
+		// require_once plugin_dir_path( dirname( __FILE__ ) ) . 'blocks/eaa2c.php';
+	
 		$this->loader = new Enhanced_Ajax_Add_To_Cart_Wc_Loader();
 
+	}
+
+        
+
+    public function register_routes() {
+        $namespace = 'eaa2c/v1';
+
+        register_rest_route( $namespace, '/connect', array(
+            array(
+                'methods'   => WP_REST_Server::ALLMETHODS,
+                'callback'  => array( $this, 'error_check_route' ),
+                // 'permissions_callback    => array( $this, '' ),
+                // 'args'      => array(
+                //     'context' => array(
+                //         'default'   => 'view',
+                //     ),
+                // ),
+            )
+		) );
+	}
+
+	public function error_check_route( WP_REST_Request $request ) {
+		$params = $request->get_params();
+		
+		error_log( 'consumer key: ' . $params['consumer_key'] );
+		error_log( 'consumer secret: ' . $params['consumer_secret'] );
+		error_log( 'key id: ' . $params['key_id'] );
+		return true;
+	}
+
+	public function register_app_rest() {
+		?>
+		<div class="error notice">
+
+        	<p>OH HELLO!
+			<?php
+				error_log( "stuff" );
+				$store_url = get_site_url();
+				$endpoint = '/wc-auth/v1/authorize';
+				$params = [
+					'app_name' => 'Enhanced AJAX Add to Cart PHP',
+					'scope' => 'read',
+					'user_id' => get_current_user_id(),
+					'return_url' => $store_url . '/wp-admin/options-general.php?page=the_rite_plugins_settings',
+					'callback_url' => $store_url . '/wp-json/eaa2c/v1/connect'
+				];
+				$query_string = http_build_query( $params );
+
+				echo '<a href="' . $store_url . $endpoint . '?' . $query_string . '" class="button btn btn-primary">Register!</a>';
+			?>
+			</p>
+		</div>
+		<?php
+	}
+
+	public function register_eaa2c() {
+
+		// Skip block registration if Gutenberg is not enabled/merged.
+		if ( ! function_exists( 'register_block_type' ) ) {
+			// error_log( "issue" );
+			return;
+		}
+
+		// error_log( "good" );
+		// $dir = plugin_dir_path( dirname( __FILE__ ) ) . 'blocks/eaa2c/';
+		// $dir = plugin_dir_path( dirname( __FILE__ ) ) . 'build/';
+		$dir = plugin_dir_path( dirname( __FILE__ ) ) . 'dist/blocks/';
+
+		// $index_js = 'index.js';
+		$index_js = 'eaa2c.js';
+		wp_register_script(
+			'eaa2c-block-editor',
+			plugins_url( $index_js, $dir .'blocks/' ),
+			// plugins_url( $index_js, $dir . 'eaa2c/' ),
+			array(
+				'wp-blocks',
+				'wp-i18n',
+				'wp-element',
+				'wp-components',
+				'wp-block-editor',
+				'wp-editor',
+			),
+			filemtime( "$dir/$index_js" )
+		);
+
+		wp_localize_script( 'eaa2c-block-editor', 'EAA2C', array(
+			'curr_user' => get_current_user_id(),
+			'route'		=> get_site_url(),
+		) );
+
+		$dir = plugin_dir_path( dirname( __FILE__ ) ) . 'blocks/eaa2c/';
+		$editor_css = 'editor.css';
+		wp_register_style(
+			'eaa2c-block-editor-style',
+			plugins_url( $editor_css, $dir . 'eaa2c/' ),
+			array(),
+			filemtime( "$dir/$editor_css" )
+		);
+
+		$style_css = 'style.css';
+		wp_register_style(
+			'eaa2c-block',
+			plugins_url( $style_css, $dir . 'eaa2c/' ),
+			array(),
+			filemtime( "$dir/$style_css" )
+		);
+
+		register_block_type( 'enhanced-ajax-add-to-cart-for-wc/eaa2c', array(
+			'editor_script' => 'eaa2c-block-editor',
+			'editor_style'  => 'eaa2c-block-editor-style',
+			'style'         => 'eaa2c-block',
+			// 'attributes' 	=> array(
+			// 	'editMode' => array(
+			// 		'type' => 'boolean',
+			// 		'default' => true,
+			// 	),
+			// 	'isPreview' => array(
+			// 		'type' => 'boolean',
+			// 		'default' => false,
+			// 	),
+			// 	'contentVisibility' => array(
+			// 		'type' => 'object',
+			// 		'default' => array(
+			// 			'title' => true,
+			// 			'price' => true,
+			// 			'quantity' => true,
+			// 		),
+			// 	),
+			// 	'buttonText' => array(
+			// 		'type' => 'string',
+			// 		'default' => 'Add to cart',
+			// 	),
+			// 	'product' => array(
+			// 		'type' => 'integer',
+			// 		'default' => null,
+			// 	),
+				// 'render_callback' => array( $this, 'render' ),
+			// )
+		) );
+
+		// error_log( "registered" );
+	}
+
+	public function render( $attributes = array(), $content = '' ) {
+		// $this->attributes = $this->parse_attributes( $attributes );
+		$this->content    = $content;
+		// $this->query_args = $this->parse_query_args();
+		// $products         = $this->get_products();
+		// $classes          = $this->get_container_classes();
+		$output           = 'kajsdalskdjaksjd';
+
+		return sprintf( '<div class="%s"><ul class="wc-block-grid__products">%s</ul></div>', 'cont', $output );
+	}
+
+	protected function parse_attributes( $attributes ) {
+		// These should match what's set in JS `registerBlockType`.
+		$defaults = array(
+			'columns'           => wc_get_theme_support( 'product_blocks::default_columns', 3 ),
+			'rows'              => wc_get_theme_support( 'product_blocks::default_rows', 1 ),
+			'alignButtons'      => false,
+			'categories'        => array(),
+			'catOperator'       => 'any',
+			'contentVisibility' => array(
+				'title'  => true,
+				'price'  => true,
+				'rating' => true,
+				'button' => true,
+			),
+		);
 	}
 
 	/**
@@ -149,7 +327,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 	 */
 	private function define_admin_hooks() {
 
-		$plugin_admin = new Enhanced_Ajax_Add_To_Cart_Wc_Admin( $this->get_plugin_name(), $this->get_version() );
+		$this->plugin_admin = new Enhanced_Ajax_Add_To_Cart_Wc_Admin( $this->get_plugin_name(), $this->get_version() );
 
 		// $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		// $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
@@ -164,6 +342,8 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 	 * @access   private
 	 */
 	private function define_public_hooks() {
+
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-enhanced-ajax-add-to-cart-wc-public.php';
 
 		$plugin_public = new Enhanced_Ajax_Add_To_Cart_Wc_Public( $this->get_plugin_name(), $this->get_version() );
 

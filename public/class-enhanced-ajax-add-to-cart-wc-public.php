@@ -74,12 +74,14 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Public {
 
 		$plugin = $this->plugin_name;
 		$js_file = '';
-		$path = realpath(dirname(__FILE__));
+		$path = realpath(dirname(__DIR__)) . '/build';
 		if ( file_exists( $path . '/js/enhanced-ajax-add-to-cart-wc.min.js' ) && !( EAA2C_DEBUG || WP_DEBUG ) ) {
-			$js_file =  plugin_dir_url( __FILE__ ) . 'js/enhanced-ajax-add-to-cart-wc.min.js';
+			// $js_file =  plugin_dir_url( __FILE__ ) . 'js/enhanced-ajax-add-to-cart-wc.min.js';
+			$js_file =  plugin_dir_url( __FILE__ ) . 'eaa-2-c-js.js';
 		}
 		else
-			$js_file =  plugin_dir_url( __FILE__ ) . 'js/enhanced-ajax-add-to-cart-wc-public.js';
+			$js_file =  plugin_dir_url( __FILE__ ) . 'eaa-2-c-js.js';
+		// $js_file =  plugin_dir_url( __FILE__ ) . 'js/enhanced-ajax-add-to-cart-wc-public.js';
 
 		if( !empty( $js_file ) ) {
 
