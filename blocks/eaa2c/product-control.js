@@ -5,6 +5,8 @@ import { __, _n, sprintf } from '@wordpress/i18n';
 import { SearchListControl } from '@woocommerce/components';
 import PropTypes from 'prop-types';
 import withSearchedTerm from './search-control';
+// import ProductEditControl from './product-edit-control';
+import EAA2CControl from './eaa2c-control';
 // wc.wcSettings.getSetting('isLargeCatalog');
 // import { Spinner, MenuItem } from '@wordpress/components';
 
@@ -61,19 +63,23 @@ const ProductControl = ( {
 	}
 
 	return (
-		<SearchListControl
-			className="woocommerce-products"
-			// isSingle
-			// isHierarchical
-			list={ products }
-			isLoading={ isLoading }
-			selected={ products.filter( ( { id } ) =>
-				selected.includes( id )
-			) }
-			onSearch={ onSearch }
-			onChange={ onChange }
-			messages={ messages }
-        />
+		<div className="wrapper">
+			{/* <EAA2CControl onChange={ onChange } contentVisibility={contentVisibility} /> */}
+			{/* <ProductEditControl selected={ selected } /> */}
+			<SearchListControl
+				className="woocommerce-products"
+				isSingle
+				// isHierarchical
+				list={ products }
+				isLoading={ isLoading }
+				selected={ products.filter( ( { id } ) =>
+					selected.includes( id )
+				) }
+				onSearch={ onSearch }
+				onChange={ onChange }
+				messages={ messages }
+			/>
+		</div>
         // <p>This is where the search is.</p>
 	);
 };

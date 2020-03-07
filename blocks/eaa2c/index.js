@@ -44,6 +44,14 @@ registerBlockType( 'enhanced-ajax-add-to-cart-for-wc/eaa2c', {
 				quantity: true,
 			},
 		},
+		contentOrder: {
+			type: 'array',
+			default: [
+				{id: 1, content: 'title'},
+				{id: 2, content: 'quantity'},
+				{id: 3, content: 'price'},
+			]
+		},
 		buttonText: {
 			type: 'string',
 			default: 'Add to cart',

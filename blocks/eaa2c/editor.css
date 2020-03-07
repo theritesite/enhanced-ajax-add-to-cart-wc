@@ -7,3 +7,23 @@
 .wp-block-enhanced-ajax-add-to-cart-for-wc-eaa2c {
 	border: 1px dotted #f00;
 }
+
+.trs-options-wrapper {
+	display: flex;
+	justify-content: space-evenly;
+}
+
+.trs-wrapper { 
+	border: 1px solid #333;
+	padding: 4px;
+}
+
+.trs-wrapper p.trs-toggle-label {
+	/* margin: 5px; */
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+.trs-toggle div span {
+	left: 30%;
+}

@@ -11,12 +11,24 @@ import { __ } from '@wordpress/i18n';
 import { InspectorControls, BlockControls } from '@wordpress/block-editor';
 import { PanelBody, PanelRow, ToggleControl, Button, Disabled, Toolbar, withSpokenMessages, Placeholder } from '@wordpress/components';
 
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+
 import { Component, Fragment } from '@wordpress/element';
 import PropTypes from 'prop-types';
 import ProductControl from './product-control';
 import EAA2CControl from './eaa2c-control';
 
+
 class AddToCartBlock extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            items: this.props.attributes.contentOrder
+        }
+        this.onDragEnd = this.onDragEnd.bind(this);
+    }
+
     getInspectorControls() {
         const { attributes, setAttributes } = this.props;
         const {
@@ -63,8 +75,130 @@ class AddToCartBlock extends Component {
         );
     }
 
+    reorder(list, startIndex, endIndex) {
+        
+        const result = Array.from(list);
+        const [removed] = result.splice(startIndex, 1);
+        result.splice(endIndex, 0, removed);
+      
+        return result;
+    };
+
+    onDragEnd(result) {
+        // dropped outside the list
+        if (!result.destination) {
+          return;
+        }
+
+        console.log( "destination can be correct" );
+
+        const { attributes, setAttributes } = this.props;
+        const {
+            contentVisibility,
+            contentOrder,
+        } = attributes;
+    
+        const items = this.reorder(
+            contentOrder,
+            result.source.index,
+            result.destination.index
+        );
+
+        console.log( "setting attributes." );
+    
+        setAttributes( { contentOrder: items } );
+    }
+
+    displayControls() {
+        const { attributes, setAttributes } = this.props;
+        const {
+            contentVisibility,
+            contentOrder,
+        } = attributes;
+
+        return ( 
+            <DragDropContext onDragEnd={this.onDragEnd}>
+                <Droppable droppableId="droppable" direction="horizontal">
+                    {(provided, snapshot) => (
+                        <div
+                            ref={provided.innerRef}
+                            {...provided.droppableProps}
+                            className="trs-options-wrapper"
+                        >
+                            {/* {Object.keys(contentVisibility).map((key, index) => { */}
+                            {contentOrder.map((key, index) => {
+                                console.log( "trying to find visibility: " + contentVisibility[key.content] );
+                                console.log( "trying to find visibility but heres the index: " + index );
+                                console.log( "trying to find visibility but heres the key: " + key.content );
+                                console.log( "trying to find visibility but heres the key: " + contentOrder[index].content );
+                                // const visibility = contentVisibility[key];
+                                return( 
+                                    <Draggable key={index} draggableId={key.content} index={index}>
+                                        {(provided, snapshot) => (
+                                            <div
+                                                ref={provided.innerRef}
+                                                {...provided.draggableProps}
+                                                {...provided.dragHandleProps}
+                                            >
+                                                <EAA2CControl 
+                                                    key={ index }
+                                                    onChange={ ( value ) => {
+                                                        const temp = JSON.parse(JSON.stringify(contentVisibility));
+                                                        temp[key] = value;
+                                                        setAttributes( { contentVisibility: temp } );
+                                                    } }
+                                                    value={ contentVisibility[key.content] } 
+                                                    item={ key.content }
+                                                /> 
+                                            </div>
+                                        )}
+                                    </Draggable>
+                                );
+                            })}
+                            {provided.placeholder}
+                        </div>
+                    )}
+                </Droppable>
+            </DragDropContext> 
+        );
+        {/*
+
+        var displayOptions = Object.keys(contentVisibility).map(function(key) {
+            return (
+                    <div>
+                        <EAA2CControl 
+                            // key={ key }
+                            onChange={ ( value ) => {
+                                const temp = JSON.parse(JSON.stringify(contentVisibility));
+                                temp[key] = value;
+                                setAttributes( { contentVisibility: temp } );
+                            } }
+                            value={ contentVisibility[key] } 
+                            item={ key }
+                        />
+                    </div>
+            )
+        });
+
+        return <div className="trs-options-wrapper">
+                <DraggableList
+                    axis="x"
+                    handle=".trs-wrapper"
+                    list={displayOptions}
+                />
+                </div>;
+        */}
+        
+    }
+
     renderEditMode() {
         const { attributes, debouncedSpeak, setAttributes } = this.props;
+        const {
+            contentVisibility,
+            // alignment,
+            editMode,
+        } = attributes;
+        const { title } = contentVisibility;
         const onDone = () => {
             setAttributes( { editMode: false } );
             debouncedSpeak(
@@ -80,7 +214,15 @@ class AddToCartBlock extends Component {
                 // className="wc-ajax-add-to-cart-product-placeholder-container"
             >
 				<div className="wc-block-handpicked-products__selection">
-                    {/* <EAA2CControl /> */}
+                    { this.displayControls() }
+                    {/* <EAA2CControl 
+                        onChange={ ( value ) => {
+                            const temp = JSON.parse(JSON.stringify(contentVisibility));
+                            temp.title = value;
+							setAttributes( { contentVisibility: temp } );
+						} }
+                        item={ contentVisibility.title } 
+                    /> */}
                     <ProductControl
                         selected={ attributes.products }
                         // onChange={ ( value ) => { setAttributes( { products: value } ) } }
