@@ -4,7 +4,7 @@
 import { __, _n, sprintf } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
 import { Draggable, SelectControl, ToggleControl } from '@wordpress/components';
-import { withState } from '@wordpress/compose';
+// import { withState } from '@wordpress/compose';
 import _ from 'lodash';
 // wc.wcSettings.getSetting('isLargeCatalog');
 // import { Spinner, MenuItem } from '@wordpress/components';

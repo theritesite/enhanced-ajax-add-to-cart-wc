@@ -136,15 +136,21 @@ class AddToCartBlock extends Component {
                                     <Draggable key={index} draggableId={key.content} index={index}>
                                         {(provided, snapshot) => (
                                             <div
-                                                ref={provided.innerRef}
-                                                {...provided.draggableProps}
-                                                {...provided.dragHandleProps}
+                                                className="trs-wrapper"
                                             >
+                                                <p
+                                                    ref={provided.innerRef}
+                                                    {...provided.draggableProps}
+                                                    {...provided.dragHandleProps}
+                                                    className="trs-wrapper"
+                                                >
+                                                    Here is the drag handle!
+                                                </p>
                                                 <EAA2CControl 
                                                     key={ index }
                                                     onChange={ ( value ) => {
                                                         const temp = JSON.parse(JSON.stringify(contentVisibility));
-                                                        temp[key] = value;
+                                                        temp[key.content] = value;
                                                         setAttributes( { contentVisibility: temp } );
                                                     } }
                                                     value={ contentVisibility[key.content] } 
@@ -161,11 +167,12 @@ class AddToCartBlock extends Component {
                 </Droppable>
             </DragDropContext> 
         );
-        {/*
+                        {/*}
 
         var displayOptions = Object.keys(contentVisibility).map(function(key) {
             return (
                     <div>
+                    {console.log( "in the old way" )}
                         <EAA2CControl 
                             // key={ key }
                             onChange={ ( value ) => {
@@ -179,15 +186,17 @@ class AddToCartBlock extends Component {
                     </div>
             )
         });
+        
 
         return <div className="trs-options-wrapper">
-                <DraggableList
+                {*//* <DraggableList
                     axis="x"
                     handle=".trs-wrapper"
                     list={displayOptions}
-                />
+                /> *//*}
+                {displayOptions}
                 </div>;
-        */}
+                */}
         
     }
 
@@ -195,6 +204,7 @@ class AddToCartBlock extends Component {
         const { attributes, debouncedSpeak, setAttributes } = this.props;
         const {
             contentVisibility,
+            contentOrder,
             // alignment,
             editMode,
         } = attributes;
