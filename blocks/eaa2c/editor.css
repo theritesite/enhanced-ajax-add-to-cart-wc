@@ -27,3 +27,12 @@
 .trs-toggle div span {
 	left: 30%;
 }
+
+.trs-dragging {
+	background-color: red;
+}
+
+.trs-not-dragging {
+	background-color: green;
+
+}

@@ -11,7 +11,11 @@ import { __ } from '@wordpress/i18n';
 import { InspectorControls, BlockControls } from '@wordpress/block-editor';
 import { PanelBody, PanelRow, ToggleControl, Button, Disabled, Toolbar, withSpokenMessages, Placeholder } from '@wordpress/components';
 
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import {
+    DragDropContext,
+    Draggable,
+    Droppable,
+} from 'react-beautiful-dnd';
 
 import { Component, Fragment } from '@wordpress/element';
 import PropTypes from 'prop-types';
@@ -23,10 +27,51 @@ class AddToCartBlock extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            items: this.props.attributes.contentOrder
-        }
+        // this.state = {
+        //     contentVisibility: this.props.attributes.contentVisibility
+        // }
         this.onDragEnd = this.onDragEnd.bind(this);
+    }
+
+    getItemControls( item, index ) {
+        const { attributes, setAttributes } = this.props;
+        const {
+            contentVisibility,
+        } = attributes;
+    
+        return(
+            <div className="trs-wrapper">
+                <p className="trs-wrapper">
+                    =
+                </p>
+                <EAA2CControl 
+                    key={ index }
+                    onChange={ ( value ) => {
+                        const temp = JSON.parse(JSON.stringify(contentVisibility));
+                        temp[item.content] = value;
+                        setAttributes( { contentVisibility: temp } );
+                    } }
+                    value={ contentVisibility[item.content] } 
+                    item={ item.content }
+                /> 
+            </div>
+        );
+
+    }
+
+    getItems() {
+        const { attributes } = this.props;
+        const { contentOrder } = attributes;
+    
+
+        let items = contentOrder.map( ( item, index ) => (
+            {
+                id: item.content,
+                component: this.getItemControls(item, index),
+            }
+        ));
+
+        return items;
     }
 
     getInspectorControls() {
@@ -90,13 +135,8 @@ class AddToCartBlock extends Component {
           return;
         }
 
-        console.log( "destination can be correct" );
-
         const { attributes, setAttributes } = this.props;
-        const {
-            contentVisibility,
-            contentOrder,
-        } = attributes;
+        const { contentOrder } = attributes;
     
         const items = this.reorder(
             contentOrder,
@@ -104,8 +144,6 @@ class AddToCartBlock extends Component {
             result.destination.index
         );
 
-        console.log( "setting attributes." );
-    
         setAttributes( { contentOrder: items } );
     }
 
@@ -114,89 +152,47 @@ class AddToCartBlock extends Component {
         const {
             contentVisibility,
             contentOrder,
+            isLoading,
         } = attributes;
 
         return ( 
-            <DragDropContext onDragEnd={this.onDragEnd}>
+            <DragDropContext
+                onDragEnd={this.onDragEnd}
+            >
                 <Droppable droppableId="droppable" direction="horizontal">
-                    {(provided, snapshot) => (
+                    {(droppableProvided) => (
                         <div
-                            ref={provided.innerRef}
-                            {...provided.droppableProps}
+                            ref={droppableProvided.innerRef}
+                            {...droppableProvided.droppableProps}
+                            // {...droppableProvided.dragHandleProps}
                             className="trs-options-wrapper"
                         >
-                            {/* {Object.keys(contentVisibility).map((key, index) => { */}
-                            {contentOrder.map((key, index) => {
-                                console.log( "trying to find visibility: " + contentVisibility[key.content] );
-                                console.log( "trying to find visibility but heres the index: " + index );
-                                console.log( "trying to find visibility but heres the key: " + key.content );
-                                console.log( "trying to find visibility but heres the key: " + contentOrder[index].content );
-                                // const visibility = contentVisibility[key];
-                                return( 
-                                    <Draggable key={index} draggableId={key.content} index={index}>
-                                        {(provided, snapshot) => (
-                                            <div
-                                                className="trs-wrapper"
-                                            >
-                                                <p
-                                                    ref={provided.innerRef}
-                                                    {...provided.draggableProps}
-                                                    {...provided.dragHandleProps}
-                                                    className="trs-wrapper"
-                                                >
-                                                    Here is the drag handle!
-                                                </p>
-                                                <EAA2CControl 
-                                                    key={ index }
-                                                    onChange={ ( value ) => {
-                                                        const temp = JSON.parse(JSON.stringify(contentVisibility));
-                                                        temp[key.content] = value;
-                                                        setAttributes( { contentVisibility: temp } );
-                                                    } }
-                                                    value={ contentVisibility[key.content] } 
-                                                    item={ key.content }
-                                                /> 
-                                            </div>
-                                        )}
-                                    </Draggable>
-                                );
-                            })}
-                            {provided.placeholder}
+                            {this.getItems().map((item, index) => (
+                                <Draggable
+                                    key={item.id}
+                                    draggableId={item.id}
+                                    disableInteractiveElementBlocking={
+                                        true
+                                    }
+                                    index={index}
+                                >
+                                    {(draggableProvided) => (
+                                    <div
+                                        ref={draggableProvided.innerRef}
+                                        {...draggableProvided.draggableProps}
+                                        {...draggableProvided.dragHandleProps}
+                                    >
+                                        {item.component}
+                                    </div>
+                                    )}
+                                </Draggable>
+                            ))}
+                            {droppableProvided.placeholder}    
                         </div>
                     )}
                 </Droppable>
             </DragDropContext> 
         );
-                        {/*}
-
-        var displayOptions = Object.keys(contentVisibility).map(function(key) {
-            return (
-                    <div>
-                    {console.log( "in the old way" )}
-                        <EAA2CControl 
-                            // key={ key }
-                            onChange={ ( value ) => {
-                                const temp = JSON.parse(JSON.stringify(contentVisibility));
-                                temp[key] = value;
-                                setAttributes( { contentVisibility: temp } );
-                            } }
-                            value={ contentVisibility[key] } 
-                            item={ key }
-                        />
-                    </div>
-            )
-        });
-        
-
-        return <div className="trs-options-wrapper">
-                {*//* <DraggableList
-                    axis="x"
-                    handle=".trs-wrapper"
-                    list={displayOptions}
-                /> *//*}
-                {displayOptions}
-                </div>;
-                */}
         
     }
 
@@ -225,17 +221,8 @@ class AddToCartBlock extends Component {
             >
 				<div className="wc-block-handpicked-products__selection">
                     { this.displayControls() }
-                    {/* <EAA2CControl 
-                        onChange={ ( value ) => {
-                            const temp = JSON.parse(JSON.stringify(contentVisibility));
-                            temp.title = value;
-							setAttributes( { contentVisibility: temp } );
-						} }
-                        item={ contentVisibility.title } 
-                    /> */}
                     <ProductControl
                         selected={ attributes.products }
-                        // onChange={ ( value ) => { setAttributes( { products: value } ) } }
                         onChange={ ( value = [] ) => {
 							const ids = value.map( ( { id } ) => id );
 							setAttributes( { products: ids } );
