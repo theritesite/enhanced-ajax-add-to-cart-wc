@@ -3,23 +3,31 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "X-Generator: babel-plugin-makepot\n"
 
-#: blocks/eaa2c/block.js:188
+#: blocks/eaa2c/block.js:103
+msgid "Editing."
+msgstr ""
+
+#: blocks/eaa2c/block.js:107
+msgid "Previewing."
+msgstr ""
+
+#: blocks/eaa2c/block.js:211
 msgid "Showing AJAX Add to Cart block preview."
 msgstr ""
 
-#: blocks/eaa2c/block.js:193
+#: blocks/eaa2c/block.js:218
 msgid "AJAX Add to Cart button"
 msgstr ""
 
-#: blocks/eaa2c/block.js:212
+#: blocks/eaa2c/block.js:233
 msgid "Done"
 msgstr ""
 
-#: blocks/eaa2c/block.js:238
+#: blocks/eaa2c/block.js:260
 msgid "Edit"
 msgstr ""
 
-#: blocks/eaa2c/block.js:92
+#: blocks/eaa2c/block.js:88
 msgid "Content"
 msgstr ""
 
@@ -27,10 +35,32 @@ msgstr ""
 msgid "Edit Mode"
 msgstr ""
 
-#: blocks/eaa2c/block.js:98
-msgid "Editing."
+#: blocks/eaa2c/index.js:20
+msgid "AJAXifies your add to cart button!"
 msgstr ""
 
-#: blocks/eaa2c/block.js:98
-msgid "Previewing."
+#: blocks/eaa2c/product-control.js:35
+msgid "Clear all products"
+msgstr ""
+
+#: blocks/eaa2c/product-control.js:36
+msgid "Products"
+msgstr ""
+
+#: blocks/eaa2c/product-control.js:37
+msgid "Your store doesn't have any products."
+msgstr ""
+
+#: blocks/eaa2c/product-control.js:41
+msgid "Search for products to display"
+msgstr ""
+
+#: blocks/eaa2c/product-control.js:47
+msgid "%d product selected"
+msgid_plural "%d products selected"
+msgstr[0] ""
+msgstr[1] ""
+
+#: blocks/eaa2c/product-control.js:55
+msgid "Product search results updated."
 msgstr ""

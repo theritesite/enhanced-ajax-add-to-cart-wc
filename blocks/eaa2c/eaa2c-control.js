@@ -26,107 +26,34 @@ const EAA2CControl = ( {
     error,
     isLoading,
 	onChange,
-    // contentVisibility,
     item,
     value,
 } ) => {
-
-    /*const titleOptions = [
-        {
-            key: 'left',
-            name: 'Left',
-        },{
-            key: 'right',
-            name: 'Right',
-        },{
-            key: 'true',
-            name: 'visible',
-        },
-    ];*/
-    const options = [
-        {
-            value: 'small',
-            label: 'small',
-        },
-        {
-            value: 'normal',
-            label: 'noraml',
-        },
-        {
-            value: 'large',
-            label: 'large',
-        },
-        {
-            value: 'huge',
-            label: 'huge',
-        },
-    ];
 
 	if ( error ) {
 		return <p>error { error.status }</p>;
     }
 
 	return (
-        // <p>tuff</p>
         <div id="draggable-panel" className="trs-wrapper">
-            {/* <SelectControl
-                label={ _.startCase(_.lowerCase("display " + item)) }
-                options={ options }
-                value={ item }
-                onChange={ onChange }
-                // value={ contentVisibility.title }
-                // value={ options.find( ( option ) => option.key === options.key ) }
-            /> */}
             <ToggleControl
-                // label={ _.startCase(_.lowerCase("display " + item)) }
                 checked={ value }
                 onChange={ onChange }
                 className="trs-toggle"
             />
             <p className="trs-toggle-label">{ _.startCase(_.lowerCase("display " + item)) }</p>
-            {/* <SelectControl
-                label="Title Size"
-                options={ options }
-                value={ item }
-                onChange={ onChange }
-                // value={ contentVisibility.title }
-                // value={ options.find( ( option ) => option.key === options.key ) }
-            /> */}
-            {/* <SelectControl
-                label="Price Size"
-                options={ options }
-                onChange={ onChange }
-                value={ contentVisibility.price }
-                // value={ options.find( ( option ) => option.key === options.key ) }
-            />
-            <SelectControl
-                label="Quantity Size"
-                options={ options }
-                onChange={ onChange }
-                value={ contentVisibility.quantity }
-                // value={ options.find( ( option ) => option.key === options.key ) }
-            /> */}
         </div>
 	);
 };
 
 EAA2CControl.propTypes = {
 	onChange: PropTypes.func.isRequired,
-    // title: PropTypes.bool,
-    // price: PropTypes.bool,
-    // quantity: PropTypes.bool,
-    // contentVisibility: PropTypes.object,
     item: PropTypes.string,
     value: PropTypes.bool,
 };
 
 EAA2CControl.defaultProps = {
     isLoading: true,
-    // contentVisibility: {
-        value: true,
-    //     price: 'true',
-    //     quantity: 'true',
-    // },
+    value: true,
 };
-// export default withState( EAA2CControl );
 export default EAA2CControl;
