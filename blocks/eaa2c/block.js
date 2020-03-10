@@ -237,8 +237,50 @@ class AddToCartBlock extends Component {
         )
     }
 
+    renderViewMode() {
+
+        const { attributes, setAttributes } = this.props;
+        const { contentVisibility, contentOrder, products } = attributes;
+
+        if ( products[0] > 0 ){
+            return (
+                <div className="woocommerce-variation-add-to-cart variations_button">
+                    { contentOrder.map( (item, index ) => {
+
+                        const classVar = "ea-" + item.content;
+                        if ( contentVisibility[item.content] === true ) {
+                            console.log( "we are in the visibility, and we are trying to render the: " + item.content );
+                            if ( item.content === 'title' || item.content === 'price' ) {
+                                console.log( "item content is: " + item.content );
+                                return (<span className="ea-line ea-text"><span>Product {item.content}</span></span>);
+                            }
+                            else if ( item.content === 'quantity' ) {
+                               return ( <span className="ea-line quantity-container">
+                                    <div className="quantity">
+                                        <input type="number" id={products[0]} class="input-text qty text" step={1} min={1} max={4} name={"steven"}
+                                                value={2} title={"quantity"} 
+                                                size="4" />
+                                    </div>
+                                </span>);
+                            }
+                        }
+                        else {
+
+                            console.log( "we are in the visibility, and we are trying to render the: " + item.content + "   but its false :(" );
+                        }
+                    })}
+                    <button type="submit" className="variable_add_to_cart_button button alt" data-pid={products[0]}
+                            data-vid={products[0]}>{"add to cart!?"}</button>
+                </div>
+            );
+        }
+        return(
+            <div className="no-product-found">no product found</div>
+        )
+    }
+
     render() {
-        const { attributes, name, setAttributes } = this.props;
+        const { attributes, setAttributes } = this.props;
         const { editMode, alignment } = attributes;
 
         const onPreview = () => {
@@ -270,7 +312,7 @@ class AddToCartBlock extends Component {
                     this.renderEditMode()
                 ) : (
                     <Disabled>
-                        <p>Put the block here that will display on the front end.</p>
+                        { this.renderViewMode() }
                     </Disabled>
                 ) }
             </Fragment>
@@ -286,14 +328,12 @@ AddToCartBlock.propTypes = {
 	/**
 	 * The register block name.
 	 */
-	name: PropTypes.string.isRequired,
+	// name: PropTypes.string.isRequired,
 	/**
 	 * A callback to update attributes
 	 */
-	setAttributes: PropTypes.func.isRequired,
+	setAttributes: PropTypes.func,
 	debouncedSpeak: PropTypes.func.isRequired,
 };
-
-// export default AddToCartBlock;
 
 export default withSpokenMessages( AddToCartBlock );
