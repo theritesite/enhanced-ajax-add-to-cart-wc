@@ -11,6 +11,7 @@ import { __ } from '@wordpress/i18n';
 import { InspectorControls, BlockControls } from '@wordpress/block-editor';
 import { PanelBody, PanelRow, ToggleControl, Button, Disabled, Toolbar, withSpokenMessages, Placeholder } from '@wordpress/components';
 
+import _ from 'lodash';
 import {
     DragDropContext,
     Draggable,
@@ -19,8 +20,8 @@ import {
 
 import { Component, Fragment } from '@wordpress/element';
 import PropTypes from 'prop-types';
-import ProductControl from './product-control';
-import EAA2CControl from './eaa2c-control';
+import ProductControl from '../common/product-control';
+// import EAA2CControl from './eaa2c-control';
 
 
 class AddToCartBlock extends Component {
@@ -33,18 +34,41 @@ class AddToCartBlock extends Component {
         this.onDragEnd = this.onDragEnd.bind(this);
     }
 
-    getItemControls( item, index ) {
+    getItemToggle( item ) {
         const { attributes, setAttributes } = this.props;
         const {
             contentVisibility,
         } = attributes;
+
+        if ( item.content === 'button' ) return;
+        
+        return (
+            <ToggleControl
+                checked={ contentVisibility[item.content] }
+                onChange={ ( value ) => {
+                    const temp = JSON.parse(JSON.stringify(contentVisibility));
+                    temp[item.content] = value;
+                    setAttributes( { contentVisibility: temp } );
+                } }
+                className="trs-toggle"
+            />
+        );
+    }
+
+    getItemControls( item, index ) {
+        // const { attributes, setAttributes } = this.props;
+        // const {
+        //     contentVisibility,
+        // } = attributes;
     
         return(
-            <div className="trs-wrapper">
+            <div key={item.content + index} className="trs-wrapper">
                 <p className="trs-wrapper">
                     =
                 </p>
-                <EAA2CControl 
+                    {/* { this.getItemToggle( item ) } */}
+                    <p className="trs-toggle-label">{ _.startCase(_.lowerCase( "display " + item.content )) }</p>
+                {/* <EAA2CControl 
                     key={ index }
                     onChange={ ( value ) => {
                         const temp = JSON.parse(JSON.stringify(contentVisibility));
@@ -53,7 +77,7 @@ class AddToCartBlock extends Component {
                     } }
                     value={ contentVisibility[item.content] } 
                     item={ item.content }
-                /> 
+                />  */}
             </div>
         );
 
@@ -167,28 +191,30 @@ class AddToCartBlock extends Component {
                             // {...droppableProvided.dragHandleProps}
                             className="trs-options-wrapper"
                         >
+            {/* <div> */}
                             {this.getItems().map((item, index) => (
-                                <Draggable
-                                    key={item.id}
-                                    draggableId={item.id}
-                                    disableInteractiveElementBlocking={
-                                        true
-                                    }
-                                    index={index}
-                                >
-                                    {(draggableProvided) => (
-                                    <div
-                                        ref={draggableProvided.innerRef}
-                                        {...draggableProvided.draggableProps}
-                                        {...draggableProvided.dragHandleProps}
-                                    >
-                                        {item.component}
-                                    </div>
-                                    )}
-                                </Draggable>
+                                // <Draggable
+                                //     key={item.id}
+                                //     draggableId={item.id}
+                                //     disableInteractiveElementBlocking={
+                                //         true
+                                //     }
+                                //     index={index}
+                                // >
+                                //     {(draggableProvided) => (
+                                //     <div
+                                //         ref={draggableProvided.innerRef}
+                                //         {...draggableProvided.draggableProps}
+                                //         {...draggableProvided.dragHandleProps}
+                                //     >
+                                        item.component
+                                //     </div>
+                                //     )}
+                                // </Draggable>
                             ))}
-                            {droppableProvided.placeholder}    
-                        </div>
+                            {/* {droppableProvided.placeholder}     */}
+                            </div>
+            //              {/* </div>
                     )}
                 </Droppable>
             </DragDropContext> 
@@ -252,13 +278,13 @@ class AddToCartBlock extends Component {
                             console.log( "we are in the visibility, and we are trying to render the: " + item.content );
                             if ( item.content === 'title' || item.content === 'price' ) {
                                 console.log( "item content is: " + item.content );
-                                return (<span className="ea-line ea-text"><span>Product {item.content}</span></span>);
+                                return (<span key={index} className="ea-line ea-text"><span>Product {item.content}</span></span>);
                             }
                             else if ( item.content === 'quantity' ) {
-                               return ( <span className="ea-line quantity-container">
+                               return ( <span key={index} className="ea-line quantity-container">
                                     <div className="quantity">
-                                        <input type="number" id={products[0]} class="input-text qty text" step={1} min={1} max={4} name={"steven"}
-                                                value={2} title={"quantity"} 
+                                        <input type="number" id={products[0]} className="input-text qty text" step={1} min={1} max={4} name={"steven"}
+                                                title={"quantity"} 
                                                 size="4" />
                                     </div>
                                 </span>);

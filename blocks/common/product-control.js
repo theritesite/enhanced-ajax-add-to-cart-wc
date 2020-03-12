@@ -6,7 +6,7 @@ import { SearchListControl } from '@woocommerce/components';
 import PropTypes from 'prop-types';
 import withSearchedTerm from './search-control';
 // import ProductEditControl from './product-edit-control';
-import EAA2CControl from './eaa2c-control';
+// import EAA2CControl from '../eaa2c/eaa2c-control';
 // wc.wcSettings.getSetting('isLargeCatalog');
 // import { Spinner, MenuItem } from '@wordpress/components';
 
