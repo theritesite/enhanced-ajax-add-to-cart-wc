@@ -9,9 +9,17 @@ var {
 
 import { __ } from '@wordpress/i18n';
 import { InspectorControls, BlockControls } from '@wordpress/block-editor';
-import { PanelBody, PanelRow, ToggleControl, Button, Disabled, Toolbar, withSpokenMessages, Placeholder } from '@wordpress/components';
+import {
+    PanelBody,
+    PanelRow,
+    ToggleControl,
+    Button,
+    Disabled,
+    Toolbar,
+    withSpokenMessages,
+    Placeholder
+} from '@wordpress/components';
 
-import _ from 'lodash';
 import {
     DragDropContext,
     Draggable,
@@ -21,7 +29,7 @@ import {
 import { Component, Fragment } from '@wordpress/element';
 import PropTypes from 'prop-types';
 import ProductControl from '../common/product-control';
-// import EAA2CControl from './eaa2c-control';
+import EAA2CControl from './eaa2c-control';
 
 
 class AddToCartBlock extends Component {
@@ -34,41 +42,18 @@ class AddToCartBlock extends Component {
         this.onDragEnd = this.onDragEnd.bind(this);
     }
 
-    getItemToggle( item ) {
+    getItemControls( item, index ) {
         const { attributes, setAttributes } = this.props;
         const {
             contentVisibility,
         } = attributes;
-
-        if ( item.content === 'button' ) return;
-        
-        return (
-            <ToggleControl
-                checked={ contentVisibility[item.content] }
-                onChange={ ( value ) => {
-                    const temp = JSON.parse(JSON.stringify(contentVisibility));
-                    temp[item.content] = value;
-                    setAttributes( { contentVisibility: temp } );
-                } }
-                className="trs-toggle"
-            />
-        );
-    }
-
-    getItemControls( item, index ) {
-        // const { attributes, setAttributes } = this.props;
-        // const {
-        //     contentVisibility,
-        // } = attributes;
     
         return(
-            <div key={item.content + index} className="trs-wrapper">
+            <div key={index} className="trs-wrapper">
                 <p className="trs-wrapper">
                     =
                 </p>
-                    {/* { this.getItemToggle( item ) } */}
-                    <p className="trs-toggle-label">{ _.startCase(_.lowerCase( "display " + item.content )) }</p>
-                {/* <EAA2CControl 
+                <EAA2CControl 
                     key={ index }
                     onChange={ ( value ) => {
                         const temp = JSON.parse(JSON.stringify(contentVisibility));
@@ -77,7 +62,7 @@ class AddToCartBlock extends Component {
                     } }
                     value={ contentVisibility[item.content] } 
                     item={ item.content }
-                />  */}
+                /> 
             </div>
         );
 
@@ -180,44 +165,44 @@ class AddToCartBlock extends Component {
         } = attributes;
 
         return ( 
-            <DragDropContext
-                onDragEnd={this.onDragEnd}
-            >
-                <Droppable droppableId="droppable" direction="horizontal">
-                    {(droppableProvided) => (
-                        <div
-                            ref={droppableProvided.innerRef}
-                            {...droppableProvided.droppableProps}
-                            // {...droppableProvided.dragHandleProps}
-                            className="trs-options-wrapper"
-                        >
-            {/* <div> */}
-                            {this.getItems().map((item, index) => (
-                                // <Draggable
-                                //     key={item.id}
-                                //     draggableId={item.id}
-                                //     disableInteractiveElementBlocking={
-                                //         true
-                                //     }
-                                //     index={index}
-                                // >
-                                //     {(draggableProvided) => (
-                                //     <div
-                                //         ref={draggableProvided.innerRef}
-                                //         {...draggableProvided.draggableProps}
-                                //         {...draggableProvided.dragHandleProps}
-                                //     >
-                                        item.component
-                                //     </div>
-                                //     )}
-                                // </Draggable>
-                            ))}
-                            {/* {droppableProvided.placeholder}     */}
+            <div className="we-should-make-a-parent">
+                <DragDropContext
+                    onDragEnd={this.onDragEnd}
+                >
+                    <Droppable droppableId="droppable" direction="horizontal">
+                        {(droppableProvided) => (
+                            <div
+                                ref={droppableProvided.innerRef}
+                                {...droppableProvided.droppableProps}
+                                // {...droppableProvided.dragHandleProps}
+                                className="trs-options-wrapper"
+                            >
+                                {this.getItems().map((item, index) => (
+                                    <Draggable
+                                        key={item.id}
+                                        draggableId={item.id}
+                                        disableInteractiveElementBlocking={
+                                            true
+                                        }
+                                        index={index}
+                                    >
+                                        {(draggableProvided) => (
+                                        <div
+                                            ref={draggableProvided.innerRef}
+                                            {...draggableProvided.draggableProps}
+                                            {...draggableProvided.dragHandleProps}
+                                        >
+                                            {item.component}
+                                        </div>
+                                        )}
+                                    </Draggable>
+                                ))}
+                                {droppableProvided.placeholder}    
                             </div>
-            //              {/* </div>
-                    )}
-                </Droppable>
-            </DragDropContext> 
+                        )}
+                    </Droppable>
+                </DragDropContext> 
+            </div>
         );
         
     }
@@ -227,7 +212,6 @@ class AddToCartBlock extends Component {
         const {
             contentVisibility,
             contentOrder,
-            // alignment,
             editMode,
         } = attributes;
         const { title } = contentVisibility;

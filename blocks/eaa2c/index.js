@@ -24,10 +24,6 @@ registerBlockType( 'enhanced-ajax-add-to-cart-for-wc/eaa2c', {
 	},
 
 	attributes: {
-		alignment: {
-			type: 'string',
-			default: 'none',
-		},
 		editMode: {
 			type: 'boolean',
 			default: true,
@@ -42,16 +38,14 @@ registerBlockType( 'enhanced-ajax-add-to-cart-for-wc/eaa2c', {
 				title: true,
 				price: true,
 				quantity: true,
-				button: true,
 			},
 		},
 		contentOrder: {
 			type: 'array',
 			default: [
-				{ id: 1, content: 'title', type: 'text' },
-				{ id: 2, content: 'quantity', type: 'object' },
-				{ id: 3, content: 'price', type: 'text' },
-				{ id: 4, content: 'button', type: 'object' },
+				{ id: 1, content: 'title' },
+				{ id: 2, content: 'quantity' },
+				{ id: 3, content: 'price' },
 			]
 		},
 		buttonText: {
