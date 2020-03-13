@@ -64,8 +64,8 @@ const ProductControl = ( {
 
 	return (
 		<div className="wrapper">
-			{/* <EAA2CControl onChange={ onChange } contentVisibility={contentVisibility} /> */}
-			{/* <ProductEditControl selected={ selected } /> */}
+			{ /* <EAA2CControl onChange={ onChange } contentVisibility={contentVisibility} /> */ }
+			{ /* <ProductEditControl selected={ selected } /> */ }
 			<SearchListControl
 				className="woocommerce-products"
 				isSingle
@@ -80,7 +80,7 @@ const ProductControl = ( {
 				messages={ messages }
 			/>
 		</div>
-        // <p>This is where the search is.</p>
+		// <p>This is where the search is.</p>
 	);
 };
 

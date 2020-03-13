@@ -1,9 +1,8 @@
 /**
  * External dependencies
  */
-import { __, _n, sprintf } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
-import { Draggable, SelectControl, ToggleControl } from '@wordpress/components';
+import { ToggleControl } from '@wordpress/components';
 // import { withState } from '@wordpress/compose';
 import _ from 'lodash';
 // wc.wcSettings.getSetting('isLargeCatalog');
@@ -22,38 +21,34 @@ import _ from 'lodash';
  *
  * @return {Function} A functional component.
  */
-const EAA2CControl = ( {
-    error,
-    isLoading,
-	onChange,
-    item,
-    value,
-} ) => {
-
+const EAA2CControl = ( { error, onChange, item, value } ) => {
 	if ( error ) {
 		return <p>error { error.status }</p>;
-    }
+	}
 
 	return (
-        <div id="draggable-panel" className="trs-wrapper">
-            <ToggleControl
-                checked={ value }
-                onChange={ onChange }
-                className="trs-toggle"
-            />
-            <p className="trs-toggle-label">{ _.startCase(_.lowerCase("display " + item)) }</p>
-        </div>
+		<div id="draggable-panel" className="trs-wrapper">
+			<ToggleControl
+				checked={ value }
+				onChange={ onChange }
+				className="trs-toggle"
+			/>
+			<p className="trs-toggle-label">
+				{ _.startCase( _.lowerCase( 'display ' + item ) ) }
+			</p>
+		</div>
 	);
 };
 
 EAA2CControl.propTypes = {
 	onChange: PropTypes.func.isRequired,
-    item: PropTypes.string,
-    value: PropTypes.bool,
+	item: PropTypes.string,
+	value: PropTypes.bool,
 };
 
 EAA2CControl.defaultProps = {
-    isLoading: true,
-    value: true,
+	isLoading: true,
+	value: true,
 };
+
 export default EAA2CControl;

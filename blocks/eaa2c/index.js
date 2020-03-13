@@ -17,7 +17,10 @@ registerBlockType( 'enhanced-ajax-add-to-cart-for-wc/eaa2c', {
 	title: 'AJAX Add to Cart Block',
 	icon: 'cart',
 	category: 'widgets',
-	description: __( 'AJAXifies your add to cart button!', 'enhanced-ajax-add-to-cart-wc' ),
+	description: __(
+		'AJAXifies your add to cart button!',
+		'enhanced-ajax-add-to-cart-wc'
+	),
 	supports: {
 		html: false,
 		align: true,
@@ -46,7 +49,7 @@ registerBlockType( 'enhanced-ajax-add-to-cart-for-wc/eaa2c', {
 				{ id: 1, content: 'title' },
 				{ id: 2, content: 'quantity' },
 				{ id: 3, content: 'price' },
-			]
+			],
 		},
 		buttonText: {
 			type: 'string',
@@ -55,12 +58,13 @@ registerBlockType( 'enhanced-ajax-add-to-cart-for-wc/eaa2c', {
 		products: {
 			type: 'array',
 			default: [],
-		}
+		},
 	},
 
 	/**
 	 * The edit function describes the structure of your block in the context of the editor.
 	 * This represents what the editor will render when the block is used.
+	 *
 	 * @see https://wordpress.org/gutenberg/handbook/block-edit-save/#edit
 	 *
 	 * @param {Object} [props] Properties passed from the editor.
@@ -91,6 +95,7 @@ registerBlockType( 'enhanced-ajax-add-to-cart-for-wc/eaa2c', {
 	/**
 	 * The save function defines the way in which the different attributes should be combined
 	 * into the final markup, which is then serialized by Gutenberg into `post_content`.
+	 *
 	 * @see https://wordpress.org/gutenberg/handbook/block-edit-save/#save
 	 *
 	 * @return {Element}       Element to render.
@@ -103,8 +108,6 @@ registerBlockType( 'enhanced-ajax-add-to-cart-for-wc/eaa2c', {
 	// 	);
 	// },
 	save( attributes ) {
-		return (
-			<AddToCartBlock { ...attributes } />
-		);
+		return <AddToCartBlock { ...attributes } />;
 	},
 } );
