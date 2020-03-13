@@ -89,7 +89,7 @@ jQuery( function( $ ) {
 			data[ key ] = value;
 		});
 
-		data['qty'] = $( this ).siblings('.quantity-container').find('input').val();
+		data['qty'] = $( this ).siblings('.quantity-container').find('input.input-text.qty.text').val();
 		data['action'] = 'simple_add_to_cart';
 
 		// Trigger event.

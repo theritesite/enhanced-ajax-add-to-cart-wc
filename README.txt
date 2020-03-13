@@ -3,7 +3,7 @@ Contributors: theritesites
 Donate link: https://www.theritesites.com
 Tags: ajax button, add to cart, AJAX add to cart, shortcode, woocommerce, quantity, wc, AJAX, variable, variable product, theritesites, The Rite Sites
 Requires at least: 4.8.1
-Tested up to:      5.3
+Tested up to:      5.4
 Requires PHP:      5.6+
 Stable tag:        trunk
 License: GPLv2 or later
@@ -122,6 +122,9 @@ At this point, no. This is designed to supplement your store to let the buttons 
 4. No title for quantity and button inputs
 
 == Changelog ==
+
+= 1.3.2 =
+* Changed how javascript selector worked for grabbing quantity from input. Only a bug in custom implementations around this plugin.
 
 = 1.3.1 =
 * Added class names to spans around ajax button title lines to allow for better styling
