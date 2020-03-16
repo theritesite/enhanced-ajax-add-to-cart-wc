@@ -3,7 +3,6 @@
  */
 import PropTypes from 'prop-types';
 import { ToggleControl } from '@wordpress/components';
-// import { withState } from '@wordpress/compose';
 import _ from 'lodash';
 // wc.wcSettings.getSetting('isLargeCatalog');
 // import { Spinner, MenuItem } from '@wordpress/components';

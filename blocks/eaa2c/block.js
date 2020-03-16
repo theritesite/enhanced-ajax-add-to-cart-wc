@@ -153,6 +153,26 @@ class AddToCartBlock extends Component {
 								// {...droppableProvided.dragHandleProps}
 								className="trs-options-wrapper"
 							>
+								{/* <Draggable
+										key={ 1 }
+										draggableId={ stuff[0].id }
+										disableInteractiveElementBlocking={
+											true
+										}
+										index={ 1 }
+									>
+										{ ( draggableProvided ) => (
+											<div
+												ref={
+													draggableProvided.innerRef
+												}
+												{ ...draggableProvided.draggableProps }
+												{ ...draggableProvided.dragHandleProps }
+											>
+												{ stuff[0].component }
+											</div>
+										) }
+									</Draggable> */}
 								{ this.getItems().map( ( item, index ) => (
 									<Draggable
 										key={ item.id }
@@ -289,40 +309,47 @@ class AddToCartBlock extends Component {
 	}
 
 	render() {
-		const { attributes, setAttributes } = this.props;
-		const { editMode } = attributes;
 
-		if ( attributes.isPreview ) {
+		const { attributes } = this.props;
+
+		if ( this.props.isEditor ) {
+			const { setAttributes } = this.props;
+			const { editMode } = attributes;
+
+			if ( attributes.isPreview ) {
+				return (
+					<div>
+						<p>This is a preview screen!</p>
+					</div>
+				);
+			}
+
 			return (
-				<div>
-					<p>This is a preview screen!</p>
-				</div>
+				<Fragment>
+					<BlockControls>
+						<Toolbar
+							controls={ [
+								{
+									icon: 'edit',
+									title: __( 'Edit' ),
+									onClick: () =>
+										setAttributes( { editMode: ! editMode } ),
+									isActive: editMode,
+								},
+							] }
+						/>
+					</BlockControls>
+					{ this.getInspectorControls() }
+					{ editMode ? (
+						this.renderEditMode()
+					) : (
+						<Disabled>{ this.renderViewMode() }</Disabled>
+					) }
+				</Fragment>
 			);
 		}
 
-		return (
-			<Fragment>
-				<BlockControls>
-					<Toolbar
-						controls={ [
-							{
-								icon: 'edit',
-								title: __( 'Edit' ),
-								onClick: () =>
-									setAttributes( { editMode: ! editMode } ),
-								isActive: editMode,
-							},
-						] }
-					/>
-				</BlockControls>
-				{ this.getInspectorControls() }
-				{ editMode ? (
-					this.renderEditMode()
-				) : (
-					<Disabled>{ this.renderViewMode() }</Disabled>
-				) }
-			</Fragment>
-		);
+		return this.renderViewMode();
 	}
 }
 
@@ -338,6 +365,7 @@ AddToCartBlock.propTypes = {
 	/**
 	 * A callback to update attributes
 	 */
+	isEditor: PropTypes.bool,
 	setAttributes: PropTypes.func,
 	debouncedSpeak: PropTypes.func.isRequired,
 };

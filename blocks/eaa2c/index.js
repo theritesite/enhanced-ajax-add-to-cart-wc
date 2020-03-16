@@ -84,12 +84,11 @@ registerBlockType( 'enhanced-ajax-add-to-cart-for-wc/eaa2c', {
 	// edit: function( props ) {
 	// 	return <AddToCartBlock { ...props } />;
 	// },
-	edit: ( attributes ) => {
+	edit: ( props ) => {
 		// return (
 		// 	el( AddToCartBlock, { attributes, setAttributes } )
 		// );
-		return <AddToCartBlock { ...attributes } />;
-		// return <p>stuff</p>;
+		return <AddToCartBlock { ...props } isEditor={ true } />;
 	},
 
 	/**
