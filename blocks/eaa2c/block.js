@@ -153,7 +153,7 @@ class AddToCartBlock extends Component {
 								// {...droppableProvided.dragHandleProps}
 								className="trs-options-wrapper"
 							>
-								{/* <Draggable
+								{ /* <Draggable
 										key={ 1 }
 										draggableId={ stuff[0].id }
 										disableInteractiveElementBlocking={
@@ -172,7 +172,7 @@ class AddToCartBlock extends Component {
 												{ stuff[0].component }
 											</div>
 										) }
-									</Draggable> */}
+									</Draggable> */ }
 								{ this.getItems().map( ( item, index ) => (
 									<Draggable
 										key={ item.id }
@@ -309,7 +309,6 @@ class AddToCartBlock extends Component {
 	}
 
 	render() {
-
 		const { attributes } = this.props;
 
 		if ( this.props.isEditor ) {
@@ -333,7 +332,9 @@ class AddToCartBlock extends Component {
 									icon: 'edit',
 									title: __( 'Edit' ),
 									onClick: () =>
-										setAttributes( { editMode: ! editMode } ),
+										setAttributes( {
+											editMode: ! editMode,
+										} ),
 									isActive: editMode,
 								},
 							] }
