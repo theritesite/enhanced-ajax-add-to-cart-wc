@@ -130,10 +130,10 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 			$variation = wc_get_product( $variation_id );
 		}
 
-		if( !is_null( $product ) ){
+		if( !is_null( $product ) && $product !== false ){
 
 			$price_display = get_woocommerce_currency_symbol() . $product->get_price();
-			if ( $variation !== null ) {
+			if ( $variation !== null && $variation !== false ) {
 				$price_display = get_woocommerce_currency_symbol() . $variation->get_price();
 			}
 

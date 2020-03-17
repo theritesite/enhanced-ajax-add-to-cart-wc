@@ -294,7 +294,7 @@ class AddToCartBlock extends Component {
 						} ) }
 						<button
 							type="submit"
-							className="variable_add_to_cart_button button alt"
+							className="eaa2c_add_to_cart_button button alt"
 							data-pid={ products[ 0 ].parent_id > 0 ? products[ 0 ].parent_id : products[ 0 ].id }
 							data-vid={ products[ 0 ].id }
 						>

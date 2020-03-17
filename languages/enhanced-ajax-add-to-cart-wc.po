@@ -28,35 +28,3 @@ msgstr[1] ""
 #: blocks/common/product-control.js:55
 msgid "Product search results updated."
 msgstr ""
-
-#: blocks/eaa2c/block.js:180
-msgid "Showing AJAX Add to Cart block preview."
-msgstr ""
-
-#: blocks/eaa2c/block.js:184
-msgid "AJAX Add to Cart button"
-msgstr ""
-
-#: blocks/eaa2c/block.js:200
-msgid "Done"
-msgstr ""
-
-#: blocks/eaa2c/block.js:270
-msgid "Edit"
-msgstr ""
-
-#: blocks/eaa2c/block.js:92
-msgid "Content"
-msgstr ""
-
-#: blocks/eaa2c/block.js:97
-msgid "Edit Mode"
-msgstr ""
-
-#: blocks/eaa2c/block.js:98
-msgid "Editing."
-msgstr ""
-
-#: blocks/eaa2c/block.js:98
-msgid "Previewing."
-msgstr ""

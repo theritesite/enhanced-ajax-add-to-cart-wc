@@ -21,6 +21,9 @@ class Enhanced_Ajax_Add_To_Cart_Wc_AJAX {
         
         add_action( 'wp_ajax_variable_add_to_cart', array( __CLASS__, 'variable_add_to_cart_callback' ) );
         add_action( 'wp_ajax_nopriv_variable_add_to_cart', array( __CLASS__, 'variable_add_to_cart_callback' ) );
+
+        add_action( 'wp_ajax_eaa2c_add_to_cart', array( __CLASS__, 'eaa2c_add_to_cart_callback' ) );
+        add_action( 'wp_ajax_nopriv_eaa2c_add_to_cart', array( __CLASS__, 'eaa2c_add_to_cart_callback' ) );
     }
 
     /**
@@ -109,6 +112,74 @@ class Enhanced_Ajax_Add_To_Cart_Wc_AJAX {
             $data['error'] = "no product received";
         }
 
+        wc_get_notices( array() );
+        wc_print_notices();
+        $html = ob_get_contents();
+        ob_end_clean();
+        $data['html'] = $html;
+        wp_send_json( $data );
+
+        wp_die();
+    }
+
+    /**
+     * The server side callback when the button is pressed to verify and add any product to the current cart
+     * 
+     * @since 2.0.0
+     */
+    public function eaa2c_add_to_cart_callback() {
+
+        ob_start();
+        $data = array();
+
+        if ( ! empty( $_POST['product'] ) && ! empty( $_POST['variable'] ) && ! empty( $_POST['quantity'] ) ) {
+            try {
+                $product_id = $_POST['product'] ;
+                $variation_id = $_POST['variable'];
+                $quantity = $_POST['quantity'];
+
+                if ( true === is_int( $variation_id ) && 0 < $variation_id && $variation_id !== $product_id  ) {
+                    $product = wc_get_product( $variation_id );
+                    $variations = $variation_id ? $product->get_variation_attributes( $variation_id ) : null;
+                    $product_status    = get_post_status( $product_id );
+                    $passed_validation =  apply_filters( 'woocommerce_add_to_cart_validation', true, $variation_id, $quantity );
+
+                    if ( $passed_validation && WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variations ) && 'publish' === $product_status ) {
+                        do_action( 'woocommerce_ajax_added_to_cart', $product_id );
+                        WC_AJAX::get_refreshed_fragments();
+
+                    } else {
+
+                        $data = array(
+                            'error' => true
+                        );
+                    }
+                } elseif ( true === is_int( $product_id ) && 0 < $product_id ) {
+                    $product_id = $_POST['product'] ;
+                    $quantity   = $_POST['quantity'];
+                    $product    = wc_get_product( $product_id );
+                    $product_status    = get_post_status( $product_id );
+                    $passed_validation =  apply_filters( 'woocommerce_add_to_cart_validation', true, $product_id, $quantity );
+
+                    if ( $passed_validation && WC()->cart->add_to_cart( $product_id, $quantity, null, null ) && 'publish' === $product_status ) {
+                        do_action( 'woocommerce_ajax_added_to_cart', $product_id );
+                        WC_AJAX::get_refreshed_fragments();
+                        
+                    } else {
+                        $data = array(
+                            'error' => true
+                        );
+                    }
+
+                }
+
+            } catch (Exception $e) {
+                return new WP_Error('add_to_cart_error', $e->getMessage(), array('status' => 500));
+            }
+        }
+        else {
+            $data['error'] = "no product received";
+        }
         wc_get_notices( array() );
         wc_print_notices();
         $html = ob_get_contents();

@@ -18,10 +18,60 @@ jQuery( function( $ ) {
 		$( document.body )
 			.on( 'click', '.variable_add_to_cart_button', this.onAddVariableToCart )
 			.on( 'click', '.simple_add_to_cart_button', this.onAddSimpleToCart )
+			.on( 'click', '.eaa2c_add_to_cart_button', this.onAddAnyToCart )
 			.on( 'added_to_cart', this.updateButton )
 			.on( 'added_to_cart', this.updateCartPage )
 			.on( 'added_to_cart', this.updateFragments )
 			.on( 'notices_received', this.showNotices );
+	};
+
+	/**
+	 * Handle the variable product add to cart event.
+	 */
+	AddToCartHandler.prototype.onAddAnyToCart = function( e ) {
+		var $thisbutton = $( this );
+		e.preventDefault();
+
+		$thisbutton.removeClass("added");
+		$thisbutton.addClass("loading");
+
+		var data = {};
+
+		$.each( $thisbutton.data(), function( key, value ) {
+			data[ key ] = value;
+		});
+
+		data['qty'] = $( this ).siblings('.quantity-container').find('input').val();
+		data['action'] = 'eaa2c_add_to_cart';
+
+		// Trigger event.
+		$( document.body ).trigger( 'adding_to_cart', [ $thisbutton, data ] );
+
+		$.ajax({
+			url: EAA2C.ajax_url,
+			type: "POST",
+			data:{
+				product: data['pid'],
+				variable: data['vid'],
+				quantity: data['qty'],
+				action: 'eaa2c_add_to_cart',
+			},
+			success: function(response){
+				if( EAA2C.debug ) {
+					console.log( "product id: " + data['pid'] + " quantity: " + data['qty']);
+				}
+				$( document.body ).trigger( 'added_to_cart', [ response.fragments, response.cart_hash, $thisbutton ] );
+				if(response.html) {
+					$( document.body ).trigger( 'notices_received', [response.html] );
+				}
+			},
+			error: function(){
+				console.error("failure!");
+				if( EAA2C.debug ) {
+					console.log( "product id: " + data['pid'] + " quantity: " + data['qty']);
+				}
+			},
+		});
 	};
 
 	/**
