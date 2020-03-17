@@ -123,6 +123,9 @@ At this point, no. This is designed to supplement your store to let the buttons 
 
 == Changelog ==
 
+= 1.3.3 =
+* Fixed bug when quantity input was hidden the add to cart button was no longer working.
+
 = 1.3.2 =
 * Changed how javascript selector worked for grabbing quantity from input. Only a bug in custom implementations around this plugin.
 
