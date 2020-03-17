@@ -64,23 +64,22 @@ const ProductControl = ( {
 
 	return (
 		<div className="wrapper">
-			{ /* <EAA2CControl onChange={ onChange } contentVisibility={contentVisibility} /> */ }
-			{ /* <ProductEditControl selected={ selected } /> */ }
 			<SearchListControl
 				className="woocommerce-products"
 				isSingle
 				// isHierarchical
 				list={ products }
 				isLoading={ isLoading }
-				selected={ products.filter( ( { id } ) =>
-					selected.includes( id )
+				selected={ products.filter( ( product ) => {
+					const selectedIds = selected.map( ( { id } ) => id );
+					return selectedIds.includes( product.id );
+					}
 				) }
 				onSearch={ onSearch }
 				onChange={ onChange }
 				messages={ messages }
 			/>
 		</div>
-		// <p>This is where the search is.</p>
 	);
 };
 

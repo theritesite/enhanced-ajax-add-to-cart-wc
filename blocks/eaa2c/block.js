@@ -232,8 +232,9 @@ class AddToCartBlock extends Component {
 					<ProductControl
 						selected={ attributes.products }
 						onChange={ ( value = [] ) => {
-							const ids = value.map( ( { id } ) => id );
-							setAttributes( { products: ids } );
+							const selected = value;
+							setAttributes( { products: selected } );
+							// setAttributes( { products: prodDat } );
 						} }
 					/>
 					<Button onClick={ onDone }>
@@ -248,24 +249,24 @@ class AddToCartBlock extends Component {
 		const { attributes } = this.props;
 		const { contentVisibility, contentOrder, products } = attributes;
 
-		if ( products[ 0 ] > 0 ) {
-			return (
-				<div className="woocommerce-variation-add-to-cart variations_button">
-					{ contentOrder.map( ( item, index ) => {
-						// const classVar = "ea-" + item.content;
-						if ( contentVisibility[ item.content ] === true ) {
-							// console.log( "we are in the visibility, and we are trying to render the: " + item.content );
+		if ( products[ 0 ] ) {
+			if ( products[0].id > 0 ) {
+				console.log( products );
+				const product = products[0];
+				return (
+					<div className="woocommerce-variation-add-to-cart variations_button">
+						{ contentOrder.map( ( item, index ) => {
 							if (
-								item.content === 'title' ||
-								item.content === 'price'
+								( item.content === 'title' || item.content === 'price' ) &&
+								contentVisibility[ item.content ] === true
 							) {
-								// console.log( "item content is: " + item.content );
+								const att = item.content === 'title' ? 'name' : 'price';
 								return (
 									<span
 										key={ index }
 										className="ea-line ea-text"
 									>
-										<span>Product { item.content }</span>
+										<span>{ product[ att ] }</span>
 									</span>
 								);
 							} else if ( item.content === 'quantity' ) {
@@ -277,33 +278,31 @@ class AddToCartBlock extends Component {
 										<div className="quantity">
 											<input
 												type="number"
-												id={ products[ 0 ] }
+												id={ products[ 0 ].id }
 												className="input-text qty text"
 												step={ 1 }
 												min={ 1 }
 												max={ 4 }
 												name={ 'steven' }
 												title={ 'quantity' }
+												hidden={ ! contentVisibility[ item.content ] }
 											/>
 										</div>
 									</span>
 								);
 							}
-						} else {
-							// console.log( "we are in the visibility, and we are trying to render the: " + item.content + "   but its false :(" );
-						}
-						return <div key={ index }>stuff</div>;
-					} ) }
-					<button
-						type="submit"
-						className="variable_add_to_cart_button button alt"
-						data-pid={ products[ 0 ] }
-						data-vid={ products[ 0 ] }
-					>
-						{ 'add to cart!?' }
-					</button>
-				</div>
-			);
+						} ) }
+						<button
+							type="submit"
+							className="variable_add_to_cart_button button alt"
+							data-pid={ products[ 0 ].parent_id > 0 ? products[ 0 ].parent_id : products[ 0 ].id }
+							data-vid={ products[ 0 ].id }
+						>
+							{ 'add to cart!?' }
+						</button>
+					</div>
+				);
+			}
 		}
 		return <div className="no-product-found">no product found</div>;
 	}

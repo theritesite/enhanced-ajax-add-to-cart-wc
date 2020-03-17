@@ -233,7 +233,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 		wp_register_style(
 			'eaa2c-block',
 			plugins_url( $style_css, $dir . 'eaa2c/' ),
-			array(),
+			array( 'wp-editor' ),
 			filemtime( "$dir/$style_css" )
 		);
 

@@ -3,6 +3,32 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "X-Generator: babel-plugin-makepot\n"
 
+#: blocks/common/product-control.js:35
+msgid "Clear all products"
+msgstr ""
+
+#: blocks/common/product-control.js:36
+msgid "Products"
+msgstr ""
+
+#: blocks/common/product-control.js:37
+msgid "Your store doesn't have any products."
+msgstr ""
+
+#: blocks/common/product-control.js:41
+msgid "Search for products to display"
+msgstr ""
+
+#: blocks/common/product-control.js:47
+msgid "%d product selected"
+msgid_plural "%d products selected"
+msgstr[0] ""
+msgstr[1] ""
+
+#: blocks/common/product-control.js:55
+msgid "Product search results updated."
+msgstr ""
+
 #: blocks/eaa2c/block.js:180
 msgid "Showing AJAX Add to Cart block preview."
 msgstr ""
@@ -11,11 +37,11 @@ msgstr ""
 msgid "AJAX Add to Cart button"
 msgstr ""
 
-#: blocks/eaa2c/block.js:203
+#: blocks/eaa2c/block.js:200
 msgid "Done"
 msgstr ""
 
-#: blocks/eaa2c/block.js:277
+#: blocks/eaa2c/block.js:270
 msgid "Edit"
 msgstr ""
 
@@ -33,8 +59,4 @@ msgstr ""
 
 #: blocks/eaa2c/block.js:98
 msgid "Previewing."
-msgstr ""
-
-#: blocks/eaa2c/index.js:20
-msgid "AJAXifies your add to cart button!"
 msgstr ""

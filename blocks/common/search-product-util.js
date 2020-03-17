@@ -60,7 +60,7 @@ export const getProducts = ( {
 			// console.log( "we are after the flatten" );
 			const list = products.map( ( product ) => ( {
 				...product,
-				parent: 0,
+				// parent: 0,
 			} ) );
 			// console.log( "returning list")
 			return list;
