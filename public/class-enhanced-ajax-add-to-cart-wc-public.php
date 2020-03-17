@@ -83,13 +83,28 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Public {
 			$js_file =  plugin_dir_url( __FILE__ ) . 'eaa-2-c-js.js';
 		// $js_file =  plugin_dir_url( __FILE__ ) . 'js/enhanced-ajax-add-to-cart-wc-public.js';
 
+		// if( !empty( $js_file ) ) {
+
+		// 	wp_register_script( $plugin . '-react-bundle' , $js_file, array( 'jquery', 'wc-add-to-cart' ), $this->version, false );
+			
+		// 	wp_localize_script( $plugin . '-react-bundle', 'EAA2C', array(
+		// 		'ajax_url'	=> admin_url( 'admin-ajax.php' ),
+		// 		'debug' => EAA2C_DEBUG,
+		// 	));
+		// 	wp_enqueue_script( $plugin . '-react-bundle' );
+		// }
+
+		$dir = plugin_dir_path( dirname( __FILE__ ) ) . 'dist/request/';
+		$index_js = 'index.js';
+		$js_file =  plugins_url( $index_js, $dir .'request/' );
+
 		if( !empty( $js_file ) ) {
 
 			wp_register_script( $plugin . '-js-bundle' , $js_file, array( 'jquery', 'wc-add-to-cart' ), $this->version, false );
 			
 			wp_localize_script( $plugin . '-js-bundle', 'EAA2C', array(
 				'ajax_url'	=> admin_url( 'admin-ajax.php' ),
-				'debug' => EAA2C_DEBUG,
+				'debug' => true,
 			));
 			wp_enqueue_script( $plugin . '-js-bundle' );
 		}

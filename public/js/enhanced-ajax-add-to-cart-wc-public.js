@@ -41,7 +41,7 @@ jQuery( function( $ ) {
 			data[ key ] = value;
 		});
 
-		data['qty'] = $( this ).siblings('.quantity-container').find('input').val();
+		data['qty'] = $( this ).siblings('.quantity-container').find('input.input-text.qty.text').val();
 		data['action'] = 'eaa2c_add_to_cart';
 
 		// Trigger event.
@@ -58,7 +58,7 @@ jQuery( function( $ ) {
 			},
 			success: function(response){
 				if( EAA2C.debug ) {
-					console.log( "product id: " + data['pid'] + " quantity: " + data['qty']);
+					console.log( "product id: " + data['pid'] + " variable id: " + data['vid'] + " quantity: " + data['qty']);
 				}
 				$( document.body ).trigger( 'added_to_cart', [ response.fragments, response.cart_hash, $thisbutton ] );
 				if(response.html) {
@@ -68,7 +68,7 @@ jQuery( function( $ ) {
 			error: function(){
 				console.error("failure!");
 				if( EAA2C.debug ) {
-					console.log( "product id: " + data['pid'] + " quantity: " + data['qty']);
+					console.log( "product id: " + data['pid'] + " variable id: " + data['vid'] + " quantity: " + data['qty']);
 				}
 			},
 		});

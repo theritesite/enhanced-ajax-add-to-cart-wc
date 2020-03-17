@@ -127,16 +127,16 @@ class Enhanced_Ajax_Add_To_Cart_Wc_AJAX {
      * 
      * @since 2.0.0
      */
-    public function eaa2c_add_to_cart_callback() {
+    public static function eaa2c_add_to_cart_callback() {
 
         ob_start();
         $data = array();
 
         if ( ! empty( $_POST['product'] ) && ! empty( $_POST['variable'] ) && ! empty( $_POST['quantity'] ) ) {
             try {
-                $product_id = $_POST['product'] ;
-                $variation_id = $_POST['variable'];
-                $quantity = $_POST['quantity'];
+                $product_id = intval( sanitize_text_field( $_POST['product'] ) );
+                $variation_id = intval( sanitize_text_field( $_POST['variable'] ) );
+                $quantity = intval( sanitize_text_field( $_POST['quantity'] ) );
 
                 if ( true === is_int( $variation_id ) && 0 < $variation_id && $variation_id !== $product_id  ) {
                     $product = wc_get_product( $variation_id );
@@ -155,8 +155,6 @@ class Enhanced_Ajax_Add_To_Cart_Wc_AJAX {
                         );
                     }
                 } elseif ( true === is_int( $product_id ) && 0 < $product_id ) {
-                    $product_id = $_POST['product'] ;
-                    $quantity   = $_POST['quantity'];
                     $product    = wc_get_product( $product_id );
                     $product_status    = get_post_status( $product_id );
                     $passed_validation =  apply_filters( 'woocommerce_add_to_cart_validation', true, $product_id, $quantity );

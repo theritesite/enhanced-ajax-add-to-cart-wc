@@ -106,6 +106,8 @@ const config = env => {
 		entryPoints[ name ] = `./blocks/${ name }`;
 	} );
 
+	entryPoints['request'] = path.resolve(__dirname, 'public/js', pluginSlug + '-public.js');
+
 
 	if(env.NODE_ENV === 'production' ) {
 		pluginList.push(
