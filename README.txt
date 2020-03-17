@@ -123,6 +123,9 @@ At this point, no. This is designed to supplement your store to let the buttons 
 
 == Changelog ==
 
+= 1.3.4 =
+* Fixed bug when using shortcodes in blocks - blocks try to run shortcode earlier than classic editor.
+
 = 1.3.3 =
 * Fixed bug when quantity input was hidden the add to cart button was no longer working.
 
