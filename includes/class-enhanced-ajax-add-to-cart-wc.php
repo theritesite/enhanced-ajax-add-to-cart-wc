@@ -198,7 +198,6 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 		// $dir = plugin_dir_path( dirname( __FILE__ ) ) . 'build/';
 		$dir = plugin_dir_path( dirname( __FILE__ ) ) . 'dist/blocks/';
 
-		// $index_js = 'index.js';
 		$index_js = 'eaa2c.js';
 		wp_register_script(
 			'eaa2c-block-editor',
@@ -241,32 +240,59 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 			'editor_script' => 'eaa2c-block-editor',
 			'editor_style'  => 'eaa2c-block-editor-style',
 			'style'         => 'eaa2c-block',
-			// 'attributes' 	=> array(
-			// 	'editMode' => array(
-			// 		'type' => 'boolean',
-			// 		'default' => true,
-			// 	),
-			// 	'isPreview' => array(
-			// 		'type' => 'boolean',
-			// 		'default' => false,
-			// 	),
-			// 	'contentVisibility' => array(
-			// 		'type' => 'object',
-			// 		'default' => array(
-			// 			'title' => true,
-			// 			'price' => true,
-			// 			'quantity' => true,
-			// 		),
-			// 	),
-			// 	'buttonText' => array(
-			// 		'type' => 'string',
-			// 		'default' => 'Add to cart',
-			// 	),
-			// 	'product' => array(
-			// 		'type' => 'integer',
-			// 		'default' => null,
-			// 	),
-				// 'render_callback' => array( $this, 'render' ),
+			'attributes' 	=> array(
+				'editMode' => array(
+					'type' => 'boolean',
+					'default' => true,
+				),
+				'isPreview' => array(
+					'type' => 'boolean',
+					'default' => false,
+				),
+				'contentVisibility' => array(
+					'type' => 'object',
+					'default' => array(
+						'title' => true,
+						'price' => true,
+						'quantity' => true,
+						'button' => true,
+						'separator' => true,
+					),
+					'items' => array (
+						'type'	=> 'boolean',
+					),
+				),
+				'contentOrder' => array(
+					'type' => 'object',
+					'default' => array(),
+					'items' => array (
+						'type'	=> 'array',
+					),
+				),
+				'quantity' => array(
+					'type' => 'object',
+					'default' => array(
+						'default' => 1,
+						'min' => 1,
+						'max' => -1,
+					),
+					'items' => array (
+						'type'	=> int,
+					),
+				),
+				'buttonText' => array(
+					'type' => 'string',
+					'default' => 'Add to cart',
+				),
+				'products' => array(
+					'type' => 'object',
+					'default' => array(),
+					'items' => array (
+						'type'	=> 'array',
+					),
+				),
+			),
+			'render_callback' => array( $this, 'render' ),
 			// )
 		) );
 
@@ -280,8 +306,86 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 		// $products         = $this->get_products();
 		// $classes          = $this->get_container_classes();
 		$output           = 'kajsdalskdjaksjd';
+		error_log( wc_print_r( $attributes, true ) ) ;
 
-		return sprintf( '<div class="%s"><ul class="wc-block-grid__products">%s</ul></div>', 'cont', $output );
+		return $this->renderHtml( $attributes );
+		// return sprintf( '<div class="%s"><ul class="wc-block-grid__products">%s</ul></div>', '', $output );
+	}
+
+	public function renderHtml( $attributes = array() ) {
+		$contentOrder = $attributes['contentOrder'];
+		$contentVisibility = $attributes['contentVisibility'];
+
+		ob_start();
+			
+		if ( is_array( $attributes['products'] ) && isset( $attributes['products'][0] ) ) {
+			$product = $attributes['products'][0];
+			$buttonText = $attributes['buttonText'];
+			$quantity = $attributes['quantity'];
+
+			$price_display = get_woocommerce_currency_symbol() . $product['price'];
+			// if ( $variation !== null && $variation !== false ) {
+			// 	$price_display = get_woocommerce_currency_symbol() . $variation->get_price();
+			// }
+
+			?>
+			<div class="enhanced-woocommerce-add-to-cart">
+				<?php foreach( $contentOrder as $item ) : ?>
+					<?php if ( strcmp( $item[ 'content' ], 'title' ) === 0 && $contentVisibility[ $item['content'] ] === true  ) : ?>
+						<span class="ea-line ea-text">
+							<span><?php esc_html_e( $product['name'] ); ?></span>
+						</span>
+					<?php endif; ?>
+					<?php if ( strcmp( $item[ 'content' ], 'price' ) === 0 && $contentVisibility[ $item['content'] ] === true   ) : ?>
+						<span class="ea-line ea-text">
+							<span><?php esc_html_e( $price_display ); ?></span>
+						</span>
+					<?php endif; ?>
+					<?php if( strcmp( $item[ 'content' ], 'quantity' ) === 0 ) : ?>
+						<?php $hidden = ( $contentVisibility[ $item['content'] ] ? '' : 'hidden="true"' ); ?>
+						<span class="ea-line quantity-container">
+							<div class="quantity">
+								<input
+									type="number"
+									id="<?php esc_attr_e( $product['id'] ); ?>"
+									class="input-text qty text"
+									value="<?php esc_attr_e( $quantity['default'] ); ?>"
+									step="1"
+									min="<?php esc_attr_e( $quantity['min'] ); ?>"
+									max="<?php esc_attr_e( $quantity['max'] ); ?>"
+									name=''
+									title='quantity'
+									<?php esc_attr_e( $hidden ); ?>
+								/>
+							</div>
+						</span>
+					<?php endif; ?>
+					<?php if( strcmp( $item[ 'content' ], 'separator' ) === 0 && true === $contentVisibility[ $item['content'] ] ) : ?>
+						<span class="ea-line">
+							<span class="ea-separator"></span>
+						</span>
+					<?php endif; ?>
+					<?php if( strcmp( $item[ 'content' ], 'button' ) === 0 && true === $contentVisibility[ $item['content'] ] ) : ?>
+						<span class="ea-line">
+							<button
+								type="submit"
+								class="eaa2c_add_to_cart_button button alt"
+								data-pid="<?php esc_attr_e( $product['parent_id'] > 0 ? $product['parent_id'] : $product['id'] ); ?>"
+								data-vid="<?php esc_attr_e( $product['id'] ); ?>"
+							>
+								<?php esc_html_e( $buttonText ); ?>
+							</button>
+						</span>
+					<?php endif; ?>
+				<?php endforeach; ?>
+			</div>
+			<?php
+		}
+		$html = ob_get_contents();
+		ob_end_clean();
+
+		return $html;
+		wp_die();
 	}
 
 	protected function parse_attributes( $attributes ) {

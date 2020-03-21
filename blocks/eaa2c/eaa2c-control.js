@@ -35,6 +35,16 @@ const EAA2CControl = ( { error, onChange, item, value } ) => {
 			<p className="trs-toggle-label">
 				{ _.startCase( _.lowerCase( 'display ' + item ) ) }
 			</p>
+			{ ( item.content === 'button' ) ?
+				<input
+					type="text"
+					// onChange={ ( buttonText ) => {
+					// 	console.log( buttonText );
+					// 	setAttributes( { buttonText: buttonText } );
+					// } }
+					placeholder={ 'add to cart' }
+					className="button-text"
+				/> : '' }
 		</div>
 	);
 };

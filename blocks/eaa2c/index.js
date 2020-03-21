@@ -10,6 +10,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
+// import ServerSideRender from '@wordpress/server-side-render';
 
 import AddToCartBlock from './block';
 
@@ -39,21 +40,33 @@ registerBlockType( 'enhanced-ajax-add-to-cart-for-wc/eaa2c', {
 			type: 'object',
 			default: {
 				title: true,
+				separator: true,
 				price: true,
 				quantity: true,
+				button: true,
 			},
 		},
 		contentOrder: {
 			type: 'array',
 			default: [
 				{ id: 1, content: 'title' },
-				{ id: 2, content: 'quantity' },
+				{ id: 2, content: 'separator' },
 				{ id: 3, content: 'price' },
+				{ id: 4, content: 'quantity' },
+				{ id: 5, content: 'button' },
 			],
 		},
 		buttonText: {
 			type: 'string',
 			default: 'Add to cart',
+		},
+		quantity: {
+			type: 'object',
+			default: {
+				default: 1,
+				min: 1,
+				max: -1,
+			},
 		},
 		products: {
 			type: 'array',
@@ -107,6 +120,7 @@ registerBlockType( 'enhanced-ajax-add-to-cart-for-wc/eaa2c', {
 	// 	);
 	// },
 	save( attributes ) {
-		return <AddToCartBlock { ...attributes } />;
+		// return <AddToCartBlock { ...attributes } />;
+		return null;
 	},
 } );

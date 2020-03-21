@@ -3,8 +3,9 @@
  * included in this file.
  */
 .ea-line {
-    float: left;
     margin-right: 0.72em;
+    width: fit-content;
+    display: inline-block;
     /* padding: 8px 0; */
 }
 

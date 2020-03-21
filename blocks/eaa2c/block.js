@@ -30,15 +30,24 @@ import EAA2CControl from './eaa2c-control';
 class AddToCartBlock extends Component {
 	constructor( props ) {
 		super( props );
-		// this.state = {
+		this.state = {
+			canDragInteractiveElements: true,
 		//     contentVisibility: this.props.attributes.contentVisibility
-		// }
+		}
 		this.onDragEnd = this.onDragEnd.bind( this );
+	}
+
+	handleTextChange(e) {
+		const { attributes, setAttributes } = this.props;
+		const { contentVisibility, buttonText } = attributes;
+
+		console.log(e.target.value);
+		setAttributes( { buttonText: e.target.value } );
 	}
 
 	getItemControls( item, index ) {
 		const { attributes, setAttributes } = this.props;
-		const { contentVisibility } = attributes;
+		const { contentVisibility, buttonText, defaultQuantity } = attributes;
 
 		return (
 			<div key={ index } className="trs-wrapper">
@@ -55,8 +64,84 @@ class AddToCartBlock extends Component {
 					value={ contentVisibility[ item.content ] }
 					item={ item.content }
 				/>
+				{ ( item.content === 'button' ) ?
+				<input
+					type="text"
+					name="button-text"
+					// onFocus={ this.setState( { canDragInteractiveElements: false } ) }
+					onChange={ ( e ) => {
+						setAttributes( { buttonText: e.target.value } );
+					} }
+					placeholder={ buttonText }
+					value={ buttonText }
+					className="button-text"
+				/> : '' }
+				{ ( item.content === 'quantity' ) ?
+				<input
+					type="number"
+					name="default-quantity"
+					// onFocus={ this.setState( { canDragInteractiveElements: false } ) }
+					onChange={ ( e ) => {
+						setAttributes( { defaultQuantity: e.target.value } );
+					} }
+					placeholder={ defaultQuantity }
+					value={ defaultQuantity }
+					className="default-quantity"
+				/> : '' }
+				{/* { ( item.content === 'button' || item.content === 'quantity' ) ? this.getItemInput( item.content ) : '' } */}
 			</div>
 		);
+	}
+
+	getItemInput( item ) {
+		const { attributes, setAttributes } = this.props;
+		const { contentVisibility, buttonText, defaultQuantity } = attributes;
+
+		if ( item === 'button' ) {
+			return (
+				<input
+					type="text"
+					onChange={ ( buttonText ) => {
+						console.log( buttonText );
+						setAttributes( { buttonText: buttonText } );
+					} }
+					value={ buttonText }
+					className="button-text"
+				/>
+			);
+		} else if ( item === 'quantity' ) {
+			return (
+				<div className="ea-quantity-container">
+					<input
+						type="number"
+						onChange={ ( defaultQuantity ) => {
+							console.log( defaultQuantity );
+							setAttributes( { defaultQuantity: defaultQuantity } );
+						} }
+						value={ defaultQuantity }
+						className="default-quantity quantity"
+					/>
+					<input
+						type="number"
+						onChange={ ( minQuantity ) => {
+							console.log( minQuantity );
+							setAttributes( { minQuantity: minQuantity } );
+						} }
+						value={ minQuantity }
+						className="min-quantity quantity"
+					/>
+					<input
+						type="number"
+						onChange={ ( maxQuantity ) => {
+							console.log( maxQuantity );
+							setAttributes( { maxQuantity: maxQuantity } );
+						} }
+						value={ maxQuantity }
+						className="max-quantity quantity"
+					/>
+				</div>
+			);
+		}
 	}
 
 	getItems() {
@@ -153,32 +238,12 @@ class AddToCartBlock extends Component {
 								// {...droppableProvided.dragHandleProps}
 								className="trs-options-wrapper"
 							>
-								{ /* <Draggable
-										key={ 1 }
-										draggableId={ stuff[0].id }
-										disableInteractiveElementBlocking={
-											true
-										}
-										index={ 1 }
-									>
-										{ ( draggableProvided ) => (
-											<div
-												ref={
-													draggableProvided.innerRef
-												}
-												{ ...draggableProvided.draggableProps }
-												{ ...draggableProvided.dragHandleProps }
-											>
-												{ stuff[0].component }
-											</div>
-										) }
-									</Draggable> */ }
 								{ this.getItems().map( ( item, index ) => (
 									<Draggable
 										key={ item.id }
 										draggableId={ item.id }
 										disableInteractiveElementBlocking={
-											true
+											false
 										}
 										index={ index }
 									>
@@ -248,8 +313,10 @@ class AddToCartBlock extends Component {
 	renderViewMode() {
 		const { attributes } = this.props;
 		const { contentVisibility, contentOrder, products } = attributes;
+		console.log( "In render view mode." );
 
 		if ( products[ 0 ] ) {
+			console.log( "products 'exist'" );
 			if ( products[0].id > 0 ) {
 				console.log( products );
 				const product = products[0];
