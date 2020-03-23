@@ -47,7 +47,7 @@ class AddToCartBlock extends Component {
 
 	getItemControls( item, index ) {
 		const { attributes, setAttributes } = this.props;
-		const { contentVisibility, buttonText, defaultQuantity } = attributes;
+		const { contentVisibility, buttonText, quantity } = attributes;
 
 		return (
 			<div key={ index } className="trs-wrapper">
@@ -58,13 +58,13 @@ class AddToCartBlock extends Component {
 						const temp = JSON.parse(
 							JSON.stringify( contentVisibility )
 						);
-						temp[ item.content ] = value;
+						temp[ item ] = value;
 						setAttributes( { contentVisibility: temp } );
 					} }
-					value={ contentVisibility[ item.content ] }
-					item={ item.content }
+					value={ contentVisibility[ item ] }
+					item={ item }
 				/>
-				{ ( item.content === 'button' ) ?
+				{ ( item === 'button' ) ?
 				<input
 					type="text"
 					name="button-text"
@@ -76,26 +76,62 @@ class AddToCartBlock extends Component {
 					value={ buttonText }
 					className="button-text"
 				/> : '' }
-				{ ( item.content === 'quantity' ) ?
-				<input
-					type="number"
-					name="default-quantity"
-					// onFocus={ this.setState( { canDragInteractiveElements: false } ) }
-					onChange={ ( e ) => {
-						setAttributes( { defaultQuantity: e.target.value } );
-					} }
-					placeholder={ defaultQuantity }
-					value={ defaultQuantity }
-					className="default-quantity"
-				/> : '' }
-				{/* { ( item.content === 'button' || item.content === 'quantity' ) ? this.getItemInput( item.content ) : '' } */}
+				{ ( item === 'quantity' ) ?
+				<div>
+					<input
+						type="number"
+						name="default-quantity"
+						// onFocus={ this.setState( { canDragInteractiveElements: false } ) }
+						onChange={ ( e ) => {
+							const temp = JSON.parse(
+								JSON.stringify( quantity )
+							);
+							temp[ 'default' ] = e.target.value;
+							setAttributes( { quantity: temp } );
+						} }
+						placeholder={ quantity[ 'default' ] }
+						value={ quantity[ 'default' ] }
+						className="input-text qty text default-quantity"
+					/>
+					<input
+						type="number"
+						name="min-quantity"
+						// onFocus={ this.setState( { canDragInteractiveElements: false } ) }
+						onChange={ ( e ) => {
+							const temp = JSON.parse(
+								JSON.stringify( quantity )
+							);
+							temp[ 'min' ] = e.target.value;
+							setAttributes( { quantity: temp } );
+						} }
+						placeholder={ quantity[ 'min' ] }
+						value={ quantity[ 'min' ] }
+						className="input-text qty text min-quantity"
+					/>
+					<input
+						type="number"
+						name="max-quantity"
+						// onFocus={ this.setState( { canDragInteractiveElements: false } ) }
+						onChange={ ( e ) => {
+							const temp = JSON.parse(
+								JSON.stringify( quantity )
+							);
+							temp[ 'max' ] = e.target.value;
+							setAttributes( { quantity: temp } );
+						} }
+						placeholder={ quantity[ 'max' ] }
+						value={ quantity[ 'max' ] }
+						className="input-text qty text max-quantity"
+					/>
+				</div> : '' }
+				{/* { ( item === 'button' || item === 'quantity' ) ? this.getItemInput( item ) : '' } */}
 			</div>
 		);
 	}
 
 	getItemInput( item ) {
 		const { attributes, setAttributes } = this.props;
-		const { contentVisibility, buttonText, defaultQuantity } = attributes;
+		const { contentVisibility, buttonText, quantity } = attributes;
 
 		if ( item === 'button' ) {
 			return (
@@ -114,29 +150,38 @@ class AddToCartBlock extends Component {
 				<div className="ea-quantity-container">
 					<input
 						type="number"
-						onChange={ ( defaultQuantity ) => {
-							console.log( defaultQuantity );
-							setAttributes( { defaultQuantity: defaultQuantity } );
+						onChange={ ( e ) => {
+							const temp = JSON.parse(
+								JSON.stringify( quantity )
+							);
+							temp[ 'default' ] = e.target.value;
+							setAttributes( { quantity: temp } );
 						} }
-						value={ defaultQuantity }
+						value={ quantity[ 'default' ] }
 						className="default-quantity quantity"
 					/>
 					<input
 						type="number"
-						onChange={ ( minQuantity ) => {
-							console.log( minQuantity );
-							setAttributes( { minQuantity: minQuantity } );
+						onChange={ ( e ) => {
+							const temp = JSON.parse(
+								JSON.stringify( quantity )
+							);
+							temp[ 'min' ] = e.target.value;
+							setAttributes( { quantity: temp } );
 						} }
-						value={ minQuantity }
+						value={ quantity[ 'min' ] }
 						className="min-quantity quantity"
 					/>
 					<input
 						type="number"
-						onChange={ ( maxQuantity ) => {
-							console.log( maxQuantity );
-							setAttributes( { maxQuantity: maxQuantity } );
+						onChange={ ( e ) => {
+							const temp = JSON.parse(
+								JSON.stringify( quantity )
+							);
+							temp[ 'max' ] = e.target.value;
+							setAttributes( { quantity: temp } );
 						} }
-						value={ maxQuantity }
+						value={ quantity[ 'max' ] }
 						className="max-quantity quantity"
 					/>
 				</div>
@@ -149,7 +194,7 @@ class AddToCartBlock extends Component {
 		const { contentOrder } = attributes;
 
 		const items = contentOrder.map( ( item, index ) => ( {
-			id: item.content,
+			id: item,
 			component: this.getItemControls( item, index ),
 		} ) );
 
@@ -324,10 +369,10 @@ class AddToCartBlock extends Component {
 					<div className="woocommerce-variation-add-to-cart variations_button">
 						{ contentOrder.map( ( item, index ) => {
 							if (
-								( item.content === 'title' || item.content === 'price' ) &&
-								contentVisibility[ item.content ] === true
+								( item === 'title' || item === 'price' ) &&
+								contentVisibility[ item ] === true
 							) {
-								const att = item.content === 'title' ? 'name' : 'price';
+								const att = item === 'title' ? 'name' : 'price';
 								return (
 									<span
 										key={ index }
@@ -336,7 +381,7 @@ class AddToCartBlock extends Component {
 										<span>{ product[ att ] }</span>
 									</span>
 								);
-							} else if ( item.content === 'quantity' ) {
+							} else if ( item === 'quantity' ) {
 								return (
 									<span
 										key={ index }
@@ -352,7 +397,7 @@ class AddToCartBlock extends Component {
 												max={ 4 }
 												name={ 'steven' }
 												title={ 'quantity' }
-												hidden={ ! contentVisibility[ item.content ] }
+												hidden={ ! contentVisibility[ item ] }
 											/>
 										</div>
 									</span>

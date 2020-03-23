@@ -263,10 +263,16 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 					),
 				),
 				'contentOrder' => array(
-					'type' => 'object',
-					'default' => array(),
+					'type' => 'array',
+					'default' => array(
+						'title',
+						'separator',
+						'price',
+						'quantity',
+						'button',
+					),
 					'items' => array (
-						'type'	=> 'array',
+						'type'	=> 'string',
 					),
 				),
 				'quantity' => array(
@@ -277,7 +283,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 						'max' => -1,
 					),
 					'items' => array (
-						'type'	=> int,
+						'type'	=> 'int',
 					),
 				),
 				'buttonText' => array(
@@ -331,18 +337,18 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 			?>
 			<div class="enhanced-woocommerce-add-to-cart">
 				<?php foreach( $contentOrder as $item ) : ?>
-					<?php if ( strcmp( $item[ 'content' ], 'title' ) === 0 && $contentVisibility[ $item['content'] ] === true  ) : ?>
+					<?php if ( strcmp( $item, 'title' ) === 0 && $contentVisibility[ $item ] === true  ) : ?>
 						<span class="ea-line ea-text">
 							<span><?php esc_html_e( $product['name'] ); ?></span>
 						</span>
 					<?php endif; ?>
-					<?php if ( strcmp( $item[ 'content' ], 'price' ) === 0 && $contentVisibility[ $item['content'] ] === true   ) : ?>
+					<?php if ( strcmp( $item, 'price' ) === 0 && $contentVisibility[ $item ] === true   ) : ?>
 						<span class="ea-line ea-text">
 							<span><?php esc_html_e( $price_display ); ?></span>
 						</span>
 					<?php endif; ?>
-					<?php if( strcmp( $item[ 'content' ], 'quantity' ) === 0 ) : ?>
-						<?php $hidden = ( $contentVisibility[ $item['content'] ] ? '' : 'hidden="true"' ); ?>
+					<?php if( strcmp( $item, 'quantity' ) === 0 ) : ?>
+						<?php $hidden = ( $contentVisibility[ $item ] ? '' : 'hidden="true"' ); ?>
 						<span class="ea-line quantity-container">
 							<div class="quantity">
 								<input
@@ -360,13 +366,13 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 							</div>
 						</span>
 					<?php endif; ?>
-					<?php if( strcmp( $item[ 'content' ], 'separator' ) === 0 && true === $contentVisibility[ $item['content'] ] ) : ?>
+					<?php if( strcmp( $item, 'separator' ) === 0 && true === $contentVisibility[ $item ] ) : ?>
 						<span class="ea-line">
 							<span class="ea-separator"></span>
 						</span>
 					<?php endif; ?>
-					<?php if( strcmp( $item[ 'content' ], 'button' ) === 0 && true === $contentVisibility[ $item['content'] ] ) : ?>
-						<span class="ea-line">
+					<?php if( strcmp( $item, 'button' ) === 0 && true === $contentVisibility[ $item ] ) : ?>
+						<!-- <span class="ea-line"> -->
 							<button
 								type="submit"
 								class="eaa2c_add_to_cart_button button alt"
@@ -375,7 +381,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 							>
 								<?php esc_html_e( $buttonText ); ?>
 							</button>
-						</span>
+						<!-- </span> -->
 					<?php endif; ?>
 				<?php endforeach; ?>
 			</div>

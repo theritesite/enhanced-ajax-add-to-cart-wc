@@ -36,42 +36,66 @@ jQuery( function( $ ) {
 		$thisbutton.addClass("loading");
 
 		var data = {};
+		var qty = {};
 
 		$.each( $thisbutton.data(), function( key, value ) {
 			data[ key ] = value;
 		});
 
-		data['qty'] = $( this ).siblings('.quantity-container').find('input.input-text.qty.text').val();
+		qty = $( this ).siblings('.quantity-container').find('input.input-text.qty.text');
 		data['action'] = 'eaa2c_add_to_cart';
+		console.log( "quantity max: " + qty.attr('max') + " and min: " + qty.attr('min'));
 
+		if( qty.attr('max') != -1 && qty.attr('max') > 1 ) {
+			if( qty.attr('max') < qty.val() && qty.attr('min') < qty.val() ) {
+				qty.value = qty.attr('max');
+			}
+			if( qty.attr('min') > qty.val() ) {
+				qty.value = qty.attr('min');
+			}
+		}
+		data['qty'] = qty.val();
+		console.log( "quantity max: " + qty.attr('max') + " and min: " + qty.attr('min') + " and val: " + qty.val() );
 		// Trigger event.
 		$( document.body ).trigger( 'adding_to_cart', [ $thisbutton, data ] );
 
-		$.ajax({
-			url: EAA2C.ajax_url,
-			type: "POST",
-			data:{
-				product: data['pid'],
-				variable: data['vid'],
-				quantity: data['qty'],
-				action: 'eaa2c_add_to_cart',
-			},
-			success: function(response){
-				if( EAA2C.debug ) {
-					console.log( "product id: " + data['pid'] + " variable id: " + data['vid'] + " quantity: " + data['qty']);
-				}
-				$( document.body ).trigger( 'added_to_cart', [ response.fragments, response.cart_hash, $thisbutton ] );
-				if(response.html) {
-					$( document.body ).trigger( 'notices_received', [response.html] );
-				}
-			},
-			error: function(){
-				console.error("failure!");
-				if( EAA2C.debug ) {
-					console.log( "product id: " + data['pid'] + " variable id: " + data['vid'] + " quantity: " + data['qty']);
-				}
-			},
-		});
+		if ( ( parseInt(qty.attr('max')) === -1 && data['qty'] > qty.attr('min') )
+				|| ( data['qty'] < qty.attr('max') && data['qty'] > qty.attr('min') )
+		) {
+			$.ajax({
+				url: EAA2C.ajax_url,
+				type: "POST",
+				data:{
+					product: data['pid'],
+					variable: data['vid'],
+					quantity: data['qty'],
+					action: 'eaa2c_add_to_cart',
+				},
+				success: function(response){
+					if( EAA2C.debug ) {
+						console.log( "product id: " + data['pid'] + " variable id: " + data['vid'] + " quantity: " + data['qty']);
+					}
+					$( document.body ).trigger( 'added_to_cart', [ response.fragments, response.cart_hash, $thisbutton ] );
+					if( response.html ) {
+						$( document.body ).trigger( 'notices_received', [response.html] );
+					}
+				},
+				error: function(){
+					console.error("failure!");
+					if( EAA2C.debug ) {
+						console.log( "product id: " + data['pid'] + " variable id: " + data['vid'] + " quantity: " + data['qty']);
+					}
+				},
+			});
+		} else if( data['qty'] > qty.attr('max') ) {
+			var errorHtml = '<ul class="woocommerce-error" role="alert"><li>cannot add product to cart, you are over the allowed maximum of ' + qty.attr('max') + ' to add to your cart.</li></ul>';
+			$thisbutton.removeClass("loading");
+			$( document.body ).trigger( 'notices_received', [errorHtml] );
+		} else if( data['qty'] < qty.attr('min') ) {
+			var errorHtml = '<ul class="woocommerce-error" role="alert"><li>cannot add product to cart, you are under the allowed minimum ' + qty.attr('min') + ' to add to your cart.</li></ul>';
+			$thisbutton.removeClass("loading");
+			$( document.body ).trigger( 'notices_received', [errorHtml] );
+		}
 	};
 
 	/**

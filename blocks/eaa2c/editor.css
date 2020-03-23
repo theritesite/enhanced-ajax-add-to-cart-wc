@@ -25,7 +25,7 @@
 }
 
 .trs-toggle div span {
-	left: 30%;
+	left: calc(50% - 18px);
 }
 
 .trs-dragging {
@@ -34,5 +34,8 @@
 
 .trs-not-dragging {
 	background-color: green;
+}
 
+.input-text.qty {
+	width: 5em;
 }

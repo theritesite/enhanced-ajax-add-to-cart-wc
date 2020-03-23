@@ -49,11 +49,11 @@ registerBlockType( 'enhanced-ajax-add-to-cart-for-wc/eaa2c', {
 		contentOrder: {
 			type: 'array',
 			default: [
-				{ id: 1, content: 'title' },
-				{ id: 2, content: 'separator' },
-				{ id: 3, content: 'price' },
-				{ id: 4, content: 'quantity' },
-				{ id: 5, content: 'button' },
+				'title',
+				'separator',
+				'price',
+				'quantity',
+				'button',
 			],
 		},
 		buttonText: {
