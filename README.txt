@@ -123,6 +123,9 @@ At this point, no. This is designed to supplement your store to let the buttons 
 
 == Changelog ==
 
+= 1.4.0 =
+* Added feature where when product is out of stock the add to cart button displays as "out of stock" instead.
+
 = 1.3.4 =
 * Fixed bug when using shortcodes in blocks - blocks try to run shortcode earlier than classic editor.
 

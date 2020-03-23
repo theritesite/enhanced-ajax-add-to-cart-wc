@@ -119,6 +119,9 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 		$variation_id = false;
 		$price = false;
 
+		$button_text = '';
+		$disable_button = '';
+
 		$product_id = $att_array['product'];
 		$title = $att_array['title'];
 		$show_price = $att_array['show_price'];
@@ -229,7 +232,6 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 
 			$a2c_html .= '</span>';
 
-			$button_text = '';
 			if ( '' !== $att_array['button_text'] ) {
 				$button_text = esc_html( wp_strip_all_tags( $att_array['button_text'] ) );
 			}
@@ -237,12 +239,24 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 				$button_text = esc_html( $product->single_add_to_cart_text() );
 			}
 
-			if( $variation_id !== false ) {
+			if ( $variation !== false && $variation instanceof WC_Product_Variation ) {
+				if ( false === $variation->is_in_stock() ) {
+					$button_text = __( 'Out of stock', 'enhanced-ajax-add-to-cart-wc' );
+					$disable_button = 'disabled';
+				}
+			}
+			elseif ( $product !== false && $variation === false && $product instanceof WC_Product ) {
+				if ( false === $product->is_in_stock() ) {
+					$button_text = __( 'Out of stock', 'enhanced-ajax-add-to-cart-wc' );
+					$disable_button = 'disabled';
+				}
+			}
+			if ( $variation_id !== false ) {
 				$a2c_html .= '<button type="submit" class="variable_add_to_cart_button button alt" data-pid="' . absint( $product->get_id() ) .
-							'" data-vid="' . absint( $variation_id ) . '">' . $button_text . '</button>';
+							'" data-vid="' . absint( $variation_id ) . '" ' . $disable_button . '>' . $button_text . '</button>';
 			}
 			else {
-				$a2c_html .= '<button type="submit" class="simple_add_to_cart_button button alt" data-pid="' . absint( $product->get_id() ) . '">' .
+				$a2c_html .= '<button type="submit" class="simple_add_to_cart_button button alt" data-pid="' . absint( $product->get_id() ) . '" ' . $disable_button . '>' .
 							$button_text . '</button>';
 			}
 

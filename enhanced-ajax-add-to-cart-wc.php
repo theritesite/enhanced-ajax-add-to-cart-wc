@@ -11,7 +11,7 @@
  * Plugin Name:       Enhanced AJAX Add to Cart for WooCommerce
  * Plugin URI:        https://www.theritesites.com/plugins/enhanced-ajax-add-to-cart-wc
  * Description:       Creates a shortcode for you to be able to add an AJAX button with an associated quantity for you WooCommerce Product
- * Version:           1.3.4
+ * Version:           1.4.0
  * Author:            TheRiteSites
  * Author URI:        https://www.theritesites.com
  * License:           GPL-2.0+
@@ -34,7 +34,7 @@ if ( ! function_exists( 'is_woocommerce_active' ) ) {
 /**
  * Current plugin version.
  */
-define( 'ENHANCED_AJAX_ADD_TO_CART', '1.3.4' );
+define( 'ENHANCED_AJAX_ADD_TO_CART', '1.4.0' );
 define( 'EAA2C_DEBUG', false );
 
 /**
