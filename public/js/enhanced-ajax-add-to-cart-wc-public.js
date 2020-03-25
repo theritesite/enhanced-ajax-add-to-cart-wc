@@ -18,10 +18,23 @@ jQuery( function( $ ) {
 		$( document.body )
 			.on( 'click', '.variable_add_to_cart_button', this.onAddVariableToCart )
 			.on( 'click', '.simple_add_to_cart_button', this.onAddSimpleToCart )
+			.on( 'click', '.variable_add_to_cart_button', this.blockButtons )
+			.on( 'click', '.simple_add_to_cart_button', this.blockButtons )
+			.on( 'added_to_cart', this.unblockButtons )
 			.on( 'added_to_cart', this.updateButton )
 			.on( 'added_to_cart', this.updateCartPage )
 			.on( 'added_to_cart', this.updateFragments )
 			.on( 'notices_received', this.showNotices );
+	};
+
+	AddToCartHandler.prototype.blockButtons = function( e ) {
+		$('.simple_add_to_cart_button').attr('disabled', true);
+		$('.variable_add_to_cart_button').attr('disabled', true);
+	};
+
+	AddToCartHandler.prototype.unblockButtons = function( e ) {
+		$('.simple_add_to_cart_button').attr('disabled', false);
+		$('.variable_add_to_cart_button').attr('disabled', false);
 	};
 
 	/**
@@ -36,11 +49,11 @@ jQuery( function( $ ) {
 
 		var data = {};
 
-		$.each( $thisbutton.data(), function( key, value ) {
+		$.each( $( this ).data(), function( key, value ) {
 			data[ key ] = value;
 		});
 
-		data['qty'] = $( this ).siblings('.quantity-container').find('input').val();
+		data['qty'] = $thisbutton.siblings('.quantity-container').find('input').val();
 		data['action'] = 'variable_add_to_cart';
 
 		// Trigger event.
@@ -57,7 +70,7 @@ jQuery( function( $ ) {
 			},
 			success: function(response){
 				if( EAA2C.debug ) {
-					console.log( "product id: " + data['pid'] + " quantity: " + data['qty']);
+					console.log( "product id: " + data['pid'] + " variation: " + data['vid'] + " quantity: " + data['qty']);
 				}
 				$( document.body ).trigger( 'added_to_cart', [ response.fragments, response.cart_hash, $thisbutton ] );
 				if(response.html) {
@@ -67,7 +80,7 @@ jQuery( function( $ ) {
 			error: function(){
 				console.error("failure!");
 				if( EAA2C.debug ) {
-					console.log( "product id: " + data['pid'] + " quantity: " + data['qty']);
+					console.log( "product id: " + data['pid'] + " variation: " + data['vid'] + " quantity: " + data['qty']);
 				}
 			},
 		});

@@ -35,7 +35,7 @@ if ( ! function_exists( 'is_woocommerce_active' ) ) {
  * Current plugin version.
  */
 define( 'ENHANCED_AJAX_ADD_TO_CART', '1.4.0' );
-define( 'EAA2C_DEBUG', false );
+define( 'EAA2C_DEBUG', true );
 
 /**
  * The code that runs during plugin activation.
