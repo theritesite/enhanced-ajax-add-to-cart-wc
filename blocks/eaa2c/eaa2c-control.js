@@ -26,25 +26,15 @@ const EAA2CControl = ( { error, onChange, item, value } ) => {
 	}
 
 	return (
-		<div id="draggable-panel" className="trs-wrapper">
+		<div className="trs-toggle-container">
+			<p className="trs-toggle-label">
+				{ _.startCase( _.lowerCase( item ) ) }
+			</p>
 			<ToggleControl
 				checked={ value }
 				onChange={ onChange }
 				className="trs-toggle"
 			/>
-			<p className="trs-toggle-label">
-				{ _.startCase( _.lowerCase( 'display ' + item ) ) }
-			</p>
-			{ ( item.content === 'button' ) ?
-				<input
-					type="text"
-					// onChange={ ( buttonText ) => {
-					// 	console.log( buttonText );
-					// 	setAttributes( { buttonText: buttonText } );
-					// } }
-					placeholder={ 'add to cart' }
-					className="button-text"
-				/> : '' }
 		</div>
 	);
 };

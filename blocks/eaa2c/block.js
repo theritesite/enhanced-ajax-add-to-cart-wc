@@ -25,13 +25,15 @@ import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { Component, Fragment } from '@wordpress/element';
 import PropTypes from 'prop-types';
 import ProductControl from '../common/product-control';
+import { formatPrice } from '../common/price';
 import EAA2CControl from './eaa2c-control';
 
 class AddToCartBlock extends Component {
 	constructor( props ) {
 		super( props );
 		this.state = {
-			canDragInteractiveElements: true,
+			// canDragInteractiveElements: true,
+			editQuantity: false,
 		//     contentVisibility: this.props.attributes.contentVisibility
 		}
 		this.onDragEnd = this.onDragEnd.bind( this );
@@ -46,12 +48,24 @@ class AddToCartBlock extends Component {
 	}
 
 	getItemControls( item, index ) {
-		const { attributes, setAttributes } = this.props;
+		const { attributes, setAttributes, debouncedSpeak } = this.props;
 		const { contentVisibility, buttonText, quantity } = attributes;
+		const editQuantity = this.state.editQuantity;
+		const itemClassList = contentVisibility[ item ] === true ? 'trs-inner-wrapper' : 'trs-inner-wrapper disabled-item';
+
+		const onDone = () => {
+			this.setState( { editQuantity: ! editQuantity } );
+			debouncedSpeak(
+				__(
+					'Editting quantity parameters.',
+					'enhanced-ajax-add-to-cart-wc'
+				)
+			);
+		};
 
 		return (
-			<div key={ index } className="trs-wrapper">
-				<p className="trs-wrapper">=</p>
+			<div key={ index } className={ itemClassList }>
+				<span className="dashicons dashicons-menu-alt3"></span>
 				<EAA2CControl
 					key={ index }
 					onChange={ ( value ) => {
@@ -78,51 +92,63 @@ class AddToCartBlock extends Component {
 				/> : '' }
 				{ ( item === 'quantity' ) ?
 				<div>
-					<input
-						type="number"
-						name="default-quantity"
-						// onFocus={ this.setState( { canDragInteractiveElements: false } ) }
-						onChange={ ( e ) => {
-							const temp = JSON.parse(
-								JSON.stringify( quantity )
-							);
-							temp[ 'default' ] = e.target.value;
-							setAttributes( { quantity: temp } );
-						} }
-						placeholder={ quantity[ 'default' ] }
-						value={ quantity[ 'default' ] }
-						className="input-text qty text default-quantity"
-					/>
-					<input
-						type="number"
-						name="min-quantity"
-						// onFocus={ this.setState( { canDragInteractiveElements: false } ) }
-						onChange={ ( e ) => {
-							const temp = JSON.parse(
-								JSON.stringify( quantity )
-							);
-							temp[ 'min' ] = e.target.value;
-							setAttributes( { quantity: temp } );
-						} }
-						placeholder={ quantity[ 'min' ] }
-						value={ quantity[ 'min' ] }
-						className="input-text qty text min-quantity"
-					/>
-					<input
-						type="number"
-						name="max-quantity"
-						// onFocus={ this.setState( { canDragInteractiveElements: false } ) }
-						onChange={ ( e ) => {
-							const temp = JSON.parse(
-								JSON.stringify( quantity )
-							);
-							temp[ 'max' ] = e.target.value;
-							setAttributes( { quantity: temp } );
-						} }
-						placeholder={ quantity[ 'max' ] }
-						value={ quantity[ 'max' ] }
-						className="input-text qty text max-quantity"
-					/>
+					<Button onClick={ onDone }>
+						{ __( 'Edit', 'enhanced-ajax-add-to-cart-wc' ) }
+					</Button>
+					{ ( this.state.editQuantity !== true ) ?
+						<div className="qty-preview">
+							<p className="qty-preview">default: {quantity['default']}</p>
+							<p className="qty-preview">min: {quantity['min']} max: {quantity['max']}</p>
+						</div>
+						:
+						<div>
+							<input
+								type="number"
+								name="default-quantity"
+								// onFocus={ this.setState( { canDragInteractiveElements: false } ) }
+								onChange={ ( e ) => {
+									const temp = JSON.parse(
+										JSON.stringify( quantity )
+									);
+									temp[ 'default' ] = e.target.value;
+									setAttributes( { quantity: temp } );
+								} }
+								placeholder={ quantity[ 'default' ] }
+								defaultValue={ quantity[ 'default' ] }
+								className="input-text qty text default-quantity"
+							/>
+							<input
+								type="number"
+								name="min-quantity"
+								// onFocus={ this.setState( { canDragInteractiveElements: false } ) }
+								onChange={ ( e ) => {
+									const temp = JSON.parse(
+										JSON.stringify( quantity )
+									);
+									temp[ 'min' ] = e.target.value;
+									setAttributes( { quantity: temp } );
+								} }
+								placeholder={ quantity[ 'min' ] }
+								defaultValue={ quantity[ 'min' ] }
+								className="input-text qty text min-quantity"
+							/>
+							<input
+								type="number"
+								name="max-quantity"
+								// onFocus={ this.setState( { canDragInteractiveElements: false } ) }
+								onChange={ ( e ) => {
+									const temp = JSON.parse(
+										JSON.stringify( quantity )
+									);
+									temp[ 'max' ] = e.target.value;
+									setAttributes( { quantity: temp } );
+								} }
+								placeholder={ quantity[ 'max' ] }
+								defaultValue={ quantity[ 'max' ] }
+								className="input-text qty text max-quantity"
+							/>
+						</div>
+					}
 				</div> : '' }
 				{/* { ( item === 'button' || item === 'quantity' ) ? this.getItemInput( item ) : '' } */}
 			</div>
@@ -273,7 +299,7 @@ class AddToCartBlock extends Component {
 
 	displayControls() {
 		return (
-			<div className="we-should-make-a-parent">
+			<div className="trs-display-controls">
 				<DragDropContext onDragEnd={ this.onDragEnd }>
 					<Droppable droppableId="droppable" direction="horizontal">
 						{ ( droppableProvided ) => (
@@ -294,6 +320,7 @@ class AddToCartBlock extends Component {
 									>
 										{ ( draggableProvided ) => (
 											<div
+												className="trs-wrapper"
 												ref={
 													draggableProvided.innerRef
 												}
@@ -334,10 +361,10 @@ class AddToCartBlock extends Component {
 					'AJAX Add to Cart button',
 					'enhanced-ajax-add-to-cart-wc'
 				) }
-				className="wc-block-products-grid wc-block-handpicked-products"
+				className="eaa2c-block-placeholder"
 				// className="wc-ajax-add-to-cart-product-placeholder-container"
 			>
-				<div className="wc-block-handpicked-products__selection">
+				<div className="eaa2c-block">
 					{ this.displayControls() }
 					<ProductControl
 						selected={ attributes.products }
@@ -357,7 +384,7 @@ class AddToCartBlock extends Component {
 
 	renderViewMode() {
 		const { attributes } = this.props;
-		const { contentVisibility, contentOrder, products } = attributes;
+		const { contentVisibility, contentOrder, products, quantity } = attributes;
 		console.log( "In render view mode." );
 
 		if ( products[ 0 ] ) {
@@ -366,12 +393,9 @@ class AddToCartBlock extends Component {
 				console.log( products );
 				const product = products[0];
 				return (
-					<div className="woocommerce-variation-add-to-cart variations_button">
+					<div className="enhanced-woocommerce-add-to-cart">
 						{ contentOrder.map( ( item, index ) => {
-							if (
-								( item === 'title' || item === 'price' ) &&
-								contentVisibility[ item ] === true
-							) {
+							if ( item === 'title' && contentVisibility[ item ] === true ) {
 								const att = item === 'title' ? 'name' : 'price';
 								return (
 									<span
@@ -379,6 +403,15 @@ class AddToCartBlock extends Component {
 										className="ea-line ea-text"
 									>
 										<span>{ product[ att ] }</span>
+									</span>
+								);
+							} else if (  item === 'price'  && contentVisibility[ item ] === true ) {
+								return (
+									<span
+										key={ index }
+										className="ea-line ea-text"
+									>
+										{ formatPrice( product['price'] ) }
 									</span>
 								);
 							} else if ( item === 'quantity' ) {
@@ -393,13 +426,20 @@ class AddToCartBlock extends Component {
 												id={ products[ 0 ].id }
 												className="input-text qty text"
 												step={ 1 }
-												min={ 1 }
-												max={ 4 }
+												defaultValue={ quantity['default'] }
+												min={ quantity['min'] }
+												max={ quantity['max'] }
 												name={ 'steven' }
 												title={ 'quantity' }
 												hidden={ ! contentVisibility[ item ] }
 											/>
 										</div>
+									</span>
+								);
+							} else if ( item === 'separator' ) {
+								return (
+									<span className="ea-line">
+										<span className="ea-separator"></span>
 									</span>
 								);
 							}
