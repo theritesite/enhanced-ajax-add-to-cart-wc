@@ -3,38 +3,34 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "X-Generator: babel-plugin-makepot\n"
 
-#: blocks/eaa2c/block.js:247
+#: blocks/eaa2c/block.js:269
 msgid "Content"
 msgstr ""
 
-#: blocks/eaa2c/block.js:252
+#: blocks/eaa2c/block.js:280
 msgid "Edit Mode"
 msgstr ""
 
-#: blocks/eaa2c/block.js:253
+#: blocks/eaa2c/block.js:286
 msgid "Editing."
 msgstr ""
 
-#: blocks/eaa2c/block.js:253
+#: blocks/eaa2c/block.js:290
 msgid "Previewing."
 msgstr ""
 
-#: blocks/eaa2c/block.js:336
+#: blocks/eaa2c/block.js:382
 msgid "Showing AJAX Add to Cart block preview."
 msgstr ""
 
-#: blocks/eaa2c/block.js:340
+#: blocks/eaa2c/block.js:392
 msgid "AJAX Add to Cart button"
 msgstr ""
 
-#: blocks/eaa2c/block.js:356
+#: blocks/eaa2c/block.js:410
 msgid "Done"
 msgstr ""
 
-#: blocks/eaa2c/block.js:442
+#: blocks/eaa2c/block.js:516
 msgid "Edit"
-msgstr ""
-
-#: blocks/eaa2c/block.js:80
-msgid "Editting quantity parameters."
 msgstr ""

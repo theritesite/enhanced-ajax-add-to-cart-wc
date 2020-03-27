@@ -79,14 +79,29 @@ input.button-text {
 }
 
 .qty-preview {
-	width: 7em;
+	width: max-content;
 	text-align: center;
 	text-align: -webkit-center;
 }
 
-.qty-preview p.qty-preview {
+.qty-preview.input-area {
+	text-align: center;
+	text-align: -webkit-center;
+	margin: auto;
+}
+
+.qty-preview.input-area input {
 	display: block;
+}
+
+.qty-preview p.qty-preview {
+	display: flex;
+	justify-content: space-between;
 	margin: 0 0;
 	font-size: 10px;
 	color: gray;
+}
+
+span.preview-text:first-child {
+	margin-right: 4px;
 }

@@ -33,7 +33,8 @@ class AddToCartBlock extends Component {
 		super( props );
 		this.state = {
 			// canDragInteractiveElements: true,
-			editQuantity: false,
+			editItem: 'default',
+			selectedComponent: '',
 		//     contentVisibility: this.props.attributes.contentVisibility
 		}
 		this.onDragEnd = this.onDragEnd.bind( this );
@@ -50,21 +51,12 @@ class AddToCartBlock extends Component {
 	getItemControls( item, index ) {
 		const { attributes, setAttributes, debouncedSpeak } = this.props;
 		const { contentVisibility, buttonText, quantity } = attributes;
-		const editQuantity = this.state.editQuantity;
+		const { editItem, selectedComponent } = this.state;
 		const itemClassList = contentVisibility[ item ] === true ? 'trs-inner-wrapper' : 'trs-inner-wrapper disabled-item';
-
-		const onDone = () => {
-			this.setState( { editQuantity: ! editQuantity } );
-			debouncedSpeak(
-				__(
-					'Editting quantity parameters.',
-					'enhanced-ajax-add-to-cart-wc'
-				)
-			);
-		};
+		const tempItem = editItem !== 'min' && editItem !== 'max' ? 'default' : editItem;
 
 		return (
-			<div key={ index } className={ itemClassList }>
+			<div key={ index } className={ itemClassList } onClick={ (e) => { this.setState( { selectedComponent: item } ) } }>
 				<span className="dashicons dashicons-menu-alt3"></span>
 				<EAA2CControl
 					key={ index }
@@ -78,79 +70,119 @@ class AddToCartBlock extends Component {
 					value={ contentVisibility[ item ] }
 					item={ item }
 				/>
-				{ ( item === 'button' ) ?
-				<input
-					type="text"
-					name="button-text"
-					// onFocus={ this.setState( { canDragInteractiveElements: false } ) }
-					onChange={ ( e ) => {
-						setAttributes( { buttonText: e.target.value } );
-					} }
-					placeholder={ buttonText }
-					value={ buttonText }
-					className="button-text"
-				/> : '' }
-				{ ( item === 'quantity' ) ?
+				{ ( item === 'button' && ( selectedComponent !== 'button' || ( selectedComponent === 'button' && editItem !== 'button' ) ) ) ?
+					<div onClick={ (e) => { this.setState( { editItem: 'button' } ) } }>
+						<p>edit text</p>
+					</div>
+				: '' }
+				{ ( item === 'button' && selectedComponent === 'button' && editItem === 'button' ) ?
+					<div>
+						<input
+							type="text"
+							name="button-text"
+							// onFocus={ this.setState( { canDragInteractiveElements: false } ) }
+							onChange={ ( e ) => {
+								setAttributes( { buttonText: e.target.value } );
+							} }
+							placeholder={ buttonText }
+							value={ buttonText }
+							className="button-text"
+						/>
+						<button
+							onClick={ (e) => {
+								this.setState( { editItem: 'default' } );
+							} }
+						>
+							done
+						</button>
+					</div>
+				: '' }
+				{ ( item === 'quantity' && selectedComponent !== 'quantity'  ) || ( item === 'quantity' && selectedComponent === 'quantity' && editItem === 'none' ) ?
+				<div className="qty-preview"> 
+					<p className="qty-preview">
+						<span className="preview-text" onClick={ (e) => { this.setState({ editItem: 'default' }) }}>edit</span>
+						<span className="preview-text" onClick={ (e) => { this.setState({ editItem: 'default' }) }}>default: {quantity['default']}</span>
+					</p>
+					<p className="qty-preview">
+						<span className="preview-text" onClick={ (e) => { this.setState({ editItem: 'min' }) }}>min: {quantity['min']}</span>
+						<span className="preview-text" onClick={ (e) => { this.setState({ editItem: 'max' }) }}>max: {quantity['max']}</span>
+					</p>
+				</div>
+				: '' }
+				{ ( item === 'quantity' && selectedComponent === 'quantity' && editItem !== 'none' ) ?
 				<div>
-					<Button onClick={ onDone }>
-						{ __( 'Edit', 'enhanced-ajax-add-to-cart-wc' ) }
-					</Button>
-					{ ( this.state.editQuantity !== true ) ?
-						<div className="qty-preview">
-							<p className="qty-preview">default: {quantity['default']}</p>
-							<p className="qty-preview">min: {quantity['min']} max: {quantity['max']}</p>
+					<div className="qty-preview"> 
+						<p className="qty-preview">
+							<span className="qty-button">
+								<button
+									onClick={ (e) => {
+										editItem === 'default' ? 
+											this.setState( { editItem: '' } ) :
+											this.setState( { editItem: 'default' } )
+										}
+									}
+									className={ editItem === 'default' ? 'selected' : '' }
+								>
+									def: {quantity['default']}
+								</button>
+							</span>
+						</p>
+						<p className="qty-preview">
+							<span className="qty-button">
+								<button
+									onClick={ (e) => {
+										editItem === 'min' ? 
+											this.setState( { editItem: '' } ) :
+											this.setState( { editItem: 'min' } )
+										}
+									}
+									className={ editItem === 'min' ? 'selected' : '' }
+								>
+									min: {quantity['min']}
+								</button>
+							</span>
+							<span className="qty-button">
+								<button
+									onClick={ (e) => {
+										editItem === 'max' ? 
+											this.setState( { editItem: '' } ) :
+											this.setState( { editItem: 'max' } )
+										}
+									}
+									className={ editItem === 'max' ? 'selected' : '' }
+								>
+									max: {quantity['max']}
+								</button>
+							</span>
+						</p>
+					</div>
+					{ ( editItem !== false && editItem !== '' ) ?
+						<div className="qty-preview input-area">
+							<p className="qty-preview">{tempItem}: </p>
+							<input
+								type="number"
+								name={ tempItem + "-quantity" }
+								onChange={ ( e ) => {
+									const temp = JSON.parse(
+										JSON.stringify( quantity )
+									);
+									temp[ tempItem ] = e.target.value;
+									setAttributes( { quantity: temp } );
+								} }
+								placeholder={ quantity[ tempItem ] }
+								value={ quantity[ tempItem ] }
+								className={ "input-text qty text " + tempItem + "-quantity" }
+							/>
+							<button
+								onClick={ (e) => {
+									this.setState( { editItem: 'none' } );
+								} }
+							>
+								done
+							</button>
 						</div>
-						:
-						<div>
-							<input
-								type="number"
-								name="default-quantity"
-								// onFocus={ this.setState( { canDragInteractiveElements: false } ) }
-								onChange={ ( e ) => {
-									const temp = JSON.parse(
-										JSON.stringify( quantity )
-									);
-									temp[ 'default' ] = e.target.value;
-									setAttributes( { quantity: temp } );
-								} }
-								placeholder={ quantity[ 'default' ] }
-								defaultValue={ quantity[ 'default' ] }
-								className="input-text qty text default-quantity"
-							/>
-							<input
-								type="number"
-								name="min-quantity"
-								// onFocus={ this.setState( { canDragInteractiveElements: false } ) }
-								onChange={ ( e ) => {
-									const temp = JSON.parse(
-										JSON.stringify( quantity )
-									);
-									temp[ 'min' ] = e.target.value;
-									setAttributes( { quantity: temp } );
-								} }
-								placeholder={ quantity[ 'min' ] }
-								defaultValue={ quantity[ 'min' ] }
-								className="input-text qty text min-quantity"
-							/>
-							<input
-								type="number"
-								name="max-quantity"
-								// onFocus={ this.setState( { canDragInteractiveElements: false } ) }
-								onChange={ ( e ) => {
-									const temp = JSON.parse(
-										JSON.stringify( quantity )
-									);
-									temp[ 'max' ] = e.target.value;
-									setAttributes( { quantity: temp } );
-								} }
-								placeholder={ quantity[ 'max' ] }
-								defaultValue={ quantity[ 'max' ] }
-								className="input-text qty text max-quantity"
-							/>
-						</div>
-					}
+					: '' }
 				</div> : '' }
-				{/* { ( item === 'button' || item === 'quantity' ) ? this.getItemInput( item ) : '' } */}
 			</div>
 		);
 	}
@@ -173,7 +205,7 @@ class AddToCartBlock extends Component {
 			);
 		} else if ( item === 'quantity' ) {
 			return (
-				<div className="ea-quantity-container">
+				<div className="ea-quantity-container"> 
 					<input
 						type="number"
 						onChange={ ( e ) => {
