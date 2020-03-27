@@ -61,7 +61,19 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Public {
 	 */
 	public function enqueue_styles() {
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/enhanced-ajax-add-to-cart-wc-public.css', array(), $this->version, 'all' );
+		// $path = plugin_dir_url( __FILE__ ) . 'css/enhanced-ajax-add-to-cart-wc-public.css'
+		$path = realpath( dirname( __FILE__ ) );
+		if ( file_exists( $path . '/css/enhanced-ajax-add-to-cart-wc-public.min.css' ) && ! ( EAA2C_DEBUG || WP_DEBUG ) ) {
+			$css_file =  plugin_dir_url( __FILE__ ) . 'css/enhanced-ajax-add-to-cart-wc-public.min.css';
+		}
+		else
+			$css_file =  plugin_dir_url( __FILE__ ) . 'css/enhanced-ajax-add-to-cart-wc-public.css';
+
+
+		if ( ! empty( $css_file ) ) {
+			wp_register_style( $this->plugin_name, $css_file, array(), $this->version, 'all' );
+		}
+		// wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/enhanced-ajax-add-to-cart-wc-public.css', array(), $this->version, 'all' );
 
 	}
 
@@ -89,7 +101,6 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Public {
 				'ajax_url'	=> admin_url( 'admin-ajax.php' ),
 				'debug' => EAA2C_DEBUG,
 			));
-			wp_enqueue_script( $plugin . '-js-bundle' );
 		}
 	}
 }
