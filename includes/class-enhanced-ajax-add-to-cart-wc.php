@@ -193,9 +193,6 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 			return;
 		}
 
-		// error_log( "good" );
-		// $dir = plugin_dir_path( dirname( __FILE__ ) ) . 'blocks/eaa2c/';
-		// $dir = plugin_dir_path( dirname( __FILE__ ) ) . 'build/';
 		$dir = plugin_dir_path( dirname( __FILE__ ) ) . 'dist/blocks/';
 
 		$index_js = 'eaa2c.js';
@@ -312,6 +309,9 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 		// $products         = $this->get_products();
 		// $classes          = $this->get_container_classes();
 		$output           = 'kajsdalskdjaksjd';
+
+		wp_enqueue_style( $this->plugin_name );
+		wp_enqueue_script( $this->plugin_name . '-js-bundle' );
 		error_log( wc_print_r( $attributes, true ) ) ;
 
 		return $this->renderHtml( $attributes );
@@ -335,7 +335,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 			// }
 
 			?>
-			<div class="enhanced-woocommerce-add-to-cart">
+			<div class="enhanced-woocommerce-add-to-cart <?php echo esc_attr( $attributes['className'] ); ?>">
 				<?php foreach( $contentOrder as $item ) : ?>
 					<?php if ( strcmp( $item, 'title' ) === 0 && $contentVisibility[ $item ] === true  ) : ?>
 						<span class="ea-line ea-text">

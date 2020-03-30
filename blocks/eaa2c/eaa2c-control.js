@@ -20,16 +20,18 @@ import _ from 'lodash';
  *
  * @return {Function} A functional component.
  */
-const EAA2CControl = ( { error, onChange, item, value } ) => {
+const EAA2CControl = ( { error, onChange, item, value, title } ) => {
 	if ( error ) {
 		return <p>error { error.status }</p>;
 	}
 
 	return (
 		<div className="trs-toggle-container">
-			<p className="trs-toggle-label">
-				{ _.startCase( _.lowerCase( item ) ) }
-			</p>
+			{ title === false ? <p className="edit-component trs-toggle-label">display?</p> :
+				<p className="trs-toggle-label">
+					{ _.startCase( _.lowerCase( item ) ) }
+				</p>
+			}
 			<ToggleControl
 				checked={ value }
 				onChange={ onChange }

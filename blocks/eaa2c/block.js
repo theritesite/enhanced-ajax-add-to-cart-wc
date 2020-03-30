@@ -14,6 +14,7 @@ import {
 	PanelRow,
 	ToggleControl,
 	Button,
+	ButtonGroup,
 	Disabled,
 	Toolbar,
 	withSpokenMessages,
@@ -21,6 +22,7 @@ import {
 } from '@wordpress/components';
 
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import _ from 'lodash';
 
 import { Component, Fragment } from '@wordpress/element';
 import PropTypes from 'prop-types';
@@ -32,24 +34,20 @@ class AddToCartBlock extends Component {
 	constructor( props ) {
 		super( props );
 		this.state = {
-			// canDragInteractiveElements: true,
 			editItem: 'default',
 			selectedComponent: '',
-		//     contentVisibility: this.props.attributes.contentVisibility
 		}
 		this.onDragEnd = this.onDragEnd.bind( this );
 	}
 
 	handleTextChange(e) {
-		const { attributes, setAttributes } = this.props;
-		const { contentVisibility, buttonText } = attributes;
+		const { setAttributes } = this.props;
 
-		console.log(e.target.value);
 		setAttributes( { buttonText: e.target.value } );
 	}
 
 	getItemControls( item, index ) {
-		const { attributes, setAttributes, debouncedSpeak } = this.props;
+		const { attributes, setAttributes } = this.props;
 		const { contentVisibility, buttonText, quantity } = attributes;
 		const { editItem, selectedComponent } = this.state;
 		const itemClassList = contentVisibility[ item ] === true ? 'trs-inner-wrapper' : 'trs-inner-wrapper disabled-item';
@@ -71,22 +69,23 @@ class AddToCartBlock extends Component {
 					item={ item }
 				/>
 				{ ( item === 'button' && ( selectedComponent !== 'button' || ( selectedComponent === 'button' && editItem !== 'button' ) ) ) ?
-					<div onClick={ (e) => { this.setState( { editItem: 'button' } ) } }>
-						<p>edit text</p>
+					<div className="edit-component btn-cmp" onClick={ (e) => { this.setState( { editItem: 'button' } ) } }>
+						<p className="edit-component">edit</p>
+						<p className="edit-component">button text</p>
 					</div>
 				: '' }
 				{ ( item === 'button' && selectedComponent === 'button' && editItem === 'button' ) ?
-					<div>
+					<div className="edit-component input-area btn-cmp">
+						<p className="display-edit-title">button text:</p>
 						<input
 							type="text"
 							name="button-text"
-							// onFocus={ this.setState( { canDragInteractiveElements: false } ) }
 							onChange={ ( e ) => {
 								setAttributes( { buttonText: e.target.value } );
 							} }
 							placeholder={ buttonText }
 							value={ buttonText }
-							className="button-text"
+							className="button-text input-text"
 						/>
 						<button
 							onClick={ (e) => {
@@ -98,12 +97,12 @@ class AddToCartBlock extends Component {
 					</div>
 				: '' }
 				{ ( item === 'quantity' && selectedComponent !== 'quantity'  ) || ( item === 'quantity' && selectedComponent === 'quantity' && editItem === 'none' ) ?
-				<div className="qty-preview"> 
-					<p className="qty-preview">
+				<div className="edit-component"> 
+					<p className="edit-component">
 						<span className="preview-text" onClick={ (e) => { this.setState({ editItem: 'default' }) }}>edit</span>
 						<span className="preview-text" onClick={ (e) => { this.setState({ editItem: 'default' }) }}>default: {quantity['default']}</span>
 					</p>
-					<p className="qty-preview">
+					<p className="edit-component">
 						<span className="preview-text" onClick={ (e) => { this.setState({ editItem: 'min' }) }}>min: {quantity['min']}</span>
 						<span className="preview-text" onClick={ (e) => { this.setState({ editItem: 'max' }) }}>max: {quantity['max']}</span>
 					</p>
@@ -111,8 +110,8 @@ class AddToCartBlock extends Component {
 				: '' }
 				{ ( item === 'quantity' && selectedComponent === 'quantity' && editItem !== 'none' ) ?
 				<div>
-					<div className="qty-preview"> 
-						<p className="qty-preview">
+					<div className="edit-component"> 
+						<p className="edit-component">
 							<span className="qty-button">
 								<button
 									onClick={ (e) => {
@@ -123,11 +122,11 @@ class AddToCartBlock extends Component {
 									}
 									className={ editItem === 'default' ? 'selected' : '' }
 								>
-									def: {quantity['default']}
+									default: { quantity['default'] }
 								</button>
 							</span>
 						</p>
-						<p className="qty-preview">
+						<p className="edit-component">
 							<span className="qty-button">
 								<button
 									onClick={ (e) => {
@@ -157,8 +156,8 @@ class AddToCartBlock extends Component {
 						</p>
 					</div>
 					{ ( editItem !== false && editItem !== '' ) ?
-						<div className="qty-preview input-area">
-							<p className="qty-preview">{tempItem}: </p>
+						<div className="edit-component input-area">
+							<p className="display-edit-title">{tempItem}: </p>
 							<input
 								type="number"
 								name={ tempItem + "-quantity" }
@@ -187,16 +186,143 @@ class AddToCartBlock extends Component {
 		);
 	}
 
-	getItemInput( item ) {
+	getItemInspectorControls( item, index ) {
 		const { attributes, setAttributes } = this.props;
 		const { contentVisibility, buttonText, quantity } = attributes;
+		const { editItem, selectedComponent } = this.state;
+		const itemClassList = contentVisibility[ item ] === true ? 'trs-inner-wrapper' : 'trs-inner-wrapper disabled-item';
+		const tempItem = editItem !== 'min' && editItem !== 'max' ? 'default' : editItem;
+
+		return (
+			<div key={ index } className={ itemClassList } onClick={ (e) => { this.setState( { selectedComponent: item } ) } }>
+				<EAA2CControl
+					key={ index }
+					onChange={ ( value ) => {
+						const temp = JSON.parse(
+							JSON.stringify( contentVisibility )
+						);
+						temp[ item ] = value;
+						setAttributes( { contentVisibility: temp } );
+					} }
+					value={ contentVisibility[ item ] }
+					item={ item }
+					title={ false }
+				/>
+				{ ( item === 'button' && ( selectedComponent !== 'button' || ( selectedComponent === 'button' && editItem !== 'button' ) ) ) ?
+					<div className="edit-component btn-cmp" onClick={ (e) => { this.setState( { editItem: 'button' } ) } }>
+						<p className="edit-component">edit button text</p>
+					</div>
+				: '' }
+				{ ( item === 'button' && selectedComponent === 'button' && editItem === 'button' ) ?
+					<div className="edit-component input-area btn-cmp">
+						<p className="display-edit-title">
+							<span className="preview-text ">button text:</span>
+							<input
+								type="text"
+								name="button-text"
+								onChange={ ( e ) => {
+									setAttributes( { buttonText: e.target.value } );
+								} }
+								placeholder={ buttonText }
+								value={ buttonText }
+								className="button-text input-text"
+							/>
+							<button
+								onClick={ (e) => {
+									this.setState( { editItem: 'default' } );
+								} }
+							>
+								done
+							</button>
+						</p>
+					</div>
+				: '' }
+				{ ( item === 'quantity' && selectedComponent !== 'quantity'  ) || ( item === 'quantity' && selectedComponent === 'quantity' && editItem === 'none' ) ?
+				<div className="edit-component btn-cmp"> 
+					<p className="edit-component">
+						<span className="preview-text" onClick={ (e) => { this.setState({ editItem: 'default' }) }}>edit</span>
+						<span className="preview-text" onClick={ (e) => { this.setState({ editItem: 'default' }) }}>default: {quantity['default']}</span>
+					</p>
+					<p className="edit-component">
+						<span className="preview-text" onClick={ (e) => { this.setState({ editItem: 'min' }) }}>min: {quantity['min']}</span>
+						<span className="preview-text" onClick={ (e) => { this.setState({ editItem: 'max' }) }}>max: {quantity['max']}</span>
+					</p>
+				</div>
+				: '' }
+				{ ( item === 'quantity' && selectedComponent === 'quantity' && editItem !== 'none' ) ?
+				<div className="edit-component btn-cmp">
+					<div className="edit-component"> 
+						<ButtonGroup>
+							<Button isPrimary isPressed onClick={(e) => {
+									editItem === 'default' ? 
+										this.setState( { editItem: '' } ) :
+										this.setState( { editItem: 'default' } )
+									}
+								}
+							>
+								Default
+							</Button>
+							<Button isPrimary onClick={(e) => {
+									editItem === 'min' ? 
+										this.setState( { editItem: '' } ) :
+										this.setState( { editItem: 'min' } )
+									}
+								}
+							>
+								Min
+							</Button>
+							<Button isPrimary onClick={(e) => {
+									editItem === 'max' ? 
+										this.setState( { editItem: '' } ) :
+										this.setState( { editItem: 'max' } )
+									}
+								}
+							>
+								Max
+							</Button>
+						</ButtonGroup>
+					</div>
+					{ ( editItem !== false && editItem !== '' ) ?
+						<div className="edit-component input-area">
+							<p className="display-edit-title">{tempItem}: 
+								<input
+									type="number"
+									name={ tempItem + "-quantity" }
+									onChange={ ( e ) => {
+										const temp = JSON.parse(
+											JSON.stringify( quantity )
+										);
+										temp[ tempItem ] = e.target.value;
+										setAttributes( { quantity: temp } );
+									} }
+									placeholder={ quantity[ tempItem ] }
+									value={ quantity[ tempItem ] }
+									className={ "input-text qty text " + tempItem + "-quantity" }
+								/>
+								<button
+									onClick={ (e) => {
+										this.setState( { editItem: 'none' } );
+									} }
+								>
+									done
+								</button>
+							</p>
+						</div>
+					: '' }
+				</div> : '' }
+			</div>
+		);
+	}
+
+	getItemInput( item ) {
+		const { attributes, setAttributes } = this.props;
+		const { buttonText, quantity } = attributes;
 
 		if ( item === 'button' ) {
 			return (
 				<input
 					type="text"
 					onChange={ ( buttonText ) => {
-						console.log( buttonText );
 						setAttributes( { buttonText: buttonText } );
 					} }
 					value={ buttonText }
@@ -261,43 +387,26 @@ class AddToCartBlock extends Component {
 
 	getInspectorControls() {
 		const { attributes, setAttributes } = this.props;
-		const { editMode } = attributes;
+		const { editMode, contentOrder, contentVisibility, quantity, buttonText } = attributes;
 
 		return (
 			<InspectorControls>
 				<PanelBody
 					title={ __( 'Content', 'enhanced-ajax-add-to-cart-wc' ) }
+					className="eaa2c-content-container"
 					initialOpen
 				>
-					<PanelRow>
-						<label htmlFor="edit-mode-form-toggle">
-							{ __(
-								'Edit Mode',
-								'enhanced-ajax-add-to-cart-wc'
-							) }
-						</label>
-						<ToggleControl
-							label={ __(
-								'Edit Mode',
-								'enhanced-ajax-add-to-cart-wc'
-							) }
-							help={
-								editMode
-									? __(
-											'Editing.',
-											'enhanced-ajax-add-to-cart-wc'
-									  )
-									: __(
-											'Previewing.',
-											'enhanced-ajax-add-to-cart-wc'
-									  )
-							}
-							checked={ editMode }
-							onChange={ () =>
-								setAttributes( { editMode: ! editMode } )
-							}
-						/>
-					</PanelRow>
+					{ contentOrder.map( ( item, index ) => {
+						return ( <PanelRow>
+							<label className="content-element " htmlFor={"content-order-form-" + item}>
+								{ __(
+									_.startCase( _.lowerCase( item ) ),
+									'enhanced-ajax-add-to-cart-wc'
+								) }
+							</label>
+							{ this.getItemInspectorControls( item, index ) }
+						</PanelRow> );
+					} ) }
 				</PanelBody>
 			</InspectorControls>
 		);
@@ -375,7 +484,6 @@ class AddToCartBlock extends Component {
 
 	renderEditMode() {
 		const { attributes, debouncedSpeak, setAttributes } = this.props;
-		// const { title } = contentVisibility;
 		const onDone = () => {
 			setAttributes( { editMode: false } );
 			debouncedSpeak(
@@ -384,7 +492,6 @@ class AddToCartBlock extends Component {
 					'enhanced-ajax-add-to-cart-wc'
 				)
 			);
-			// console.log( "oh123?" );
 		};
 
 		return (
@@ -394,7 +501,6 @@ class AddToCartBlock extends Component {
 					'enhanced-ajax-add-to-cart-wc'
 				) }
 				className="eaa2c-block-placeholder"
-				// className="wc-ajax-add-to-cart-product-placeholder-container"
 			>
 				<div className="eaa2c-block">
 					{ this.displayControls() }
@@ -415,17 +521,17 @@ class AddToCartBlock extends Component {
 	}
 
 	renderViewMode() {
-		const { attributes } = this.props;
+		const { attributes, className } = this.props;
 		const { contentVisibility, contentOrder, products, quantity } = attributes;
 		console.log( "In render view mode." );
 
 		if ( products[ 0 ] ) {
 			console.log( "products 'exist'" );
 			if ( products[0].id > 0 ) {
-				console.log( products );
+				// console.log( products );
 				const product = products[0];
 				return (
-					<div className="enhanced-woocommerce-add-to-cart">
+					<div className={ "enhanced-woocommerce-add-to-cart " + className }>
 						{ contentOrder.map( ( item, index ) => {
 							if ( item === 'title' && contentVisibility[ item ] === true ) {
 								const att = item === 'title' ? 'name' : 'price';
