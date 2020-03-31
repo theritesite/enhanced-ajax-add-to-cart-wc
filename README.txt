@@ -3,17 +3,25 @@ Contributors: theritesites
 Donate link: https://www.theritesites.com
 Tags: ajax button, add to cart, AJAX add to cart, shortcode, woocommerce, quantity, wc, AJAX, variable, variable product, theritesites, The Rite Sites
 Requires at least: 4.8.1
-Tested up to:      5.3
+Tested up to:      5.4
 Requires PHP:      5.6+
 Stable tag:        trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Creates a shortcode for you to be able to add an AJAX button with an associated quantity for you WooCommerce Product
+Creates a new block and shortcode for you to be able to add an AJAX button with an associated quantity for you WooCommerce Product
 
 == Description ==
 
 This extension for [WooCommerce](https://www.woocommerce.com) allows you to render an AJAX button with an associated quantity field. Create effective and functional buttons to use for your or your customers convenience anywhere on your site you want!
+
+= Block Documentation =
+**New "AJAX Add to Cart Block"!**
+New and improved interface to create flexible components on any page of your website that has the block editor enabled!
+Easily toggle displays and drag-and-drop to move around objects to change the appearance of the add to cart component on the front end.
+
+Not only does the block have all the features the shortcode does, but expands further upon that allowing you to change the display order of each individual component using a visual editor!
+The block also has a product select tool so you no longer have to remember individual product or variation IDs
 
 = Shortcode Documentation =
 **New Shorter Shortcode: ajax_add_to_cart is now an option for enh_ajax_add_to_cart_button**
@@ -25,7 +33,8 @@ The required field for every button is the product_id, with six optional fields:
 - show_price
 - button_text
 
-`[enh_ajax_add_to_cart_button product_id={pid} variation_id={vid} show_price={beginning|b|after|a|rear|r} button_text={STRING} title={none|attributes|att|attribute} quantity={INTEGER} show_quantity={yes} ]`
+`[enh_ajax_add_to_cart_button product_id={pid} variation_id={vid} show_price={beginning|b|after|a|rear|r} button_text={STRING} title={none|attributes|att|attribute} quantity={INTEGER} show_quantity={yes} ]
+[ajax_add_to_cart product_id={pid} variation_id={vid} show_price={beginning|b|after|a|rear|r} button_text={STRING} title={none|attributes|att|attribute} quantity={INTEGER} show_quantity={yes} ]`
 
 
 SIMPLE PRODUCT: Use only the required parameters to make a quantity box and add to cart button for a simple product with the title to the left:
@@ -52,8 +61,9 @@ Use the product and variation parameters to make a quantity box and add to cart 
 Refer to screenshot 4 below to see the output
 
 Use the button_text parameter to change the text on the Add to Cart button! (Strips out HTML tags)
+To have multiple words on the button, use double quotes( " ) to get your phrase on the button.
 
-`[ajax_add_to_cart product=3312 variation=3313 button_text=Add! ]`
+`[ajax_add_to_cart product=3312 variation=3313 button_text="Add to cart!" ]`
 
 
 Use the show_price parameter to make a price field appear, with the options being before the title, after the title but before the quantity/add to cart button, or at the very rear of the line!
@@ -91,10 +101,17 @@ Or...
 
 == Frequently Asked Questions ==
 
+= Can I put multiple words on the button? =
+
+Yes!
+Shortcode: By using the button_text parameter using double quotes around your phrase. button_text="quickly add this product!"
+Block: Just put your phrase in the input box!
+
 = How can I change the separator between the price and the button or text? =
 
 There is a CSS selector available for changing the separator for the plugin as a whole. You can put this in your themes styles.css or "Additional CSS" section of theme customizer
 The default is shown below. To change the character, change the content value from " - " to whatever you see fit. Leave blank quotes for removing it all together (e.g. content: "";)
+This is the same for blocks and shortcodes.
 
 `
 .ea-separator::before {
@@ -102,13 +119,30 @@ The default is shown below. To change the character, change the content value fr
 }
 `
 
+= Can I change the styling of the quantity input? =
+
+Of course! Currently, there are no standard options for styling.
+We realize that many websites want their own styling or have already hired a designer. We let our elements be as broad and blank as possible while picking up theme standards.
+
+If your theme styles are not being applied to the quantity input, you can use the following css selector to edit all of the quantity inputs:
+`
+
+`
+
 = Does this work for variable products? =
 
-Yes! To use variable products, you must specify both the product id and the variation id in the shortcode parameters.
+Yes!
+Shortcode: To use variable products, you must specify both the product id and the variation id in the shortcode parameters.
+Block: Select the product you want to use in the product selector!
+
+= How are different variations uniquely identified? =
+
+The title attributes are how you can define what is displayed on the frontend. Options are the standard product title (no product attributes), product title + product attributes, or just the product attributes.
+Alternatively, in the premium version, there is a blank text input that can be used in the block editor. This can be used for any text and can be a unique identifier.
 
 = Can there be multiple ajax buttons on the same page? =
 
-Yes! You can only safely do the same variation of a variable product once on the same page, or one simple (of the same product) product button on the same page. The reason being, the JavaScript used to pass the quantity to the server is using either the variation id or the product id (respectively) to find which quantity box should be used.
+Yes! You can safely use multiple buttons on the same page with confirmed results.
 
 = Does this replace the add to cart button on product pages or archives? = 
 
