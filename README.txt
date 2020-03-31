@@ -129,7 +129,9 @@ At this point, no. This is designed to supplement your store to let the buttons 
 
 == Changelog ==
 
-= 1.4.1 =
+= 1.5.0 =
+* Added button blocking using the disabled html parameter. This prevents requests being skipped when many buttons pressed within short time.
+* Tweaked how assets are enqueued to only enqueue on pages when the shortcode is on it. This prevents overriding the AJAX setting in WooCommerce settings page.
 * Fixed bug where variation was showing with parent product default cost. Now shows correct variation price.
 
 = 1.4.0 =
