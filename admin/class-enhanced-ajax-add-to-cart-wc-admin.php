@@ -95,6 +95,9 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 			'button_text'	=> ''  // Added in version 1.3.0
 		), $atts);
 
+		wp_enqueue_style( $this->plugin_name );
+		wp_enqueue_script( $this->plugin_name . '-js-bundle' );
+
 		if( !empty( $att_array['product'] ) )
 			$add_to_cart_html = $this->display_variable_product_add_to_cart( $att_array );
 		
