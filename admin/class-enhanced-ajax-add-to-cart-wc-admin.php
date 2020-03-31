@@ -137,7 +137,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 
 			$price_display = get_woocommerce_currency_symbol() . $product->get_price();
 			if ( $variation !== null && $variation !== false ) {
-				$price_display = get_woocommerce_currency_symbol() . $product->get_price();
+				$price_display = get_woocommerce_currency_symbol() . $variation->get_price();
 			}
 
 			if ( false != $variation_id )

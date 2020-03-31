@@ -52,8 +52,9 @@ Use the product and variation parameters to make a quantity box and add to cart 
 Refer to screenshot 4 below to see the output
 
 Use the button_text parameter to change the text on the Add to Cart button! (Strips out HTML tags)
+Use double quotes ( "like this" ) to get a phrase with spaces
 
-`[ajax_add_to_cart product=3312 variation=3313 button_text=Add! ]`
+`[ajax_add_to_cart product=3312 variation=3313 button_text="Add this to cart!" ]`
 
 
 Use the show_price parameter to make a price field appear, with the options being before the title, after the title but before the quantity/add to cart button, or at the very rear of the line!
@@ -91,6 +92,11 @@ Or...
 
 == Frequently Asked Questions ==
 
+= Can I put multiple words on the button? =
+
+Yes!
+Shortcode: By using the button_text parameter using double quotes around your phrase. button_text="quickly add this product!"
+
 = How can I change the separator between the price and the button or text? =
 
 There is a CSS selector available for changing the separator for the plugin as a whole. You can put this in your themes styles.css or "Additional CSS" section of theme customizer
@@ -122,6 +128,9 @@ At this point, no. This is designed to supplement your store to let the buttons 
 4. No title for quantity and button inputs
 
 == Changelog ==
+
+= 1.4.1 =
+* Fixed bug where variation was showing with parent product default cost. Now shows correct variation price.
 
 = 1.4.0 =
 * Added feature where when product is out of stock the add to cart button displays as "out of stock" instead.
