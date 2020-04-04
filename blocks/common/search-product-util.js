@@ -18,9 +18,9 @@ const getProductsRequests = ( {
 		search,
 		orderby: 'title',
 		order: 'asc',
-		consumer_key: 'ck_5f7fbb292d1a17f1d04705314018160d07a65564',
-		consumer_secret: 'cs_2b8e302b8a9ab86ebc16503bcb530aa25ef49821',
-		query_string_auth: true,
+		// consumer_key: 'ck_5f7fbb292d1a17f1d04705314018160d07a65564',
+		// consumer_secret: 'cs_2b8e302b8a9ab86ebc16503bcb530aa25ef49821',
+		// query_string_auth: true,
 	};
 	const requests = [
 		addQueryArgs( '/wc/v3/products', { ...defaultArgs, ...queryArgs } ),
@@ -35,11 +35,11 @@ const getProductsRequests = ( {
 						// catalog_visibility: 'any',
 						status: 'publish',
 						include: selected,
-						consumer_key:
-							'ck_5f7fbb292d1a17f1d04705314018160d07a65564',
-						consumer_secret:
-							'cs_2b8e302b8a9ab86ebc16503bcb530aa25ef49821',
-						query_string_auth: true,
+						// consumer_key:
+						// 	'ck_5f7fbb292d1a17f1d04705314018160d07a65564',
+						// consumer_secret:
+						// 	'cs_2b8e302b8a9ab86ebc16503bcb530aa25ef49821',
+						// query_string_auth: true,
 					} )
 				)
 		);

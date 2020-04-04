@@ -67,7 +67,6 @@ const ProductControl = ( {
 			<SearchListControl
 				className="woocommerce-products"
 				isSingle
-				// isHierarchical
 				list={ products }
 				isLoading={ isLoading }
 				selected={ products.filter( ( product ) => {

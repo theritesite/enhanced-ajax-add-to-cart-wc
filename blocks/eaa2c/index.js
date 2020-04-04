@@ -68,7 +68,15 @@ registerBlockType( 'enhanced-ajax-add-to-cart-for-wc/eaa2c', {
 				max: -1,
 			},
 		},
+		titleType: {
+			type: 'string',
+			default: 'full',
+		},
 		products: {
+			type: 'array',
+			default: [],
+		},
+		variations: {
 			type: 'array',
 			default: [],
 		},

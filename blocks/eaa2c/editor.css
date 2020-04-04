@@ -123,3 +123,17 @@ input.button-text {
 span.preview-text:first-child {
 	margin-right: 4px;
 }
+
+.components-base-control.trs-radio-cmp {
+	font-size: 10px;
+    color: gray;
+    text-align: left;
+}
+
+.components-base-control.trs-radio-cmp.components-radio-control {
+    margin-bottom: 0;
+}
+
+.ea-separator::before {
+    content: " - ";
+}

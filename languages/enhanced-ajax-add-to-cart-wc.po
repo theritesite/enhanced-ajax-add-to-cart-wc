@@ -3,22 +3,22 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "X-Generator: babel-plugin-makepot\n"
 
-#: blocks/eaa2c/block.js:395
+#: blocks/eaa2c/block.js:569
 msgid "Content"
 msgstr ""
 
-#: blocks/eaa2c/block.js:490
+#: blocks/eaa2c/block.js:682
 msgid "Showing AJAX Add to Cart block preview."
 msgstr ""
 
-#: blocks/eaa2c/block.js:499
+#: blocks/eaa2c/block.js:686
 msgid "AJAX Add to Cart button"
 msgstr ""
 
-#: blocks/eaa2c/block.js:516
+#: blocks/eaa2c/block.js:701
 msgid "Done"
 msgstr ""
 
-#: blocks/eaa2c/block.js:622
+#: blocks/eaa2c/block.js:803
 msgid "Edit"
 msgstr ""

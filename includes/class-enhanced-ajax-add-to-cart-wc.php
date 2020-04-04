@@ -294,6 +294,17 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 						'type'	=> 'array',
 					),
 				),
+				'variations' => array(
+					'type' => 'object',
+					'default' => array(),
+					'items' => array (
+						'type'	=> 'array',
+					),
+				),
+				'titleType' => array(
+					'type' => 'string',
+					'default' => 'full',
+				)
 			),
 			'render_callback' => array( $this, 'render' ),
 			// )

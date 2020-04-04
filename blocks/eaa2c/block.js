@@ -19,6 +19,7 @@ import {
 	Toolbar,
 	withSpokenMessages,
 	Placeholder,
+	RadioControl,
 } from '@wordpress/components';
 
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
@@ -27,8 +28,10 @@ import _ from 'lodash';
 import { Component, Fragment } from '@wordpress/element';
 import PropTypes from 'prop-types';
 import ProductControl from '../common/product-control';
+import ProductVariationControl from '../common/product-variation-control';
 import { formatPrice } from '../common/price';
 import EAA2CControl from './eaa2c-control';
+import { createTitle } from '../common/title';
 
 class AddToCartBlock extends Component {
 	constructor( props ) {
@@ -46,9 +49,22 @@ class AddToCartBlock extends Component {
 		setAttributes( { buttonText: e.target.value } );
 	}
 
+	isVariableProduct() {
+		const { attributes } = this.props;
+		const { products } = attributes;
+
+		if ( products[0] && products[0].type !== null && products[0].type !== '' ) {
+			if ( products[0].type === 'variable' ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	getItemControls( item, index ) {
 		const { attributes, setAttributes } = this.props;
-		const { contentVisibility, buttonText, quantity } = attributes;
+		const { contentVisibility, buttonText, quantity, titleType } = attributes;
 		const { editItem, selectedComponent } = this.state;
 		const itemClassList = contentVisibility[ item ] === true ? 'trs-inner-wrapper' : 'trs-inner-wrapper disabled-item';
 		const tempItem = editItem !== 'min' && editItem !== 'max' ? 'default' : editItem;
@@ -68,6 +84,38 @@ class AddToCartBlock extends Component {
 					value={ contentVisibility[ item ] }
 					item={ item }
 				/>
+				{ this.isVariableProduct() === false ? '' :
+					<div>
+						{ ( item === 'title' && ( selectedComponent !== 'title' || ( selectedComponent === 'title' && editItem !== 'title' ) ) ) ?
+							<div className="edit-component btn-cmp" onClick={ (e) => { this.setState( { editItem: 'title' } ) } }>
+								<p className="edit-component">edit</p>
+								<p className="edit-component">title text</p>
+							</div>
+						: '' }
+						{ ( item === 'title' && selectedComponent === 'title' && editItem === 'title' ) ?
+							<div className="edit-component btn-cmp">
+								<p className="edit-component">title text</p>
+								<RadioControl
+									className="trs-radio-cmp"
+									selected={ titleType }
+									options={ [
+										{ label: 'Full', value: 'full' },
+										{ label: 'Base', value: 'base' },
+										{ label: 'Attributes', value: 'att' },
+									] }
+									onChange={ ( titleType ) => { setAttributes( { titleType } ) } }
+								/>
+								<button
+									onClick={ (e) => {
+										this.setState( { editItem: 'none' } ); console.log("should close");
+									} }
+								>
+									done
+								</button>
+							</div>
+						: '' }
+					</div>
+				}
 				{ ( item === 'button' && ( selectedComponent !== 'button' || ( selectedComponent === 'button' && editItem !== 'button' ) ) ) ?
 					<div className="edit-component btn-cmp" onClick={ (e) => { this.setState( { editItem: 'button' } ) } }>
 						<p className="edit-component">edit</p>
@@ -188,7 +236,7 @@ class AddToCartBlock extends Component {
 
 	getItemInspectorControls( item, index ) {
 		const { attributes, setAttributes } = this.props;
-		const { contentVisibility, buttonText, quantity } = attributes;
+		const { contentVisibility, buttonText, quantity, titleType } = attributes;
 		const { editItem, selectedComponent } = this.state;
 		const itemClassList = contentVisibility[ item ] === true ? 'trs-inner-wrapper' : 'trs-inner-wrapper disabled-item';
 		const tempItem = editItem !== 'min' && editItem !== 'max' ? 'default' : editItem;
@@ -208,6 +256,37 @@ class AddToCartBlock extends Component {
 					item={ item }
 					title={ false }
 				/>
+				{ this.isVariableProduct() === false ? '' :
+					<div className="edit-component btn-cmp">
+						{ ( item === 'title' && ( selectedComponent !== 'title' || ( selectedComponent === 'title' && editItem !== 'title' ) ) ) ?
+							<div className="edit-component btn-cmp" onClick={ (e) => { this.setState( { editItem: 'title' } ) } }>
+								<p className="edit-component">edit title text</p>
+							</div>
+						: '' }
+						{ ( item === 'title' && selectedComponent === 'title' && editItem === 'title' ) ?
+							<div className="edit-component btn-cmp">
+								<p className="edit-component">title text</p>
+								<RadioControl
+									className="trs-radio-cmp"
+									selected={ titleType }
+									options={ [
+										{ label: 'Full', value: 'full' },
+										{ label: 'Base', value: 'base' },
+										{ label: 'Attributes', value: 'att' },
+									] }
+									onChange={ ( titleType ) => { setAttributes( { titleType } ) } }
+								/>
+								<button
+									onClick={ (e) => {
+										this.setState( { editItem: 'none' } ); console.log("should close");
+									} }
+								>
+									done
+								</button>
+							</div>
+						: '' }
+					</div>
+				}
 				{ ( item === 'button' && ( selectedComponent !== 'button' || ( selectedComponent === 'button' && editItem !== 'button' ) ) ) ?
 					<div className="edit-component btn-cmp" onClick={ (e) => { this.setState( { editItem: 'button' } ) } }>
 						<p className="edit-component">edit button text</p>
@@ -397,7 +476,7 @@ class AddToCartBlock extends Component {
 					initialOpen
 				>
 					{ contentOrder.map( ( item, index ) => {
-						return ( <PanelRow>
+						return ( <PanelRow key={index}>
 							<label className="content-element " htmlFor={"content-order-form-" + item}>
 								{ __(
 									_.startCase( _.lowerCase( item ) ),
@@ -482,6 +561,31 @@ class AddToCartBlock extends Component {
 		);
 	}
 
+	displayVariationControls() {
+		const { attributes, setAttributes } = this.props;
+		const { products, variations } = attributes;
+
+		if ( products.length > 0 ) {
+			if ( products[ 0 ].type === 'variable' ) {
+				return(
+					<div className="variations">
+						{console.log(products[0])}
+						<ProductVariationControl
+							parentProd={ products[0] }
+							selected={ variations }
+							onChange={ ( value = [] ) => {
+								const selected = value;
+								setAttributes( { variations: selected } );
+								// setAttributes( { products: prodDat } );
+							} }
+						/>
+					</div>
+				);
+			}
+		}
+
+	}
+
 	renderEditMode() {
 		const { attributes, debouncedSpeak, setAttributes } = this.props;
 		const onDone = () => {
@@ -504,6 +608,7 @@ class AddToCartBlock extends Component {
 			>
 				<div className="eaa2c-block">
 					{ this.displayControls() }
+					{ this.displayVariationControls() }
 					<ProductControl
 						selected={ attributes.products }
 						onChange={ ( value = [] ) => {
@@ -522,7 +627,7 @@ class AddToCartBlock extends Component {
 
 	renderViewMode() {
 		const { attributes, className } = this.props;
-		const { contentVisibility, contentOrder, products, quantity } = attributes;
+		const { contentVisibility, contentOrder, products, quantity, titleType, variations } = attributes;
 		console.log( "In render view mode." );
 
 		if ( products[ 0 ] ) {
@@ -530,17 +635,29 @@ class AddToCartBlock extends Component {
 			if ( products[0].id > 0 ) {
 				// console.log( products );
 				const product = products[0];
+				const variation = variations[0] ? variations[0] : [];
+				const title = createTitle( { product, variation, titleType } );
 				return (
 					<div className={ "enhanced-woocommerce-add-to-cart " + className }>
 						{ contentOrder.map( ( item, index ) => {
 							if ( item === 'title' && contentVisibility[ item ] === true ) {
-								const att = item === 'title' ? 'name' : 'price';
 								return (
 									<span
 										key={ index }
 										className="ea-line ea-text"
 									>
-										<span>{ product[ att ] }</span>
+										{ title }
+									</span>
+								);
+							} else if ( item === 'title' && contentVisibility[ item ] === true && title === 'full' ) {
+								const att = item === 'title' ? 'name' : 'price';
+								return (
+									<span
+										key={ index }
+										className="ea-line ea-text "
+									>
+										<span>{ product[ titleType ] }</span>
+										{/* <span>{ product[ att ] }</span> */}
 									</span>
 								);
 							} else if (  item === 'price'  && contentVisibility[ item ] === true ) {
@@ -576,7 +693,7 @@ class AddToCartBlock extends Component {
 								);
 							} else if ( item === 'separator' ) {
 								return (
-									<span className="ea-line">
+									<span key={ index } className="ea-line">
 										<span className="ea-separator"></span>
 									</span>
 								);
