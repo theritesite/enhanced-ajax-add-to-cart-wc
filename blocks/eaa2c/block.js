@@ -627,7 +627,7 @@ class AddToCartBlock extends Component {
 
 	renderViewMode() {
 		const { attributes, className } = this.props;
-		const { contentVisibility, contentOrder, products, quantity, titleType, variations } = attributes;
+		const { buttonText, contentVisibility, contentOrder, products, quantity, titleType, variations } = attributes;
 		console.log( "In render view mode." );
 
 		if ( products[ 0 ] ) {
@@ -654,7 +654,7 @@ class AddToCartBlock extends Component {
 								return (
 									<span
 										key={ index }
-										className="ea-line ea-text "
+										className="ea-line ea-text"
 									>
 										<span>{ product[ titleType ] }</span>
 										{/* <span>{ product[ att ] }</span> */}
@@ -705,7 +705,7 @@ class AddToCartBlock extends Component {
 							data-pid={ products[ 0 ].parent_id > 0 ? products[ 0 ].parent_id : products[ 0 ].id }
 							data-vid={ products[ 0 ].id }
 						>
-							{ 'add to cart!?' }
+							{ buttonText }
 						</button>
 					</div>
 				);

@@ -19,6 +19,6 @@ msgstr ""
 msgid "Done"
 msgstr ""
 
-#: blocks/eaa2c/block.js:803
+#: blocks/eaa2c/block.js:804
 msgid "Edit"
 msgstr ""

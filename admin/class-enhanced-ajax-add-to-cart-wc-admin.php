@@ -95,7 +95,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 			'button_text'	=> ''  // Added in version 1.3.0
 		), $atts);
 
-		if( !empty( $att_array['product'] ) )
+		if ( ! empty( $att_array['product'] ) )
 			$add_to_cart_html = $this->display_variable_product_add_to_cart( $att_array );
 		
 		return $add_to_cart_html ;
@@ -125,12 +125,12 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 
 		$product = wc_get_product( $product_id );
 		
-		if( $att_array['variation'] != '' ) {
+		if ( $att_array['variation'] != '' ) {
 			$variation_id = $att_array['variation'];
 			$variation = wc_get_product( $variation_id );
 		}
 
-		if( !is_null( $product ) && $product !== false ){
+		if ( ! is_null( $product ) && $product !== false ) {
 
 			$price_display = get_woocommerce_currency_symbol() . $product->get_price();
 			if ( $variation !== null && $variation !== false ) {
@@ -150,7 +150,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 			 *  else display the full variation name
 			 *  @since 1.1.0
 			 */
-			if( $title == 'attributes' || $title == 'attribute' || $title == 'att' ) {
+			if ( $title == 'attributes' || $title == 'attribute' || $title == 'att' ) {
 
 				$att_title = '';
 				if ( strpos( $show_price, 'b' ) !== false ) {
@@ -165,7 +165,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 				}
 				$a2c_html .= '<span class="ea-line ea-text">' . $att_title . '</span>';
 			}
-			elseif( $title !== 'none' ) {
+			elseif ( $title !== 'none' ) {
 				$name = '';
 
 				if ( strpos( $show_price, 'b' ) !== false ) {
@@ -198,15 +198,15 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 			
 			// Added version 1.1.0
 			// If there was quantity specified, start processing for default quantity
-			if( $att_array['quantity'] != '' && $att_array['show_quantity'] != 'yes' ) {
+			if ( $att_array['quantity'] != '' && $att_array['show_quantity'] != 'yes' ) {
 				$a2c_html .= '<input type="hidden" id="' . esc_attr( $input_id ) . '" name="' . esc_attr( $input_name ) .
 								'" value="' . esc_attr( $att_array['quantity'] ) . '">';
 			}
-			if( $att_array['quantity'] == '' || $att_array['show_quantity'] == 'yes' ) {
+			if ( $att_array['quantity'] == '' || $att_array['show_quantity'] == 'yes' ) {
 			
 				// If there was a quantity specified on the shortcode, and there is to be number input box
 				// Set the input value to be the quantity specified
-				if( $att_array['show_quantity'] == 'yes' && $att_array['quantity'] != '' )
+				if ( $att_array['show_quantity'] == 'yes' && $att_array['quantity'] != '' )
 					$input_value = $att_array['quantity'];
 				// Otherwise continue as normal
 				else
@@ -237,7 +237,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 				$button_text = esc_html( $product->single_add_to_cart_text() );
 			}
 
-			if( $variation_id !== false ) {
+			if ( $variation_id !== false ) {
 				$a2c_html .= '<button type="submit" class="variable_add_to_cart_button button alt" data-pid="' . absint( $product->get_id() ) .
 							'" data-vid="' . absint( $variation_id ) . '">' . $button_text . '</button>';
 			}

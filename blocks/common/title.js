@@ -12,7 +12,7 @@ export const createTitle = ( {
 			varName = variation.attributes.map( ( attribute ) => " " + attribute.option );
 		}
 		if ( ( parentName ) && ( varName ) && titleType === 'full' ) {
-			return parentName + varName;
+			return parentName + ' - ' + varName;
 		} else if ( varName && titleType === 'att' ) {
 			return varName;
 		} else {

@@ -336,26 +336,46 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 		ob_start();
 			
 		if ( is_array( $attributes['products'] ) && isset( $attributes['products'][0] ) ) {
-			$product = $attributes['products'][0];
+			$product_raw = $attributes['products'][0];
+			$product_id = isset( $product_raw['id'] ) ? $product_raw['id'] : 0;
+			$product = wc_get_product( $product_id );
+			$variation_raw = isset( $attributes['variations'][0] ) ? $attributes['variations'][0] : array();
+			$variation_id = isset( $variation_raw['id'] ) ? $variation_raw['id'] : 0;
+			$variation = wc_get_product( $variation_id );
 			$buttonText = $attributes['buttonText'];
 			$quantity = $attributes['quantity'];
+			$extraClasses = isset( $attributes['className'] ) ? $attributes['className'] : '';
+			$extraClasses .= isset( $attributes['align'] ) ? ' align' . $attributes['align'] : '';
+			$titleType = isset( $attributes['titleType'] ) ? $attributes['titleType'] : 'full';
 
-			$price_display = get_woocommerce_currency_symbol() . $product['price'];
-			// if ( $variation !== null && $variation !== false ) {
-			// 	$price_display = get_woocommerce_currency_symbol() . $variation->get_price();
-			// }
+			$priceDisplay = get_woocommerce_currency_symbol() . $product->get_price();
+			$titleDisplay = $product->get_name();
+			if ( $variation !== null && $variation !== false ) {
+				$priceDisplay = get_woocommerce_currency_symbol() . $variation->get_price();
+
+				if ( strcmp( $titleType, 'full' ) === 0 ) {
+					$titleDisplay = $variation->get_name();
+				}
+				elseif ( strcmp( $titleType, 'att' ) === 0 ) {
+					$titleDisplay = '';
+					if ( $variation instanceof WC_Product ) {
+						foreach ( $variation->get_variation_attributes() as $key => $attribute )
+							$titleDisplay .= ucfirst( $attribute ) . ' ';
+					}
+				}
+			}
 
 			?>
-			<div class="enhanced-woocommerce-add-to-cart <?php echo esc_attr( $attributes['className'] ); ?>">
+			<div class="enhanced-woocommerce-add-to-cart <?php echo esc_attr( $extraClasses ); ?>">
 				<?php foreach( $contentOrder as $item ) : ?>
 					<?php if ( strcmp( $item, 'title' ) === 0 && $contentVisibility[ $item ] === true  ) : ?>
 						<span class="ea-line ea-text">
-							<span><?php esc_html_e( $product['name'] ); ?></span>
+							<span><?php esc_html_e( $titleDisplay ); ?></span>
 						</span>
 					<?php endif; ?>
 					<?php if ( strcmp( $item, 'price' ) === 0 && $contentVisibility[ $item ] === true   ) : ?>
 						<span class="ea-line ea-text">
-							<span><?php esc_html_e( $price_display ); ?></span>
+							<span><?php esc_html_e( $priceDisplay ); ?></span>
 						</span>
 					<?php endif; ?>
 					<?php if( strcmp( $item, 'quantity' ) === 0 ) : ?>
@@ -364,7 +384,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 							<div class="quantity">
 								<input
 									type="number"
-									id="<?php esc_attr_e( $product['id'] ); ?>"
+									id="<?php esc_attr_e( $product_id ); ?>"
 									class="input-text qty text"
 									value="<?php esc_attr_e( $quantity['default'] ); ?>"
 									step="1"
@@ -387,8 +407,8 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 							<button
 								type="submit"
 								class="eaa2c_add_to_cart_button button alt"
-								data-pid="<?php esc_attr_e( $product['parent_id'] > 0 ? $product['parent_id'] : $product['id'] ); ?>"
-								data-vid="<?php esc_attr_e( $product['id'] ); ?>"
+								data-pid="<?php esc_attr_e( $product_raw['parent_id'] > 0 ? $product_raw['parent_id'] : $product_raw['id'] ); ?>"
+								data-vid="<?php esc_attr_e( $variation_id ); ?>"
 							>
 								<?php esc_html_e( $buttonText ); ?>
 							</button>

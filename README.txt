@@ -9,11 +9,15 @@ Stable tag:        trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Creates a new block and shortcode for you to be able to add an AJAX button with an associated quantity for you WooCommerce Product
+Creates a new block and shortcode that creates an Add to Cart button with an associated quantity for your WooCommerce Products which customers can interact with without reloading any page!
 
 == Description ==
 
 This extension for [WooCommerce](https://www.woocommerce.com) allows you to render an AJAX button with an associated quantity field. Create effective and functional buttons to use for your or your customers convenience anywhere on your site you want!
+
+**Breaking Changes in 2.0**
+We have changed the design to condense some code and make things more simple. We have deprecated some javascript and server side PHP functions and have added deprecated notices.
+These are from how the Add to Cart button was different between variations and other types of products. They now use the same code for different product types. This will effect the selectors for styling or any other custom code relying on classes used by this plugin.
 
 = Block Documentation =
 **New "AJAX Add to Cart Block"!**
@@ -95,7 +99,7 @@ Or...
 
 = Manual Installation =
 1. Upload the entire `/enhanced-ajax-add-to-cart-wc` directory to the `/wp-content/plugins/` directory.
-2. Activate WooCommerce Cost of Shipping through the 'Plugins' menu in WordPress.
+2. Activate Enhanced AJAX Add to Cart for WooCommerce through the 'Plugins' menu in WordPress.
 3. Enjoy the easy input of the flexible AJAX add to cart buttons on any page on your site!
 
 
@@ -134,6 +138,12 @@ If your theme styles are not being applied to the quantity input, you can use th
 Yes!
 Shortcode: To use variable products, you must specify both the product id and the variation id in the shortcode parameters.
 Block: Select the product you want to use in the product selector!
+
+= Some attributes for variable products are not appearing =
+
+This can be a compatibility issue with how the store is set up. This plugin uses the variation ID to add the products to the cart. If the variable product with **back end** selected attributes is not a defined variation, then the product will not be able to be used correctly.
+
+In short: all variable products to be used by this must be defined variations and have a unique id.
 
 = How are different variations uniquely identified? =
 

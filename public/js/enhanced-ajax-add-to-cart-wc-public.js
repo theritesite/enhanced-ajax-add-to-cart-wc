@@ -59,8 +59,8 @@ jQuery( function( $ ) {
 		// Trigger event.
 		$( document.body ).trigger( 'adding_to_cart', [ $thisbutton, data ] );
 
-		if ( ( parseInt(qty.attr('max')) === -1 && data['qty'] > qty.attr('min') )
-				|| ( data['qty'] < qty.attr('max') && data['qty'] > qty.attr('min') )
+		if ( ( parseInt(qty.attr('max')) === -1 && data['qty'] >= qty.attr('min') )
+				|| ( data['qty'] <= qty.attr('max') && data['qty'] >= qty.attr('min') )
 		) {
 			$.ajax({
 				url: EAA2C.ajax_url,
@@ -99,9 +99,11 @@ jQuery( function( $ ) {
 	};
 
 	/**
+	 * @deprecated Since version 2.0.0. Will be deleted in 3.0. Use AddToCartHandler.prototype.onAddAnyToCart instead.
 	 * Handle the variable product add to cart event.
 	 */
 	AddToCartHandler.prototype.onAddVariableToCart = function( e ) {
+		console.warn( "Calling deprecated function 'onAddVariableToCart'. Deprecated in 2.0.0 of Enhanced AJAX Add to Cart." );
 		var $thisbutton = $( this );
 		e.preventDefault();
 
@@ -148,9 +150,11 @@ jQuery( function( $ ) {
 	};
 
 	/**
+	 * @deprecated Since version 2.0.0. Will be deleted in 3.0. Use AddToCartHandler.prototype.onAddAnyToCart instead.
 	 * Handle the simple product add to cart event.
 	 */
 	AddToCartHandler.prototype.onAddSimpleToCart = function( e ) {
+		console.warn( "Calling deprecated function 'onAddSimpleToCart'. Deprecated in 2.0.0 of Enhanced AJAX Add to Cart." );
 		var $thisbutton = $( this );
 		e.preventDefault();
 
