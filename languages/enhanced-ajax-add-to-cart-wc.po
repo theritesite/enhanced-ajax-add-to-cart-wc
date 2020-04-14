@@ -1,0 +1,30 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=utf-8\n"
+"X-Generator: babel-plugin-makepot\n"
+
+#: blocks/common/product-variation-control.js:36
+msgid "Clear all products"
+msgstr ""
+
+#: blocks/common/product-variation-control.js:37
+msgid "Product Variations"
+msgstr ""
+
+#: blocks/common/product-variation-control.js:38
+msgid "This product doesn't have any variations."
+msgstr ""
+
+#: blocks/common/product-variation-control.js:42
+msgid "Search for the product variations and select"
+msgstr ""
+
+#: blocks/common/product-variation-control.js:48
+msgid "%d variation selected"
+msgid_plural "%d variations selected"
+msgstr[0] ""
+msgstr[1] ""
+
+#: blocks/common/product-variation-control.js:56
+msgid "Product Variation search results updated."
+msgstr ""

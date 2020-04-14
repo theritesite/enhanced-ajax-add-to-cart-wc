@@ -1,7 +1,7 @@
 === Enhanced AJAX Add to Cart for WooCommerce ===
 Contributors: theritesites
 Donate link: https://www.theritesites.com
-Tags: ajax button, add to cart, AJAX add to cart, shortcode, woocommerce, quantity, wc, AJAX, variable, variable product, theritesites, The Rite Sites
+Tags: ajax button, add to cart, AJAX add to cart, shortcode, block, woocommerce, gutenberg, theritesites, The Rite Sites
 Requires at least: 4.8.1
 Tested up to:      5.4
 Requires PHP:      5.6+
@@ -9,23 +9,36 @@ Stable tag:        trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Creates a shortcode for you to be able to add an AJAX button with an associated quantity for you WooCommerce Product
+Creates a new block and shortcode that allows customers to add WooCommerce products to their cart without leaving or reloading the current page.
 
 == Description ==
 
 This extension for [WooCommerce](https://www.woocommerce.com) allows you to render an AJAX button with an associated quantity field. Create effective and functional buttons to use for your or your customers convenience anywhere on your site you want!
 
+**Breaking Changes in 2.0**
+We have changed the design to condense some code and make things more simple. We have deprecated some javascript and server side PHP functions and have added deprecated notices.
+These are from how the Add to Cart button was different between variations and other types of products. They now use the same code for different product types. This will effect the selectors for styling or any other custom code relying on classes used by this plugin.
+
+= Block Documentation =
+**New "AJAX Add to Cart Block"!**
+New and improved interface to create flexible components on any page of your website that has the block editor enabled!
+Easily toggle displays and drag-and-drop to move around objects to change the appearance of the add to cart component on the front end.
+
+Not only does the block have all the features the shortcode does, but expands further upon that allowing you to change the display order of each individual component using a visual editor!
+The block also has a product select tool so you no longer have to remember individual product or variation IDs
+
 = Shortcode Documentation =
 **New Shorter Shortcode: ajax_add_to_cart is now an option for enh_ajax_add_to_cart_button**
-The required field for every button is the product_id, with six optional fields:
-- variation_id (used for variable products)
+The required field for every button is the product, with six optional fields:
+- variation (used for variable products)
 - title (to reflect the label before the button)
 - quantity (sets the default quantity **AND hides the quantity checkbox**)
 - show_quantity (**if quantity is specified**, re-enables the checkbox)
 - show_price
 - button_text
 
-`[enh_ajax_add_to_cart_button product_id={pid} variation_id={vid} show_price={beginning|b|after|a|rear|r} button_text={STRING} title={none|attributes|att|attribute} quantity={INTEGER} show_quantity={yes} ]`
+`[enh_ajax_add_to_cart_button product={pid} variation={vid} show_price={beginning|b|after|a|rear|r} button_text={STRING} title={none|attributes|att|attribute} quantity={INTEGER} show_quantity={yes} ]
+[ajax_add_to_cart product={pid} variation={vid} show_price={beginning|b|after|a|rear|r} button_text={STRING} title={none|attributes|att|attribute} quantity={INTEGER} show_quantity={yes} ]`
 
 
 SIMPLE PRODUCT: Use only the required parameters to make a quantity box and add to cart button for a simple product with the title to the left:
@@ -86,7 +99,7 @@ Or...
 
 = Manual Installation =
 1. Upload the entire `/enhanced-ajax-add-to-cart-wc` directory to the `/wp-content/plugins/` directory.
-2. Activate WooCommerce Cost of Shipping through the 'Plugins' menu in WordPress.
+2. Activate Enhanced AJAX Add to Cart for WooCommerce through the 'Plugins' menu in WordPress.
 3. Enjoy the easy input of the flexible AJAX add to cart buttons on any page on your site!
 
 
@@ -96,11 +109,13 @@ Or...
 
 Yes!
 Shortcode: By using the button_text parameter using double quotes around your phrase. button_text="quickly add this product!"
+Block: Just put your phrase in the input box!
 
 = How can I change the separator between the price and the button or text? =
 
 There is a CSS selector available for changing the separator for the plugin as a whole. You can put this in your themes styles.css or "Additional CSS" section of theme customizer
 The default is shown below. To change the character, change the content value from " - " to whatever you see fit. Leave blank quotes for removing it all together (e.g. content: "";)
+This is the same for blocks and shortcodes.
 
 `
 .ea-separator::before {
@@ -108,13 +123,36 @@ The default is shown below. To change the character, change the content value fr
 }
 `
 
+= Can I change the styling of the quantity input? =
+
+Of course! Currently, there are no standard options for styling.
+We realize that many websites want their own styling or have already hired a designer. We let our elements be as broad and blank as possible while picking up theme standards.
+
+If your theme styles are not being applied to the quantity input, you can use the following css selector to edit all of the quantity inputs:
+`
+
+`
+
 = Does this work for variable products? =
 
-Yes! To use variable products, you must specify both the product id and the variation id in the shortcode parameters.
+Yes!
+Shortcode: To use variable products, you must specify both the product id and the variation id in the shortcode parameters.
+Block: Select the product you want to use in the product selector!
+
+= Some attributes for variable products are not appearing =
+
+This can be a compatibility issue with how the store is set up. This plugin uses the variation ID to add the products to the cart. If the variable product with **back end** selected attributes is not a defined variation, then the product will not be able to be used correctly.
+
+In short: all variable products to be used by this must be defined variations and have a unique id.
+
+= How are different variations uniquely identified? =
+
+The title attributes are how you can define what is displayed on the frontend. Options are the standard product title (no product attributes), product title + product attributes, or just the product attributes.
+Alternatively, in the premium version, there is a blank text input that can be used in the block editor. This can be used for any text and can be a unique identifier.
 
 = Can there be multiple ajax buttons on the same page? =
 
-Yes! You can only safely do the same variation of a variable product once on the same page, or one simple (of the same product) product button on the same page. The reason being, the JavaScript used to pass the quantity to the server is using either the variation id or the product id (respectively) to find which quantity box should be used.
+Yes! You can safely use multiple buttons on the same page with confirmed results.
 
 = Does this replace the add to cart button on product pages or archives? = 
 
@@ -128,6 +166,12 @@ At this point, no. This is designed to supplement your store to let the buttons 
 4. No title for quantity and button inputs
 
 == Changelog ==
+
+= 2.0.0 =
+* Added AJAX Add to Cart block
+* Added "base" title option for variable products
+* Added extra class parameter "class" to add to the wrapper element.
+* Fixed bug when attribute title was selected but undefined, now printing parent product name rather than nothing.
 
 = 1.5.0 =
 * Added button blocking using the disabled html parameter. This prevents requests being skipped when many buttons pressed within short time.
@@ -194,6 +238,13 @@ At this point, no. This is designed to supplement your store to let the buttons 
 * Shortcode associates quantity with AJAX button
 
 == Upgrade Notice ==
+= 2.0.0 =
+* Styling changes: Button classes have changed to make buttons more uniform
+* Styling changes: Added spacing around the separator
+* Deprecated function: Enhanced_Ajax_Add_To_Cart_Wc_Admin::display_variable_product_add_to_cart()
+* Deprecated function: Enhanced_Ajax_Add_To_Cart_Wc_AJAX::variable_add_to_cart_callback()
+* Deprecated function: Enhanced_Ajax_Add_To_Cart_Wc_AJAX::simple_add_to_cart_callback()
+
 = 1.1 =
 * Update now to be able to hide or show the quantity input box!
 

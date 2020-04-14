@@ -11,7 +11,7 @@
  * Plugin Name:       Enhanced AJAX Add to Cart for WooCommerce
  * Plugin URI:        https://www.theritesites.com/plugins/enhanced-ajax-add-to-cart-wc
  * Description:       Creates a shortcode for you to be able to add an AJAX button with an associated quantity for you WooCommerce Product
- * Version:           1.5.0
+ * Version:           2.0.0-alpha
  * Author:            TheRiteSites
  * Author URI:        https://www.theritesites.com
  * License:           GPL-2.0+
@@ -34,24 +34,24 @@ if ( ! function_exists( 'is_woocommerce_active' ) ) {
 /**
  * Current plugin version.
  */
-define( 'ENHANCED_AJAX_ADD_TO_CART', '1.5.0' );
+define( 'ENHANCED_AJAX_ADD_TO_CART', '2.0.0-alpha' );
 define( 'EAA2C_DEBUG', false );
 
 /**
  * The code that runs during plugin activation.
- * This action is documented in includes/class-enhanced-ajax-add-to-cart-wc-activator.php
+ * This action is documented in src/class-eaa2c-activator.php
  */
 function activate_enhanced_ajax_add_to_cart_wc() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-enhanced-ajax-add-to-cart-wc-activator.php';
+	require_once plugin_dir_path( __FILE__ ) . 'src/class-eaa2c-activator.php';
 	Enhanced_Ajax_Add_To_Cart_Wc_Activator::activate();
 }
 
 /**
  * The code that runs during plugin deactivation.
- * This action is documented in includes/class-enhanced-ajax-add-to-cart-wc-deactivator.php
+ * This action is documented in src/class-eaa2c-deactivator.php
  */
 function deactivate_enhanced_ajax_add_to_cart_wc() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-enhanced-ajax-add-to-cart-wc-deactivator.php';
+	require_once plugin_dir_path( __FILE__ ) . 'src/class-eaa2c-deactivator.php';
 	Enhanced_Ajax_Add_To_Cart_Wc_Deactivator::deactivate();
 }
 
@@ -62,7 +62,7 @@ register_deactivation_hook( __FILE__, 'deactivate_enhanced_ajax_add_to_cart_wc' 
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-require plugin_dir_path( __FILE__ ) . 'includes/class-enhanced-ajax-add-to-cart-wc.php';
+require plugin_dir_path( __FILE__ ) . 'src/class-enhanced-ajax-add-to-cart-wc.php';
 
 /**
  * Begins execution of the plugin.
