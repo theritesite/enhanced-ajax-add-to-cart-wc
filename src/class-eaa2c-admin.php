@@ -122,7 +122,6 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 
 		// Skip block registration if Gutenberg is not enabled/merged.
 		if ( ! function_exists( 'register_block_type' ) ) {
-			error_log( "styff2" );
 			return;
 		}
 
@@ -254,7 +253,6 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 	 * @return via writing and echoing html, returns all the html for buttons.
 	 */
 	public function render_from_block( $raw_attributes = array(), $content = '' ) {
-		error_log( "here" );
 		if ( ! empty( $raw_attributes ) ) {
 			$block = new Enhanced_Ajax_Add_To_Cart_Wc_Single( $raw_attributes );
 			return $block->render();

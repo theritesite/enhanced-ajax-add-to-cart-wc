@@ -61,21 +61,23 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Public {
 		$js_file =  plugin_dir_url( __DIR__ ) . 'assets/js/enhanced-ajax-add-to-cart-wc-public.js';
 
 		$path = realpath( dirname( __DIR__ ) ) . '/dist/request/';
-		error_log( $path . $index_js );
-		error_log( file_exists( $path . $index_js ) ? 'uyes' : 'no' );
 		if ( file_exists( $path . $index_js ) && ! ( EAA2C_DEBUG || WP_DEBUG ) ) {
 			$dir = plugin_dir_path( dirname( __FILE__ ) ) . 'dist/request/';
 			$js_file =  plugins_url( $index_js, $dir .'request/' );
 		}
 
 		if ( ! empty( $js_file ) && defined( 'EAA2C_NAME' ) ) {
+			$blocking = get_option( 'eaa2c_button_blocking', false );
+			if ( strcmp( $blocking, 'on' ) === 0 || strcmp( $blocking, 'true' ) === 0 ) {
+				$blocking = true;
+			}
 
 			wp_register_script( EAA2C_NAME . '-js-bundle' , $js_file, array( 'jquery', 'wc-add-to-cart' ), $this->version, false );
 			
 			wp_localize_script( EAA2C_NAME . '-js-bundle', 'EAA2C', array(
 				'ajax_url'	=> admin_url( 'admin-ajax.php' ),
-				'blocking'	=> true,
-				'debug'		=> true,
+				'blocking'	=> $blocking,
+				'debug'		=> EAA2C_DEBUG,
 			));
 		}
 	}

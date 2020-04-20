@@ -93,11 +93,14 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Single extends Abstract_EAA2C_Button {
 			if ( strpos( strtolower( $attributes['show_quantity'] ), 'n' ) !== false ) {
 				$defaults['contentVisibility']['quantity'] = false;
 			}
+			if ( strpos( strtolower( $attributes['show_quantity'] ), 'y' ) !== false ) {
+				$defaults['contentVisibility']['quantity'] = true;
+			}
 		}
 		if ( isset( $attributes['show_price'] ) ) {
-			error_log( $attributes['show_price'] );
+			// error_log( $attributes['show_price'] );
 			$newContentOrder = $this->create_content_order_from_shortcode( $attributes['show_price'] );
-			error_log( wc_print_r( $newContentOrder, true ) );
+			// error_log( wc_print_r( $newContentOrder, true ) );
 			if ( ! empty( $newContentOrder ) ) {
 				$defaults['contentOrder'] = $newContentOrder;
 				$defaults['contentVisibility']['separator'] = true;
@@ -115,7 +118,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Single extends Abstract_EAA2C_Button {
 			}
 		}
 
-		error_log( wc_print_r( $defaults, true ) );
+		// error_log( wc_print_r( $defaults, true ) );
 
 		// $this->meta = $defaults;
 		// return $this->meta;

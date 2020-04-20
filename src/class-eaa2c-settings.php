@@ -11,60 +11,6 @@
  */
 
 class Enhanced_Ajax_Add_To_Cart_Wc_Settings {
-	/**
-	 * Parent plugin class.
-	 *
-	 * @var    CR_WC
-	 * @since  1.0.0
-	 */
-	protected $plugin = null;
-
-	/**
-	 * Option key, and option page slug.
-	 *
-	 * @var    string
-	 * @since  1.0.0
-	 */
-	protected static $key = 'cr_wc_settings';
-
-	/**
-	 * Options page metabox ID.
-	 *
-	 * @var    string
-	 * @since  1.0.0
-	 */
-	protected static $metabox_id = 'cr_wc_settings_metabox';
-
-	/**
-	 * Options Page title.
-	 *
-	 * @var    string
-	 * @since  1.0.0
-	 */
-	protected $title = '';
-
-	/**
-	 * Options Page hook.
-	 *
-	 * @var string
-	 */
-	protected $options_page = '';
-
-	protected $settings_page;
-
-	/**
-	 * Constructor.
-	 *
-	 * @since  1.0.0
-	 *
-	 * @param  CR_WC $plugin Main plugin object.
-	 */
-	public function __construct( ) {
-		// $this->plugin = $plugin;
-		// $this->hooks();
-		// $this->register_menu_item();
-		// $this->register_settings();
-	}
 
 	public function register_menu_item() {
 		$this->settings_page = add_submenu_page(
@@ -122,6 +68,17 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Settings {
 				// 'default' => false
 			)
 		);
+		register_setting(
+			'eaa2c_settings',
+			'eaa2c_out_of_stock',
+			array(
+				'type' => 'boolean',
+				'description' => '',
+				// 'sanitize_callback' => array( $this, '' ),
+				'show_in_rest' => true
+				// 'default' => false
+			)
+		);
 		add_settings_section(
 			'eaa2c_settings',
 			// __( 'General Settings', EAA2C_NAME ),
@@ -133,9 +90,9 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Settings {
 	}
 
 	public function display_all_settings_callback( $args ) {
+		$this->render_display_options();
 		$this->render_general_settings();
 		$this->render_element_options();
-		$this->render_display_options();
 	}
 
 	public function render_display_options() {
@@ -171,6 +128,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Settings {
 			array(
 				'name' => 'eaa2c_default_text',
 				'type' => 'text',
+				'desc' => $this->get_premium_description_link(),
 				'value' => get_option( 'eaa2c_default_text'),
 				'class' => 'disabled',
 				'disabled' => true
@@ -200,6 +158,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Settings {
 			array(
 				'name' => 'eaa2c_image_field',
 				'type' => 'checkbox',
+				'desc' => $this->get_premium_description_link(),
 				'value' => $image_field,
 				'class' => 'disabled',
 				'disabled' => true
@@ -215,6 +174,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Settings {
 			array(
 				'name' => 'eaa2c_custom_field',
 				'type' => 'checkbox',
+				'desc' => $this->get_premium_description_link(),
 				'value' => $custom_field,
 				'class' => 'disabled',
 				'disabled' => true
@@ -229,6 +189,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Settings {
 			array(
 				'name' => 'eaa2c_default_text',
 				'type' => 'text',
+				'desc' => $this->get_premium_description_link(),
 				'value' => get_option( 'eaa2c_default_text'),
 				'class' => 'disabled',
 				'disabled' => true
@@ -248,7 +209,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Settings {
 				'title' => __( 'General Settings', EAA2C_NAME )
 			)
 		);
-		$blocking = empty( get_option( 'eaa2c_button_blocking') ) ? 0 : get_option( 'eaa2c_button_blocking');
+		$blocking = empty( get_option( 'eaa2c_button_blocking') ) ? 0 : get_option( 'eaa2c_button_blocking' );
 		add_settings_field(
 			'eaa2c_button_blocking',
 			__( 'Block buttons per request?', EAA2C_NAME ),
@@ -259,6 +220,19 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Settings {
 				'name' => 'eaa2c_button_blocking',
 				'type' => 'checkbox',
 				'value' => $blocking
+			)
+		);
+		$out_of_stock = empty( get_option( 'eaa2c_out_of_stock') ) ? 0 : get_option( 'eaa2c_out_of_stock' );
+		add_settings_field(
+			'eaa2c_out_of_stock',
+			__( 'Disable out of stock check?', EAA2C_NAME ),
+			array( $this, 'toggle_button' ),
+			$this->settings_page,
+			'eaa2c_settings',
+			array(
+				'name' => 'eaa2c_out_of_stock',
+				'type' => 'checkbox',
+				'value' => $out_of_stock
 			)
 		);
 		add_settings_field(
@@ -294,10 +268,11 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Settings {
 			$this->settings_page,
 			'eaa2c_settings',
 			array(
-				'name' => 'eaa2c_add_to_cart_text',
+				'name' => 'eaa2c_dom_check',
 				'type' => 'checkbox',
 				'value' => $dom_check,
 				'class' => 'disabled',
+				'desc' => $this->get_premium_description_link(),
 				'disabled' => true
 			)
 		);
@@ -311,6 +286,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Settings {
 				'name' => 'eaa2c_default_text',
 				'type' => 'text',
 				'value' => get_option( 'eaa2c_default_text'),
+				'desc' => $this->get_premium_description_link(),
 				'class' => 'disabled',
 				'disabled' => true
 			)
@@ -321,11 +297,17 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Settings {
 		$checked = $args['value'] === 0 || empty( $args['value'] ) ? '' : ' checked';
 		$disabled = isset( $args['disabled'] ) && $args['disabled'] === true ? ' disabled ' : '';
 		echo '<input type="' . esc_attr($args['type'] ) . '" name="' . esc_attr($args['name'] ) . '"' . esc_attr( $checked . $disabled ) . '/>';
+		if ( ! empty( $args['desc'] ) ) {
+			echo '<p class="description">' . $args['desc'] . '</p>';
+		}
 	}
 
 	public function text_input( $args ) {
 		$disabled = isset( $args['disabled'] ) && $args['disabled'] === true ? ' disabled ' : '';
 		echo '<input name="' . esc_attr($args['name'] ) . '" type="' . esc_attr($args['type'] ) . '" value="' . esc_attr( $args['value'] ) . '"' . esc_attr( $disabled ) . ' />';
+		if ( ! empty( $args['desc'] ) ) {
+			echo '<p class="description">' . $args['desc'] . '</p>';
+		}
 	}
 
 	public function subheading( $args ) {
@@ -339,13 +321,16 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Settings {
 				<h1>Enhanced AJAX Add to Cart Settings</h1>
 			</div>
 			<?php
-			// settings_fields( 'eaa2c_element_options_group' );
-			// settings_fields( 'eaa2c_general_settings_group' );
 			settings_fields( 'eaa2c_settings' );
 			do_settings_sections( $this->settings_page );
 			submit_button();
 			?>
 		</form>
 		<?php
+	}
+
+	public function get_premium_description_link() {
+		$link = sprintf( wp_kses( __( 'To us this setting, get <a href="%s">premium</a>!', EAA2C_NAME ), array( 'a' => array( 'href' => array() ) ) ), esc_url( 'https://www.theritesites.com/plugins/enhanced-ajax-add-to-cart-woocommerce' ) );
+		return $link;
 	}
 }

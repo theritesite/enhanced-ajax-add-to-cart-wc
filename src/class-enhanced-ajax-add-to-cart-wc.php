@@ -70,6 +70,14 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 		if ( ! defined( 'EAA2C_NAME' ) ) {
 			define( 'EAA2C_NAME', 'enhanced-ajax-add-to-cart-wc' );
 		}
+		if ( ! defined( 'EAA2C_DEBUG' ) ) {
+			$debug = get_option( 'eaa2c_debug', false );
+			if ( strcmp( $debug, 'true' ) === 0 || strcmp( $debug, 'on' ) === 0 ) {
+				$debug = true;
+			}
+			define( 'EAA2C_DEBUG', $debug );
+		}
+		
 		$this->plugin_name = EAA2C_NAME;
 
 		$this->load_dependencies();
