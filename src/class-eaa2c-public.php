@@ -76,7 +76,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Public {
 			
 			wp_localize_script( EAA2C_NAME . '-js-bundle', 'EAA2C', array(
 				'ajax_url'	=> admin_url( 'admin-ajax.php' ),
-				'blocking'	=> $blocking,
+				'blocking'	=> $blocking  ,
 				'debug'		=> EAA2C_DEBUG,
 			));
 		}

@@ -99,6 +99,7 @@ const config = env => {
 
 	const EAA2CPackages = [
 		'eaa2c',
+		'eaa2c-group',
 	];
 
 	const entryPoints = {};

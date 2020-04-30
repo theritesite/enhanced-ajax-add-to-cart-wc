@@ -25,14 +25,16 @@ const withParentSearchedTerm = createHigherOrderComponent( ( OriginalComponent )
 		}
 
 		componentDidMount() {
-			const { selected, parentProd } = this.props;
+			const { selected, parentProd, list } = this.props;
 			// TODO retrieve terms, products for now.
 
-			getProductVariations( { parentProd, selected } )
-				.then( ( list ) => {
-					this.setState( { list, loading: false } );
-				} )
-				.catch( this.setError );
+			if ( ! list && ! list.length ) {
+				getProductVariations( { parentProd, selected } )
+					.then( ( list ) => {
+						this.setState( { list, loading: false } );
+					} )
+					.catch( this.setError );
+			}
 		}
 
 		componentWillUnmount() {

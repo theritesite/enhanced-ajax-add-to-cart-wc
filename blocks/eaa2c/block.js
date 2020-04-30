@@ -27,11 +27,22 @@ import _ from 'lodash';
 
 import { Component, Fragment } from '@wordpress/element';
 import PropTypes from 'prop-types';
-import ProductControl from '../common/product-control';
-import ProductVariationControl from '../common/product-variation-control';
+// import ProductControl from '../common/product-control';
+import ProductControl from '../common/product-control/index.js';
+// import ProductVariationControl from '../common/product-variation-control';
 import { formatPrice } from '../common/price';
-import EAA2CControl from './eaa2c-control';
+import EAA2CControl from '../common/eaa2c-control';
 import { createTitle } from '../common/title';
+
+import { applyMiddleware, createStore, compose } from 'redux';
+import thunk from 'redux-thunk';
+import { Provider } from 'react-redux';
+
+import * as storageUtils from '../common/utils/local-storage';
+import localApiMiddleware from '../common/utils/local-api-middleware';
+
+
+import { setNonce, setBaseURL } from '../common/api/request';
 
 class AddToCartBlock extends Component {
 	constructor( props ) {
@@ -39,8 +50,16 @@ class AddToCartBlock extends Component {
 		this.state = {
 			editItem: 'default',
 			selectedComponent: '',
+			list: [],
 		}
 		this.onDragEnd = this.onDragEnd.bind( this );
+	}
+
+	setNoncesOnce() {
+		if ( global.EAA2C ) {
+			setNonce( global.EAA2C.nonce );
+			setBaseURL( global.EAA2C.baseURL );
+		}
 	}
 
 	handleTextChange(e) {
@@ -570,7 +589,7 @@ class AddToCartBlock extends Component {
 				return(
 					<div className="variations">
 						{console.log(products[0])}
-						<ProductVariationControl
+						{/* <ProductVariationControl
 							parentProd={ products[0] }
 							selected={ variations }
 							onChange={ ( value = [] ) => {
@@ -578,7 +597,7 @@ class AddToCartBlock extends Component {
 								setAttributes( { variations: selected } );
 								// setAttributes( { products: prodDat } );
 							} }
-						/>
+						/> */}
 					</div>
 				);
 			}
@@ -588,6 +607,7 @@ class AddToCartBlock extends Component {
 
 	renderEditMode() {
 		const { attributes, debouncedSpeak, setAttributes } = this.props;
+		const createdStores = {};
 		const onDone = () => {
 			setAttributes( { editMode: false } );
 			debouncedSpeak(
@@ -597,6 +617,46 @@ class AddToCartBlock extends Component {
 				)
 			);
 		};
+
+		const routeClassName = 'eaa2c-product-control';
+		const args = { list: {}, products: {}, variations: {}, selected: {}, isLoading: true, error: {} };
+		const Route = ProductControl( args );
+		if ( typeof createdStores[ routeClassName ] === 'undefined' ) {
+			const persistedStateKey = Route.getStateKey();
+			const persistedState = storageUtils.getWithExpiry( persistedStateKey );
+			storageUtils.remove( persistedStateKey );
+			const serverState = Route.getInitialState();
+			const initialState = { ...serverState, ...persistedState };
+
+			const middlewares = [
+				thunk.withExtraArgument( args ),
+				localApiMiddleware,
+			];
+
+			if ( Route.getMiddlewares ) {
+				middlewares.push.apply( middlewares, Route.getMiddlewares() );
+			}
+
+			const enhancers = [
+				applyMiddleware( ...middlewares ),
+			].filter( Boolean );
+
+			const store = compose( ...enhancers )( createStore )( Route.getReducer(), initialState );
+			if ( Route.getInitialActions ) {
+				Route.getInitialActions().forEach( store.dispatch );
+			}
+	
+			window.addEventListener( 'beforeunload', () => {
+				const state = store.getState();
+	
+				if ( window.persistState ) {
+					storageUtils.setWithExpiry( persistedStateKey, Route.getStateForPersisting( state ) );
+				}
+			} );
+	
+			createdStores[ routeClassName ] = store;
+	
+		}
 
 		return (
 			<Placeholder
@@ -609,14 +669,18 @@ class AddToCartBlock extends Component {
 				<div className="eaa2c-block">
 					{ this.displayControls() }
 					{ this.displayVariationControls() }
-					<ProductControl
-						selected={ attributes.products }
-						onChange={ ( value = [] ) => {
-							const selected = value;
-							setAttributes( { products: selected } );
-							// setAttributes( { products: prodDat } );
-						} }
-					/>
+					
+					<Provider store={ createdStores[ routeClassName ] }>
+						<ProductControl.View
+							// selected={ attributes.products }
+							// onChange={ ( value = [] ) => {
+							// 	const selected = value;
+							// 	setAttributes( { products: selected } );
+							// 	// setAttributes( { products: prodDat } );
+							// } }
+							// multiple={ false }
+						/>
+					</Provider>
 					<Button onClick={ onDone }>
 						{ __( 'Done', 'enhanced-ajax-add-to-cart-wc' ) }
 					</Button>

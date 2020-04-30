@@ -21,6 +21,7 @@
     "@wordpress/dependency-extraction-webpack-plugin": "^2.3.0",
     "@wordpress/editor": "^9.12.2",
     "@wordpress/eslint-plugin": "^4.0.0",
+    "@wordpress/html-entities": "^2.7.0",
     "@wordpress/i18n": "^3.9.0",
     "@wordpress/scripts": "^7.1.2",
     "@wordpress/url": "^2.11.0",
@@ -66,8 +67,13 @@
     "@woocommerce/woocommerce-rest-api": "^1.0.1",
     "@wordpress/components": "^9.2.2",
     "@wordpress/server-side-render": "^1.8.2",
+    "classnames": "^2.2.6",
+    "gridicons": "^3.3.1",
     "react": "16.9.0",
     "react-dom": "16.9.0",
+    "react-redux": "^7.2.0",
+    "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0",
     "use-debounce": "^3.3.0"
   }
 }

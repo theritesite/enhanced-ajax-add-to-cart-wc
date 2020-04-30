@@ -59,6 +59,15 @@ export const getProducts = ( {
 			const products = uniqBy( flatten( data ), 'id' );
 			// console.log( "we are after the flatten" );
 			const list = products.map( ( product ) => ( {
+				// name: createTitle( { product: product, variation: [] } ),
+				// id: product.id,
+				// full: createTitle( { product: product, variation: [], titleType: 'full' } ),
+				// base: createTitle( { product: product, variation: [], titleType: 'base' } ),
+				// price: product.price,
+				// type: product.type,
+				// attributes: product.attributes,
+				children: product.variations,
+				// raw: product,
 				...product,
 				// parent: 0,
 			} ) );

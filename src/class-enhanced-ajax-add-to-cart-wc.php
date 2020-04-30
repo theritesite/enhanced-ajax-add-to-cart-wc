@@ -115,6 +115,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/class-eaa2c-admin.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/class-eaa2c-public.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/class-eaa2c-single.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/class-eaa2c-group.php';
 
 		$this->loader = new Enhanced_Ajax_Add_To_Cart_Wc_Loader();
 
@@ -135,6 +136,27 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
                 // ),
             )
 		) );
+		register_rest_route( $namespace, '/products', array(
+            array(
+                'methods'   => WP_REST_Server::ALLMETHODS,
+                'callback'  => array( $this, 'get_all_products_and_variations' ),
+                // 'permissions_callback    => array( $this, '' ),
+                // 'args'      => array(
+                //     'context' => array(
+                //         'default'   => 'view',
+                //     ),
+                // ),
+            )
+		) );
+	}
+
+	public function get_all_products_and_variations( WP_REST_Request $request ) {
+		$params = $request->get_params();
+
+		$q = `SELECT p.post_parent as pp, GROUP_CONCAT(DISTINCT p.ID) FROM wp_posts as p WHERE p.post_type = 'product_variation' AND p.post_status = 'publish' GROUP BY pp;`;
+		
+		error_log( 'parameters to get all products and variations: ' . wc_print_r( $params, true ) );
+		return true;
 	}
 
 	public function error_check_route( WP_REST_Request $request ) {
@@ -217,8 +239,9 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 		// $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
 		$this->loader->add_action( 'init', $this->plugin_admin, 'register_eaa2c_single', 9999 );
+		$this->loader->add_action( 'init', $this->plugin_admin, 'register_eaa2c_group', 9999 );
 		// add_action( 'admin_notices', array( $this, 'register_app_rest' ) );
-		// add_action( 'rest_api_init', array( $this, 'register_routes' ) );
+		add_action( 'rest_api_init', array( $this, 'register_routes' ) );
 
 	}
 

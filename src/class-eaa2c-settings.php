@@ -12,6 +12,8 @@
 
 class Enhanced_Ajax_Add_To_Cart_Wc_Settings {
 
+	protected $settings_page;
+
 	public function register_menu_item() {
 		$this->settings_page = add_submenu_page(
 			'woocommerce',
