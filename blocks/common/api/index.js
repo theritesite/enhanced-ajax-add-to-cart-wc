@@ -3,11 +3,14 @@
  */
 import request from './request';
 
-const namespace = 'wc-emcctt/v1/connect/';
+// const namespace = 'wc-emcctt/v1/connect/';
+const namespace = 'wc/v3/';
 
-export const order = () => `${ namespace }order`;
+export const products = () => `${ namespace }products`
+export const variations = () => `${ namespace }products/${ product.ID }/variations`
 
-export const user = () => `${ namespace }user`;
+// export const order = () => `${ namespace }order`;
+// export const user = () => `${ namespace }user`;
 
 const handleError = ( jsonError ) => {
 	if ( jsonError.data.message ) {

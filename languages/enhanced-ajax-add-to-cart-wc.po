@@ -29,22 +29,56 @@ msgstr[1] ""
 msgid "Product search results updated."
 msgstr ""
 
-#: blocks/eaa2c/block.js:597
+#: blocks/common/search-list-control.js:313
+msgid "Clear all"
+msgstr ""
+
+#: blocks/common/search-list-control.js:39
+msgid "Clear all selected items"
+msgstr ""
+
+#: blocks/common/search-list-control.js:40
+msgid "Results"
+msgstr ""
+
+#: blocks/common/search-list-control.js:41
+msgid "No items found."
+msgstr ""
+
+#: blocks/common/search-list-control.js:42
+msgid "No results for %s"
+msgstr ""
+
+#: blocks/common/search-list-control.js:43
+msgid "Search for items"
+msgstr ""
+
+#: blocks/common/search-list-control.js:45
+msgid "%d item selected"
+msgid_plural "%d items selected"
+msgstr[0] ""
+msgstr[1] ""
+
+#: blocks/common/search-list-control.js:47
+msgid "Search results updated."
+msgstr ""
+
+#: blocks/eaa2c/block.js:582
 msgid "Content"
 msgstr ""
 
-#: blocks/eaa2c/block.js:701
+#: blocks/eaa2c/block.js:687
 msgid "Showing AJAX Add to Cart block preview."
 msgstr ""
 
-#: blocks/eaa2c/block.js:747
+#: blocks/eaa2c/block.js:722
 msgid "AJAX Add to Cart button"
 msgstr ""
 
-#: blocks/eaa2c/block.js:755
+#: blocks/eaa2c/block.js:747
 msgid "Done"
 msgstr ""
 
-#: blocks/eaa2c/block.js:858
+#: blocks/eaa2c/block.js:850
 msgid "Edit"
 msgstr ""

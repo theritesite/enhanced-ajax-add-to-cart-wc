@@ -235,9 +235,6 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 
 		$this->plugin_admin = new Enhanced_Ajax_Add_To_Cart_Wc_Admin();
 
-		// $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-		// $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-
 		$this->loader->add_action( 'init', $this->plugin_admin, 'register_eaa2c_single', 9999 );
 		$this->loader->add_action( 'init', $this->plugin_admin, 'register_eaa2c_group', 9999 );
 		// add_action( 'admin_notices', array( $this, 'register_app_rest' ) );

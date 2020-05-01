@@ -42,13 +42,29 @@ const messages = {
 
 export class ProductControler extends Component {
 
+	constructor( props ) {
+		super(props);
+	}
+
+	componentDidMount() {
+		console.log( "ProductControler Mounted." );
+		const { selected, dispatch, onListRequest, products } = this.props;
+		dispatch(ProductControlActions.fetchProductsIfNeeded( selected, '', [] ))
+		.then(
+			console.log( "dispatched fetchProductsIfNeeded completed." ),
+			onListRequest( products ),
+			console.log( "set parent product list" ),
+		);
+	}
+
 	render() {
-		const { error, multiple, isLoading, products, selected, onSearch, onChange } = this.props;
+		const { error, multiple, isLoading, products, selected, onSearch, onChange, dispatch } = this.props;
 
 		console.log( "in render view" );
 		if ( error ) {
 			return <p>error { error.status }</p>;
 		}
+
 
 		return (
 			<div className="wrapper">
@@ -58,6 +74,11 @@ export class ProductControler extends Component {
 					list={ products }
 					isLoading={ isLoading }
 					selected={ products.filter( ( product ) => {
+						// const selectedIds = Object.keys( selected ).map(function(key, index) {
+						// 	if ( key === 'id' ) {
+						// 		return selected[key];
+						// 	}
+						// })
 						const selectedIds = selected.map( ( { id } ) => id );
 						return selectedIds.includes( product.id );
 						}
@@ -65,6 +86,7 @@ export class ProductControler extends Component {
 					onSearch={ onSearch }
 					onChange={ onChange }
 					messages={ messages }
+					dispatch={ dispatch }
 				/>
 			</div>
 		);
@@ -76,15 +98,17 @@ ProductControler.propTypes = {
 	onSearch: PropTypes.func,
 	selected: PropTypes.array,
 	products: PropTypes.array,
-	variations: PropTypes.array,
+	variations: PropTypes.object,
 	isLoading: PropTypes.bool,
 	multiple: PropTypes.bool,
+	dispatch: PropTypes.func.isRequired,
+	onListRequest: PropTypes.func
 };
 
 ProductControler.defaultProps = {
 	selected: [],
 	products: [],
-	variations: [],
+	variations: {},
 	isLoading: true,
 	multiple: false,
 };
@@ -96,6 +120,6 @@ const mapStateToProps = state => ({
 	isLoading: state.isLoading,
   });
   
-const mapDispatchToProps = dispatch => bindActionCreators(ProductControlActions, dispatch );
+const mapDispatchToProps = dispatch => bindActionCreators( ProductControlActions, dispatch );
   
 export default connect(mapStateToProps, mapDispatchToProps)(ProductControler);

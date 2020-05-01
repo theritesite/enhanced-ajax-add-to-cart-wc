@@ -15,6 +15,7 @@ import { escapeRegExp, findIndex } from 'lodash';
 import Gridicon from 'gridicons';
 import PropTypes from 'prop-types';
 import { getProductVariations } from './search-product-variation-util';
+import * as ProductControlActions from './product-control/state/actions';
 
 /**
  * Internal dependencies
@@ -68,12 +69,15 @@ export class SearchListControl extends Component {
 		}
 	}
 
-	onRemove( id ) {
-		const { isSingle, onChange, selected } = this.props;
+	onRemove( item ) {
+		const { isSingle, onChange, selected, dispatch } = this.props;
+		const id = item.id;
 		return () => {
 			if ( isSingle ) {
 				onChange( [] );
 			}
+			dispatch( ProductControlActions.removeSelected( item ) );
+
 			const i = findIndex( selected, { id } );
 			onChange( [
 				...selected.slice( 0, i ),
@@ -83,23 +87,28 @@ export class SearchListControl extends Component {
 	}
 
 	onSelect( item ) {
-		const { isSingle, onChange, selected, list } = this.props;
+		const { isSingle, onChange, selected, list, dispatch } = this.props;
 		return () => {
 			if ( this.isSelected( item ) ) {
-				this.onRemove( item.id )();
+				console.log( "calling remove" );
+				this.onRemove( item )();
 				return;
 			}
 			if ( item.type === 'variable' ) {
 				// this.setState({ oldList: list });
 				// this.renderList( list )
 			}
-			else {
+			// else {
 				if ( isSingle ) {
+					console.log( "adding item to selected list" );
+					console.log( item );
+					dispatch( ProductControlActions.setSelected( item ) );
+					// selected = [ ...selected, item ];
 					onChange( [ item ] );
 				} else {
 					onChange( [ ...selected, item ] );
 				}
-			}
+			// }
 		};
 	}
 

@@ -8,68 +8,104 @@
  */
 import * as api from '../../api';
 
+import { getProducts } from '../../search-product-util';
+import { getProductVariations } from '../../search-product-variation-util';
+
 export const FETCH_PRODUCTS = 'FETCH_PRODUCTS';
 export const FETCH_VARIATIONS = 'FETCH_VARIATIONS';
 export const SET_SELECTED = 'SET_SELECTED';
 export const SET_LIST = 'SET_LIST';
+export const GET_PRODUCTS = 'GET_PRODUCTS';
 export const SET_PRODUCTS = 'SET_PRODUCTS';
 export const SET_VARIATIONS = 'SET_VARIATIONS';
 export const REMOVE_SELECTED = 'REMOVE_SELECTED';
 
-export const requestOrders = () => {
+export function fetchProducts( selected, search, args ) {
+	console.log( "hello there" );
 	return dispatch => {
-		dispatch({
-			type: ORDERS_REQUESTED,
-		});
+		dispatch( requestProducts( selected, search, args ) )
+		return getProducts(  selected, search, args )
+			// .then( response => response.json())
+			.then( response => dispatch( setProducts( response ) ) );
+	}
+};
 
-		return fetchOrders()
-			.then( resp => {
-				resp.orders;
-				// console.log( "in fetch order then" );
-				// console.log( resp.orders );
-				dispatch({
-					type: ORDERS_RECEIVED,
-					payload: resp.orders,
-				})
-			 } );
-	};
+function requestProducts( selected, search, args ) {
+	return {
+		type: GET_PRODUCTS,
+		selected,
+		search,
+		args,
+	}
 }
 
-const fetchOrders = () => {
-	return api.get( api.order() );
-}
-
-export const processOrders = orders => {
-	return dispatch => {
-		return processTheseOrders( orders )
-			.then( data => {
-				// console.log( "in process order then" );
-				// console.log( data );
-				dispatch({
-					type: ORDER_PROCESSED,
-					payload: data.orders,
-				})
-			});
+export function fetchVariations( parent, selected, search, args ) {
+	return {
+		type: FETCH_VARIATIONS,
+		parent,
+		selected,
+		search,
+		args,
 	};
 };
 
-const processTheseOrders = orders => {
-	return api.post( api.order(), { orders } )
+export function setSelected( product, value ) {
+	return {
+		type: SET_SELECTED,
+		product,
+		value,
+	};
+};
+
+export function setList( list ) {
+	return {
+		type: SET_LIST,
+		list,
+	};
+};
+
+export function setProducts( products ) {
+	return {
+		type: SET_PRODUCTS,
+		products,
+	};
+};
+
+export function setVariations( parent, variations ) {
+	return {
+		type: SET_VARIATIONS,
+		parent,
+		variations,
+	};
+};
+
+export function removeSelected( product, value ) {
+	return {
+		type: REMOVE_SELECTED,
+		product,
+		value,
+	};
+};
+
+function shouldFetchProducts( state, selected, search, args ) {
+	const { products, isLoading, error } = state;
+	if ( ! products ) {
+		console.log( "no products exist, sending!" );
+		return true;
+	} else if ( isLoading ) {
+		return false;
+	} else {
+		error = 'Issue loading the products';
+		return false;
+	}
 }
 
-export const connectStartNew = () => {
-	// console.log( "in connectstartnew" );
+export function fetchProductsIfNeeded( selected, search, args ) {
+	console.log( "in fetchProductsIfNeeded." );
 	return ( dispatch, getState ) => {
-		dispatch( requestOrders() ).then( async () => {
-			const ordersArray = getState().orders;
-			const stepSize = getState().stepSize;
-			let steps = getState().orders.length;
-			let arrSlice = [];
-			for( let i = 0; i < Math.ceil(steps / stepSize); i ++ ) {
-				arrSlice = ordersArray.slice( i * stepSize, ( i + 1 ) * stepSize );
-				await dispatch( processOrders( arrSlice ) );
-			}
-			
-		});
-	};
-};
+		if ( shouldFetchProducts( getState(), selected, search, args ) ) {
+			console.log( "sending fetch dispatch." );
+			return dispatch( fetchProducts( selected, search, args ) );
+		}
+	}
+}

@@ -42,8 +42,6 @@ import * as storageUtils from '../common/utils/local-storage';
 import localApiMiddleware from '../common/utils/local-api-middleware';
 
 
-import { setNonce, setBaseURL } from '../common/api/request';
-
 class AddToCartBlock extends Component {
 	constructor( props ) {
 		super( props );
@@ -53,13 +51,6 @@ class AddToCartBlock extends Component {
 			list: [],
 		}
 		this.onDragEnd = this.onDragEnd.bind( this );
-	}
-
-	setNoncesOnce() {
-		if ( global.EAA2C ) {
-			setNonce( global.EAA2C.nonce );
-			setBaseURL( global.EAA2C.baseURL );
-		}
 	}
 
 	handleTextChange(e) {
@@ -607,7 +598,7 @@ class AddToCartBlock extends Component {
 
 	renderEditMode() {
 		const { attributes, debouncedSpeak, setAttributes } = this.props;
-		const createdStores = {};
+		// const createdStores = {};
 		const onDone = () => {
 			setAttributes( { editMode: false } );
 			debouncedSpeak(
@@ -618,45 +609,45 @@ class AddToCartBlock extends Component {
 			);
 		};
 
-		const routeClassName = 'eaa2c-product-control';
-		const args = { list: {}, products: {}, variations: {}, selected: {}, isLoading: true, error: {} };
-		const Route = ProductControl( args );
-		if ( typeof createdStores[ routeClassName ] === 'undefined' ) {
-			const persistedStateKey = Route.getStateKey();
-			const persistedState = storageUtils.getWithExpiry( persistedStateKey );
-			storageUtils.remove( persistedStateKey );
-			const serverState = Route.getInitialState();
-			const initialState = { ...serverState, ...persistedState };
+		// const routeClassName = 'eaa2c-product-control';
+		// const args = { list: {}, products: {}, variations: {}, selected: {}, isLoading: true, error: {} };
+		// const Route = ProductControl( args );
+		// if ( typeof createdStores[ routeClassName ] === 'undefined' ) {
+		// 	const persistedStateKey = Route.getStateKey();
+		// 	const persistedState = storageUtils.getWithExpiry( persistedStateKey );
+		// 	storageUtils.remove( persistedStateKey );
+		// 	const serverState = Route.getInitialState();
+		// 	const initialState = { ...serverState, ...persistedState };
 
-			const middlewares = [
-				thunk.withExtraArgument( args ),
-				localApiMiddleware,
-			];
+		// 	const middlewares = [
+		// 		thunk.withExtraArgument( args ),
+		// 		localApiMiddleware,
+		// 	];
 
-			if ( Route.getMiddlewares ) {
-				middlewares.push.apply( middlewares, Route.getMiddlewares() );
-			}
+		// 	if ( Route.getMiddlewares ) {
+		// 		middlewares.push.apply( middlewares, Route.getMiddlewares() );
+		// 	}
 
-			const enhancers = [
-				applyMiddleware( ...middlewares ),
-			].filter( Boolean );
+		// 	const enhancers = [
+		// 		applyMiddleware( ...middlewares ),
+		// 	].filter( Boolean );
 
-			const store = compose( ...enhancers )( createStore )( Route.getReducer(), initialState );
-			if ( Route.getInitialActions ) {
-				Route.getInitialActions().forEach( store.dispatch );
-			}
+		// 	const store = compose( ...enhancers )( createStore )( Route.getReducer(), initialState );
+		// 	if ( Route.getInitialActions ) {
+		// 		Route.getInitialActions().forEach( store.dispatch );
+		// 	}
 	
-			window.addEventListener( 'beforeunload', () => {
-				const state = store.getState();
+			// window.addEventListener( 'beforeunload', () => {
+			// 	const state = store.getState();
 	
-				if ( window.persistState ) {
-					storageUtils.setWithExpiry( persistedStateKey, Route.getStateForPersisting( state ) );
-				}
-			} );
+			// 	if ( window.persistState ) {
+			// 		storageUtils.setWithExpiry( persistedStateKey, Route.getStateForPersisting( state ) );
+			// 	}
+			// } );
 	
-			createdStores[ routeClassName ] = store;
+			// createdStores[ routeClassName ] = store;
 	
-		}
+		// }
 
 		return (
 			<Placeholder
@@ -670,17 +661,22 @@ class AddToCartBlock extends Component {
 					{ this.displayControls() }
 					{ this.displayVariationControls() }
 					
-					<Provider store={ createdStores[ routeClassName ] }>
-						<ProductControl.View
-							// selected={ attributes.products }
-							// onChange={ ( value = [] ) => {
-							// 	const selected = value;
-							// 	setAttributes( { products: selected } );
-							// 	// setAttributes( { products: prodDat } );
-							// } }
-							// multiple={ false }
+					{/* <Provider store={ this.store }> */}
+						<ProductControl
+							selected={ attributes.products }
+							onChange={ ( value = [] ) => {
+								const selected = value;
+								console.log( "about to set products attribute from selected products" );
+								setAttributes( { products: selected } );
+								// setAttributes( { products: prodDat } );
+							} }
+							onListRequest={ (value = [] ) => {
+								const list = value;
+								this.setState( { list } );
+							} }
+							multiple={ false }
 						/>
-					</Provider>
+					{/* </Provider> */}
 					<Button onClick={ onDone }>
 						{ __( 'Done', 'enhanced-ajax-add-to-cart-wc' ) }
 					</Button>
