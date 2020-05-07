@@ -7,17 +7,24 @@ export const createTitle = ( {
 	const parentName = product.name;
 	var varName = '';
 
-	if ( variation.length && parentName && titleType !== 'base' ) {
-		if ( variation.attributes ) {
-			varName = variation.attributes.map( ( attribute ) => " " + attribute.option );
+	console.log( "creating title from " + product.id + " using titletype: " + titleType + " and parent name: " + parentName );
+	if ( variation && parentName && titleType !== 'base' ) {
+		// console.log( "title type is not base" );
+		if ( variation.attributes /*&& variation.attributes.length > 0 */) {
+			varName = '' + variation.attributes.map( ( attribute ) => " " + attribute.option );
+			console.log( "we are in varname and it is: " + varName );
 		}
 		if ( ( parentName ) && ( varName ) && titleType === 'full' ) {
+			console.log( parentName + ' - ' + varName );
 			return parentName + ' - ' + varName;
 		} else if ( varName && titleType === 'att' ) {
+			console.log( varName );
 			return varName;
 		} else {
-			console.log( "product: " + product );
-			console.log( "variation: " + variation );
+			console.log( "product: " );
+			console.log( product );
+			console.log( "variation: " );
+			console.log( variation );
 			console.log( "title type: " + titleType );
 			if ( product ) {
 				if ( ! parentName ) {
@@ -28,6 +35,8 @@ export const createTitle = ( {
 		}
 	} else if ( product ) {
 		if ( parentName ) {
+			// console.log( "fall through" );
+			// console.log( parentName );
 			return parentName;
 		}
 		else {

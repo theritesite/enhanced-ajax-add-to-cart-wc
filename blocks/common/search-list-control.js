@@ -16,6 +16,8 @@ import Gridicon from 'gridicons';
 import PropTypes from 'prop-types';
 import { getProductVariations } from './search-product-variation-util';
 import * as ProductControlActions from './product-control/state/actions';
+import { SearchSubListControl } from './search-sub-list-control';
+import { MenuItem } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -23,6 +25,9 @@ import * as ProductControlActions from './product-control/state/actions';
 import { buildTermsTree } from './hierarchy';
 import SearchListItem from './search-list-item';
 import Tag from './tag';
+import {
+	IconBack,
+} from './icons';
 
 const defaultMessages = {
 	clear: __( 'Clear all selected items', 'woocommerce-admin' ),
@@ -51,9 +56,11 @@ export class SearchListControl extends Component {
 		super( ...arguments );
 
 		this.state = {
-			oldList: []
+			oldList: [],
+			currentProduct: {}
 		}
 
+		this.backOne = this.backOne.bind( this );
 		this.onSelect = this.onSelect.bind( this );
 		this.onRemove = this.onRemove.bind( this );
 		this.onClear = this.onClear.bind( this );
@@ -87,26 +94,50 @@ export class SearchListControl extends Component {
 	}
 
 	onSelect( item ) {
-		const { isSingle, onChange, selected, list, dispatch } = this.props;
+		const { isSingle, onChange, selected, list, dispatch, variations } = this.props;
 		return () => {
-			if ( this.isSelected( item ) ) {
+			if ( this.isSelected( item ) && item.type !== 'variable' ) {
 				console.log( "calling remove" );
 				this.onRemove( item )();
+				if ( item.type === 'variation' ) {
+					this.backOne();
+				}
 				return;
 			}
 			if ( item.type === 'variable' ) {
+				this.setState({ currentProduct: item });
+				dispatch(ProductControlActions.fetchVariationsIfNeeded( item, selected, '', [] ))
+					// .then(
+					// 	console.log( "dispatched fetchVariationsIfNeeded completed." ),
+						// this.setState({ list: variations[item.id] })
+						// dispatch(ProductControlActions.setList( item ) )
+					// );
 				// this.setState({ oldList: list });
 				// this.renderList( list )
+				console.log( "it is a variable" );
+			}
+			else if ( item.type === 'variation' ) {
+				console.log( "adding item to selected list as the variation has been clicked." );
+				dispatch( ProductControlActions.setSelected( item, true ) );
+					// dispatch(ProductControlActions.fetchProductsIfNeeded( selected, '', [] ));
+					// dispatch( ProductControlActions.switchToProducts() );
+				this.backOne();
+				
+			}
+			else {
+				console.log( "it is not a variable product type" );
 			}
 			// else {
-				if ( isSingle ) {
-					console.log( "adding item to selected list" );
-					console.log( item );
-					dispatch( ProductControlActions.setSelected( item ) );
-					// selected = [ ...selected, item ];
-					onChange( [ item ] );
-				} else {
-					onChange( [ ...selected, item ] );
+				if ( item.type !== 'variable' && item.type !== 'variation' ) {
+					if ( isSingle ) {
+						console.log( "adding item to selected list" );
+						console.log( item );
+						dispatch( ProductControlActions.setSelected( item, true ) );
+						// selected = [ ...selected, item ];
+						// onChange( [ item ] );
+					} else {
+						// onChange( [ ...selected, item ] );
+					}
 				}
 			// }
 		};
@@ -140,7 +171,11 @@ export class SearchListControl extends Component {
 	}
 
 	isSelected( item ) {
-		return findIndex( this.props.selected, { id: item.id } ) !== -1;
+		if ( item.type === 'variable' ) {
+			return this.props.selected.some( prod => /*{ return( */item.children.includes( prod.id ) /*) }*/ );
+		} else {
+			return findIndex( this.props.selected, { id: item.id } ) !== -1;
+		}
 	}
 
 	getFilteredList( list, search ) {
@@ -184,33 +219,58 @@ export class SearchListControl extends Component {
 					{/* { this.renderList( item.children, depth + 1 ) } */}
 				</Fragment>
 			:
-				item.children[0] = { name: "tester!" },
 				<Fragment key={ item.id }>
 					{ renderItem( {
 						item,
 						isSelected: this.isSelected( item ),
 						onSelect: this.onSelect,
-						// onSelect: this.onVariableSelect,
-						// onSelect: this.renderList( item.children, depth + 1 ),
 						isSingle,
 						search,
 						depth,
 					} ) }
-					{ item.children && item.children.length > 0 ? <div className="holder-container woocommerce-search-list__list woocommerce-search-list__item"><span style={{minWidth: "35px"}}></span>{item.children.length} options to choose from...</div> : '' }
+					{ item.children && item.children.length > 0 ?
+						<div onClick={ this.onSelect( item ) } className="holder-container woocommerce-search-list__list woocommerce-search-list__item">
+							<span style={{minWidth: "35px"}}></span>
+							{item.children.length} options to choose from...
+						</div>
+						: '' }
 				</Fragment>
 			
 		) );
 	}
 
+	backOne() {
+		const { dispatch } = this.props;
+		console.log( "goign back 1 list" );
+		this.setState({ currentProduct: {} });
+		return dispatch( ProductControlActions.switchToProducts() );
+	}
+
+	renderListItemHeader( product ) {
+		return (
+			<MenuItem onClick={ this.backOne } icon="dashicons-arrow-left-alt" role="columnheader" className="is-back-button components-button components-icon-button woocommerce-search-list__title">
+				<span className="woocommerce-search-list__item-state" aria-label={"Back to previous list"}><IconBack/></span>
+				<span className="woocommerce-search-list__label search-list-header">Choosing variation for {product.name}...</span>
+			</MenuItem>
+		);
+	}
+
 	renderListSection() {
 		const { isLoading, search } = this.props;
 		const messages = { ...defaultMessages, ...this.props.messages };
+		const { currentProduct } = this.state;
 
 		if ( isLoading ) {
 			return (
-				<div className="woocommerce-search-list__list is-loading">
-					<Spinner />
-				</div>
+				<MenuGroup
+					label={ messages.list }
+					className="woocommerce-search-list__list"
+				>
+					{ currentProduct && Object.keys(currentProduct).length > 0 ? this.renderListItemHeader( currentProduct ) : '' }
+					<div className="woocommerce-search-list__list is-loading">
+						<Spinner />
+					</div>
+				</MenuGroup>
 			);
 		}
 		const list = this.getFilteredList( this.props.list, search );
@@ -241,6 +301,7 @@ export class SearchListControl extends Component {
 				label={ messages.list }
 				className="woocommerce-search-list__list"
 			>
+				{ currentProduct && Object.keys(currentProduct).length > 0 ? this.renderListItemHeader( currentProduct ) : '' }
 				{ this.renderList( list ) }
 			</MenuGroup>
 		);

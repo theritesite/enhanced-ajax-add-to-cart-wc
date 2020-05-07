@@ -17,14 +17,32 @@ export const SET_SELECTED = 'SET_SELECTED';
 export const SET_LIST = 'SET_LIST';
 export const GET_PRODUCTS = 'GET_PRODUCTS';
 export const SET_PRODUCTS = 'SET_PRODUCTS';
+export const GET_VARIATIONS = 'GET_VARIATIONS';
 export const SET_VARIATIONS = 'SET_VARIATIONS';
 export const REMOVE_SELECTED = 'REMOVE_SELECTED';
+export const SWITCH_TO_PROD = 'SWITCH_TO_PROD';
+export const SWITCH_TO_VAR  = 'SWITCH_TO_VAR';
+
+export function switchToProducts() {
+	console.log( "switching ot products list" );
+	return {
+		type: SWITCH_TO_PROD,
+	}
+}
+
+export function switchToVariations( parent ) {
+	console.log( "switching ot variations list" );
+	return {
+		type: SWITCH_TO_VAR,
+		parent,
+	}
+}
 
 export function fetchProducts( selected, search, args ) {
 	console.log( "hello there" );
 	return dispatch => {
 		dispatch( requestProducts( selected, search, args ) )
-		return getProducts(  selected, search, args )
+		return getProducts( { selected, search, args } )
 			// .then( response => response.json())
 			.then( response => dispatch( setProducts( response ) ) );
 	}
@@ -39,25 +57,54 @@ function requestProducts( selected, search, args ) {
 	}
 }
 
-export function fetchVariations( parent, selected, search, args ) {
+export function fetchVariations( parentProd, selected, search, args ) {
+	// return {
+	// 	type: FETCH_VARIATIONS,
+	// 	parent,
+	// 	selected,
+	// 	search,
+	// 	args,
+	// };
+	console.log( "hello there variations" );
+	console.log( parentProd );
+	return dispatch => {
+		dispatch( requestVariations( parentProd, selected, search, args ) )
+		return getProductVariations( { parentProd, selected, search, args } )
+			// .then( response => response.json())
+			.then( response => dispatch( setVariations( parentProd, response ) ) );
+	}
+};
+
+function requestVariations( parent, selected, search, args ) {
 	return {
-		type: FETCH_VARIATIONS,
+		type: GET_VARIATIONS,
 		parent,
 		selected,
 		search,
 		args,
-	};
-};
+	}
+}
 
-export function setSelected( product, value ) {
+export function setSelected( product, single ) {
+	console.log( "called and reached setSelected." );
 	return {
 		type: SET_SELECTED,
 		product,
-		value,
+		single,
 	};
 };
 
-export function setList( list ) {
+export function setList( item ) {
+	const { products, variations } = state;
+	if ( item ) {
+		if ( variations[ item.id ] ) {
+			var list = variations[ item.id ];
+			return {
+				type: SET_LIST,
+				list
+			}
+		}
+	}
 	return {
 		type: SET_LIST,
 		list,
@@ -95,7 +142,7 @@ function shouldFetchProducts( state, selected, search, args ) {
 	} else if ( isLoading ) {
 		return false;
 	} else {
-		error = 'Issue loading the products';
+		console.log( "there was an error with products fetching." );
 		return false;
 	}
 }
@@ -106,6 +153,55 @@ export function fetchProductsIfNeeded( selected, search, args ) {
 		if ( shouldFetchProducts( getState(), selected, search, args ) ) {
 			console.log( "sending fetch dispatch." );
 			return dispatch( fetchProducts( selected, search, args ) );
+		} else if ( getState().products ) {
+			// return {
+			// 	type: SWITCH_TO_PROD,
+				// selected,
+				// search,
+				// args,
+			// }
+			return dispatch( switchToProducts() );
+		}
+	}
+}
+
+function shouldFetchVariations( state, parent, selected, search, args ) {
+	const { variations, isLoading, error } = state;
+	if ( ! variations ) {
+		console.log( "no variations exist, sending!" );
+		return true;
+	} else if ( ! variations[parent.id] ) {
+		console.log( "no variations for this product exist, sending!" );
+		return true;
+	} else if ( variations[parent.id] ) {
+		return false;
+	} else if ( isLoading ) {
+		return false;
+	} else {
+		console.log( "there was an error with variation fetching." );
+		return false;
+	}
+}
+
+export function fetchVariationsIfNeeded( parent, selected, search, args ) {
+	console.log( "in fetchVariationsIfNeeded." );
+	console.log( parent );
+	return ( dispatch, getState ) => {
+		const { variations } = getState();
+		if ( shouldFetchVariations( getState(), parent, selected, search, args ) ) {
+			console.log( "sending fetch dispatch for variations." );
+			return dispatch( fetchVariations( parent, selected, search, args ) );
+		} else if ( variations[parent.id] ) {
+			// return variations[ parent.id ];
+			// return {
+			// 	type: GET_VARIATIONS,
+			// 	parent,
+			// 	selected,
+			// 	search,
+			// 	args,
+			// }
+			console.log( "attempting to switch" );
+			return dispatch( switchToVariations( parent ) );
 		}
 	}
 }

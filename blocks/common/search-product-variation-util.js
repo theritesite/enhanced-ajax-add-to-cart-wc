@@ -24,6 +24,7 @@ const getProductVariationsRequests = ( {
 		// consumer_secret: 'cs_2b8e302b8a9ab86ebc16503bcb530aa25ef49821',
 		// query_string_auth: true,
 	};
+	console.log( "in getProductVariationsRequests with parent produ id is: " + parentProd.id );
 	const requests = [
 		addQueryArgs( '/wc/v3/products/' + parentProd.id + '/variations', { ...defaultArgs, ...queryArgs } ),
 	];
@@ -50,26 +51,14 @@ const getProductVariationsRequests = ( {
 	return requests;
 };
 
-const createVariationName = ( {
-	parentProd,
-	product,
-} ) => {
-	// const parentName = parentProd.name;
-	// const varName = product.attributes.map( ( attribute ) => " " + attribute.option );
-
-	if ( product && parentProd ) {
-		if ( ( parentProd.name ) && ( product.attributes ) ) {
-			return parentProd.name + product.attributes.map( ( attribute ) => " " + attribute.option );
-		}
-	}
-};
-
 export const getProductVariations = ( {
 	parentProd = [],
 	selected = [],
 	search = '',
 	queryArgs = [],
 } ) => {
+	// console.log( "in getProductVariations with parent produ id is: " + parentProd.id );
+	// console.log( parentProd );
 	const requests = getProductVariationsRequests( { parentProd, selected, search, queryArgs } );
 
 	return Promise.all( requests.map( ( path ) => apiFetch( { path } ) ) )
@@ -80,11 +69,11 @@ export const getProductVariations = ( {
 				name: createTitle( { product: parentProd, variation: variation } ),
 				id: variation.id,
 				full: createTitle( { product: parentProd, variation: variation, titleType: 'full' } ),
-				att: createTitle( { product: parentProd, variation: variation, titleType: 'attribute' } ),
+				att: createTitle( { product: parentProd, variation: variation, titleType: 'att' } ),
 				base: createTitle( { product: parentProd, variation: variation, titleType: 'base' } ),
 				price: variation.price,
-				parent_id: variation.parent_id,
-				type: variation.type,
+				parent_id: parentProd.id,
+				type: 'variation',
 				attributes: variation.attributes,
 				raw: variation,
 				// name: parentProd.name + product.attributes.map( ( attribute ) => " " + attribute.option ),

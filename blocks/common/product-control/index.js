@@ -41,6 +41,8 @@ export default class ProductControl extends Component {
 			storageUtils.remove( persistedStateKey );
 			const serverState = reducer.DEFAULT_STATE;
 			const initialState = { ...serverState, ...persistedState };
+			console.log( "this is initial state." );
+			console.log( initialState );
 
 			const middlewares = [
 				thunk.withExtraArgument( args ),
@@ -56,6 +58,7 @@ export default class ProductControl extends Component {
 				const state = store.getState();
 				const { onChange, selected, multiple, onListRequest } = this.props;
 				const { products, variations, list } = state;
+				console.log( "this is in before unload" );
 			
 				if ( window.persistState ) {
 					// storageUtils.setWithExpiry( persistedStateKey, { list, products, variations, selected } );

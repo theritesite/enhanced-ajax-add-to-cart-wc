@@ -14,8 +14,11 @@ import {
 	SET_LIST,
 	GET_PRODUCTS,
 	SET_PRODUCTS,
+	GET_VARIATIONS,
 	SET_VARIATIONS,
-	REMOVE_SELECTED 
+	REMOVE_SELECTED,
+	SWITCH_TO_PROD,
+	SWITCH_TO_VAR,
 } from './actions';
 
 
@@ -25,30 +28,51 @@ export const DEFAULT_STATE = {
 	products: [],
 	variations: {},
 	selected: {},
+	currentProduct: {},
 };
 
 export default ( state = DEFAULT_STATE, action ) => {
-	var { selected } = state;
+	var { selected, products, variations } = state;
 	switch ( action.type ) {
+		case SWITCH_TO_PROD:
+			console.log( "switching to prod" );
+			return {
+				...state,
+				list: products
+			};
+		case SWITCH_TO_VAR:
+			console.log( "switching to var: " + action.parent.id );
+			console.log( action.parent );
+			console.log( "that should have been the parent product." );
+			return {
+				...state,
+				list: variations[ action.parent.id ]
+			};
 		case SET_PRODUCTS:
 			return {
 				...state,
 				products: action.products,
 				isLoading: false,
+				list: action.products,
 			};
 		case SET_VARIATIONS:
 			return {
 				...state,
 				variations: {
 					...state.variations,
-					[ action.parent.ID ]: action.variations,
+					[ action.parent.id ]: action.variations,
 				},
+				list: action.variations,
+				currentProduct: action.parent,
+				isLoading: false,
 			};
 		case SET_SELECTED:
-			var newSel = state.selected ? state.selected.concat( action.product ) : [ action.product ];
+			var newSel = ( state.selected && ! action.single ) ? state.selected.concat( action.product ) : [ action.product ];
+			console.log( "setting selected:" );
+			console.log( newSel );
 			return {
 				...state,
-				selected: newSel
+				selected: [ ...newSel ]
 				// [
 				// 	...state.selected,
 				// 	action.product,
@@ -73,6 +97,13 @@ export default ( state = DEFAULT_STATE, action ) => {
 				list: action.list,
 			};
 		case GET_PRODUCTS:
+			return {
+				...state,
+				// list: products,
+				isLoading: true,
+			};
+		case GET_VARIATIONS:
+			// return state;
 			return {
 				...state,
 				isLoading: true,

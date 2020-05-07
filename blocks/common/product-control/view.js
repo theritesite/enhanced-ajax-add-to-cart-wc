@@ -44,6 +44,10 @@ export class ProductControler extends Component {
 
 	constructor( props ) {
 		super(props);
+
+		this.state = {
+			// list: this.props.products,
+		}
 	}
 
 	componentDidMount() {
@@ -59,7 +63,11 @@ export class ProductControler extends Component {
 
 	render() {
 		const { error, multiple, isLoading, products, selected, onSearch, onChange, dispatch } = this.props;
+		const { list } = this.props;
 
+		// if ( ! list ) {
+		// 	this.setState({ list: products });
+		// }
 		console.log( "in render view" );
 		if ( error ) {
 			return <p>error { error.status }</p>;
@@ -71,18 +79,19 @@ export class ProductControler extends Component {
 				<SearchListControl
 					className="woocommerce-products"
 					isSingle={ multiple === true ? false : true }
-					list={ products }
+					list={ list && list.length > 0 ? list : products }
 					isLoading={ isLoading }
-					selected={ products.filter( ( product ) => {
-						// const selectedIds = Object.keys( selected ).map(function(key, index) {
-						// 	if ( key === 'id' ) {
-						// 		return selected[key];
-						// 	}
-						// })
-						const selectedIds = selected.map( ( { id } ) => id );
-						return selectedIds.includes( product.id );
+					selected={ selected }
+					/*selected={ products.filter( ( product ) => {
+							// const selectedIds = Object.keys( selected ).map(function(key, index) {
+							// 	if ( key === 'id' ) {
+							// 		return selected[key];
+							// 	}
+							// })
+							const selectedIds = selected.map( ( { id } ) => id );
+							return selectedIds.includes( product.id );
 						}
-					) }
+					) }*/
 					onSearch={ onSearch }
 					onChange={ onChange }
 					messages={ messages }
@@ -111,6 +120,7 @@ ProductControler.defaultProps = {
 	variations: {},
 	isLoading: true,
 	multiple: false,
+	// list: [],
 };
 
 const mapStateToProps = state => ({
@@ -118,6 +128,7 @@ const mapStateToProps = state => ({
 	products: state.products,
 	variations: state.variations,
 	isLoading: state.isLoading,
+	list: state.list,
   });
   
 const mapDispatchToProps = dispatch => bindActionCreators( ProductControlActions, dispatch );
