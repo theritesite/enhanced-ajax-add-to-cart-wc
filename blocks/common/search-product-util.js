@@ -5,6 +5,7 @@ import apiFetch from '@wordpress/api-fetch';
 import { addQueryArgs } from '@wordpress/url';
 import { getSetting } from '@woocommerce/settings';
 import { flatten, uniqBy } from 'lodash';
+import { createTitle } from './title';
 
 const getProductsRequests = ( {
 	selected = [],
@@ -57,18 +58,19 @@ export const getProducts = ( {
 	return Promise.all( requests.map( ( path ) => apiFetch( { path } ) ) )
 		.then( ( data ) => {
 			const products = uniqBy( flatten( data ), 'id' );
-			// console.log( "we are after the flatten" );
+			console.log( "we are after the flatten" );
 			const list = products.map( ( product ) => ( {
-				// name: createTitle( { product: product, variation: [] } ),
-				// id: product.id,
-				// full: createTitle( { product: product, variation: [], titleType: 'full' } ),
-				// base: createTitle( { product: product, variation: [], titleType: 'base' } ),
-				// price: product.price,
-				// type: product.type,
+				name: createTitle( { product: product, variation: [], titleType: 'base' } ),
+				id: product.id,
+				full: createTitle( { product: product, variation: [], titleType: 'base' } ),
+				base: createTitle( { product: product, variation: [], titleType: 'base' } ),
+				att: createTitle( { product: product, variation: [], titleType: 'base' } ),
+				price: product.price,
+				type: product.type,
 				// attributes: product.attributes,
 				children: product.variations,
-				// raw: product,
-				...product,
+				raw: product,
+				// ...product,
 				// parent: 0,
 			} ) );
 			// console.log( "returning list")

@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
  * Internal dependencies
  */
 import * as ProductControlActions from './state/actions';
-import SearchListControl from '../search-list-control';
+import SearchListControl from './search-list-control';
 
 const messages = {
 	clear: __( 'Clear all products', 'enhanced-ajax-add-to-cart-wc' ),
@@ -54,21 +54,21 @@ export class ProductControler extends Component {
 		console.log( "ProductControler Mounted." );
 		const { selected, dispatch, onListRequest, products } = this.props;
 		dispatch(ProductControlActions.fetchProductsIfNeeded( selected, '', [] ))
-		.then(
-			console.log( "dispatched fetchProductsIfNeeded completed." ),
-			onListRequest( products ),
-			console.log( "set parent product list" ),
-		);
+		// .then(
+			// console.log( "dispatched fetchProductsIfNeeded completed." ),
+			// onListRequest( products ),
+			// console.log( "set parent product list" ),
+		// );
 	}
 
 	render() {
-		const { error, multiple, isLoading, products, selected, onSearch, onChange, dispatch } = this.props;
+		const { error, multiple, isLoading, products, variations, selected, onSearch, onChange, dispatch } = this.props;
 		const { list } = this.props;
 
 		// if ( ! list ) {
 		// 	this.setState({ list: products });
 		// }
-		console.log( "in render view" );
+		// console.log( "in render view" );
 		if ( error ) {
 			return <p>error { error.status }</p>;
 		}
@@ -80,6 +80,8 @@ export class ProductControler extends Component {
 					className="woocommerce-products"
 					isSingle={ multiple === true ? false : true }
 					list={ list && list.length > 0 ? list : products }
+					products={ products }
+					variations={ variations }
 					isLoading={ isLoading }
 					selected={ selected }
 					/*selected={ products.filter( ( product ) => {

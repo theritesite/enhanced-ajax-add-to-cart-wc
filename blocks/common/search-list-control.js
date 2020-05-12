@@ -14,10 +14,9 @@ import { compose, withInstanceId, withState } from '@wordpress/compose';
 import { escapeRegExp, findIndex } from 'lodash';
 import Gridicon from 'gridicons';
 import PropTypes from 'prop-types';
-import { getProductVariations } from './search-product-variation-util';
 import * as ProductControlActions from './product-control/state/actions';
-import { SearchSubListControl } from './search-sub-list-control';
 import { MenuItem } from '@wordpress/components';
+import { TransitionGroup, CSSTransition, SwitchTransition } from 'react-transition-group';
 
 /**
  * Internal dependencies
@@ -107,11 +106,6 @@ export class SearchListControl extends Component {
 			if ( item.type === 'variable' ) {
 				this.setState({ currentProduct: item });
 				dispatch(ProductControlActions.fetchVariationsIfNeeded( item, selected, '', [] ))
-					// .then(
-					// 	console.log( "dispatched fetchVariationsIfNeeded completed." ),
-						// this.setState({ list: variations[item.id] })
-						// dispatch(ProductControlActions.setList( item ) )
-					// );
 				// this.setState({ oldList: list });
 				// this.renderList( list )
 				console.log( "it is a variable" );
@@ -142,29 +136,6 @@ export class SearchListControl extends Component {
 			// }
 		};
 	}
-
-	// onVariableSelect( item ) {
-	// 	const { isSingle, onChange, selected, list } = this.props;
-	// 	return () => {
-			// if ( this.isSelected( item ) ) {
-			// 	this.onRemove( item.id )();
-			// 	return;
-			// }
-			// this.setState({ oldList: list });
-			// if ( isSingle ) {
-			// 	getProductVariations( { item } )
-			// 	.then( ( variationList ) => {
-			// 		this.setState( { list: variationList, loading: false } );
-			// 	} )
-			// 	.catch( this.setError );
-			// 	this.renderList( list )
-			// 	// onChange( [ item ] );
-			// } else {
-				// this.renderList( item.children, 1 )
-				// onChange( [ ...selected, item ] );
-		// 	}
-		// };
-	// }
 
 	onClear() {
 		this.props.onChange( [] );
@@ -255,12 +226,12 @@ export class SearchListControl extends Component {
 		);
 	}
 
-	renderListSection() {
+	renderListSection( currList = undefined ) {
 		const { isLoading, search } = this.props;
 		const messages = { ...defaultMessages, ...this.props.messages };
-		const { currentProduct } = this.state;
+		const { currentProduct, willSlide } = this.state;
 
-		if ( isLoading ) {
+		if ( isLoading && ( currList === undefined || (currList && currList < 1) ) ) {
 			return (
 				<MenuGroup
 					label={ messages.list }
@@ -273,9 +244,17 @@ export class SearchListControl extends Component {
 				</MenuGroup>
 			);
 		}
-		const list = this.getFilteredList( this.props.list, search );
 
-		if ( ! list.length ) {
+		var list = this.getFilteredList( this.props.list, search );
+
+		if ( currList && currList.length > 0 ) {
+			console.log( "its not the standrd list." );
+			list = currList;
+		}
+		else {
+			console.log( "no it is not" );
+		}
+		if ( ! list.length && list !== currList ) {
 			return (
 				<div className="woocommerce-search-list__list is-not-found">
 					<span className="woocommerce-search-list__not-found-icon">
@@ -301,7 +280,7 @@ export class SearchListControl extends Component {
 				label={ messages.list }
 				className="woocommerce-search-list__list"
 			>
-				{ currentProduct && Object.keys(currentProduct).length > 0 ? this.renderListItemHeader( currentProduct ) : '' }
+				{ currentProduct && Object.keys(currentProduct).length > 0 && list !== currList ? this.renderListItemHeader( currentProduct ) : '' }
 				{ this.renderList( list ) }
 			</MenuGroup>
 		);
@@ -346,7 +325,9 @@ export class SearchListControl extends Component {
 	render() {
 		const { className = '', search, setState } = this.props;
 		const messages = { ...defaultMessages, ...this.props.messages };
+		const willSlide = ( this.state.currentProduct && this.state.currentProduct.id > 0 && this.props.products && this.props.products.length > 0 ) ? true : false;
 
+		console.log( "willslide: " + willSlide );
 		return (
 			<div className={ `woocommerce-search-list ${ className }` }>
 				{ this.renderSelectedSection() }
@@ -360,7 +341,21 @@ export class SearchListControl extends Component {
 					/>
 				</div>
 
-				{ this.renderListSection() }
+				<TransitionGroup className="slider-group">
+					{ (this.state.currentProduct && this.state.currentProduct.id > 0 && this.props.products && this.props.products.length > 0) === true ? '' : 
+							<div className="slider-container">
+								{ this.renderListSection( this.props.products ) }
+							</div>
+					}
+					{ (this.state.currentProduct && this.state.currentProduct.id > 0 && this.props.products && this.props.products.length > 0) === false ? '' : 
+						<CSSTransition timeout={500} appear={true} enter={true} exit={true} classNames="slider">
+							<div className="slider-container">
+								{ this.renderListSection() }
+							</div>
+						</CSSTransition>
+					}
+					<div className="slider-placeholder" />
+				</TransitionGroup>
 			</div>
 		);
 	}

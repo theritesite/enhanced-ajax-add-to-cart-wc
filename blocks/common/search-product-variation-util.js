@@ -24,7 +24,7 @@ const getProductVariationsRequests = ( {
 		// consumer_secret: 'cs_2b8e302b8a9ab86ebc16503bcb530aa25ef49821',
 		// query_string_auth: true,
 	};
-	console.log( "in getProductVariationsRequests with parent produ id is: " + parentProd.id );
+	// console.log( "in getProductVariationsRequests with parent produ id is: " + parentProd.id );
 	const requests = [
 		addQueryArgs( '/wc/v3/products/' + parentProd.id + '/variations', { ...defaultArgs, ...queryArgs } ),
 	];

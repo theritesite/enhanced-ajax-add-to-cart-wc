@@ -17,7 +17,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc_AJAX {
     public static function init() {
         add_action( 'wp_ajax_eaa2c_add_to_cart', array( __CLASS__, 'eaa2c_add_to_cart_callback' ) );
         add_action( 'wp_ajax_nopriv_eaa2c_add_to_cart', array( __CLASS__, 'eaa2c_add_to_cart_callback' ) );
-error_log( "in the ajax area" );
+       
         /**
          * Deprecated actions
          */

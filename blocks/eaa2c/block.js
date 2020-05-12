@@ -64,7 +64,7 @@ class AddToCartBlock extends Component {
 		const { products } = attributes;
 
 		if ( products[0] && products[0].type !== null && products[0].type !== '' ) {
-			if ( products[0].type === 'variable' ) {
+			if ( products[0].type === 'variable' || products[0].type === 'variation' ) {
 				return true;
 			}
 		}
@@ -659,7 +659,6 @@ class AddToCartBlock extends Component {
 			>
 				<div className="eaa2c-block">
 					{ this.displayControls() }
-					{ this.displayVariationControls() }
 					
 					{/* <Provider store={ this.store }> */}
 						<ProductControl
@@ -695,8 +694,8 @@ class AddToCartBlock extends Component {
 			if ( products[0].id > 0 ) {
 				// console.log( products );
 				const product = products[0];
-				const variation = variations[0] ? variations[0] : [];
-				const title = createTitle( { product, variation, titleType } );
+				// const title = createTitle( { product, variation, titleType } );
+				const title = product[titleType];
 				return (
 					<div className={ "enhanced-woocommerce-add-to-cart " + className }>
 						{ contentOrder.map( ( item, index ) => {

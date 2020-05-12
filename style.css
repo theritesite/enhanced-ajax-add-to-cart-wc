@@ -1,0 +1,20 @@
+.slider-endter {
+  opacity: 0; }
+
+.slider-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in; }
+
+.slider-exit {
+  opacity: 1; }
+
+.slider-exit-active {
+  opacity: 0;
+  transition: opacity 500ms ease-in; }
+
+.slider-enter-done {
+  background-color: red; }
+
+.slider-exit-done {
+  background-color: yellow; }
+

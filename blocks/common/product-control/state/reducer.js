@@ -35,15 +35,15 @@ export default ( state = DEFAULT_STATE, action ) => {
 	var { selected, products, variations } = state;
 	switch ( action.type ) {
 		case SWITCH_TO_PROD:
-			console.log( "switching to prod" );
+			// console.log( "switching to prod" );
 			return {
 				...state,
 				list: products
 			};
 		case SWITCH_TO_VAR:
-			console.log( "switching to var: " + action.parent.id );
-			console.log( action.parent );
-			console.log( "that should have been the parent product." );
+			// console.log( "switching to var: " + action.parent.id );
+			// console.log( action.parent );
+			// console.log( "that should have been the parent product." );
 			return {
 				...state,
 				list: variations[ action.parent.id ]
@@ -68,8 +68,8 @@ export default ( state = DEFAULT_STATE, action ) => {
 			};
 		case SET_SELECTED:
 			var newSel = ( state.selected && ! action.single ) ? state.selected.concat( action.product ) : [ action.product ];
-			console.log( "setting selected:" );
-			console.log( newSel );
+			// console.log( "setting selected:" );
+			// console.log( newSel );
 			return {
 				...state,
 				selected: [ ...newSel ]
@@ -82,8 +82,8 @@ export default ( state = DEFAULT_STATE, action ) => {
 		case REMOVE_SELECTED:
 			const id = action.product.id;
 			var i = findIndex( selected, { id } );
-			console.log( "index of remove " + i );
-			console.log( "selected item: " + selected[i] );
+			// console.log( "index of remove " + i );
+			// console.log( "selected item: " + selected[i] );
 			return {
 				...state,
 				selected: [
