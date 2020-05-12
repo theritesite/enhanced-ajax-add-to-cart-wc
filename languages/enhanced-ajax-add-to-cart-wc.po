@@ -3,89 +3,60 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "X-Generator: babel-plugin-makepot\n"
 
-#: blocks/common/product-control/search-list-control.js:319
+#: blocks/common/product-control/search-list-control.js:384
 msgid "Clear all"
 msgstr ""
 
-#: blocks/common/product-control/search-list-control.js:33
+#: blocks/common/product-control/search-list-control.js:42
 msgid "Clear all selected items"
 msgstr ""
 
-#: blocks/common/product-control/search-list-control.js:34
+#: blocks/common/product-control/search-list-control.js:43
 msgid "Results"
 msgstr ""
 
-#: blocks/common/product-control/search-list-control.js:35
+#: blocks/common/product-control/search-list-control.js:44
 msgid "No items found."
 msgstr ""
 
-#: blocks/common/product-control/search-list-control.js:36
+#: blocks/common/product-control/search-list-control.js:45
 msgid "No results for %s"
 msgstr ""
 
-#: blocks/common/product-control/search-list-control.js:37
+#: blocks/common/product-control/search-list-control.js:46
 msgid "Search for items"
 msgstr ""
 
-#: blocks/common/product-control/search-list-control.js:40
+#: blocks/common/product-control/search-list-control.js:48
 msgid "%d item selected"
 msgid_plural "%d items selected"
 msgstr[0] ""
 msgstr[1] ""
 
-#: blocks/common/product-control/search-list-control.js:48
+#: blocks/common/product-control/search-list-control.js:50
 msgid "Search results updated."
 msgstr ""
 
-#: blocks/common/product-control/view.js:17
-#: blocks/common/product-variation-control.js:36
-msgid "Clear all products"
-msgstr ""
-
-#: blocks/common/product-control/view.js:18
-msgid "Products"
-msgstr ""
-
-#: blocks/common/product-control/view.js:19
-msgid "Your store doesn't have any products."
-msgstr ""
-
-#: blocks/common/product-control/view.js:23
-msgid "Search for products to display"
-msgstr ""
-
-#: blocks/common/product-control/view.js:29
-msgid "%d product selected"
-msgid_plural "%d products selected"
-msgstr[0] ""
-msgstr[1] ""
-
-#: blocks/common/product-control/view.js:37
-msgid "Product search results updated."
-msgstr ""
-
-#: blocks/common/product-variation-control.js:37
-msgid "Product Variations"
-msgstr ""
-
-#: blocks/common/product-variation-control.js:38
-msgid "This product doesn't have any variations."
-msgstr ""
-
-#: blocks/common/product-variation-control.js:42
-msgid "Search for the product variations and select"
-msgstr ""
-
-#: blocks/common/product-variation-control.js:48
-msgid "%d variation selected"
-msgid_plural "%d variations selected"
-msgstr[0] ""
-msgstr[1] ""
-
-#: blocks/common/product-variation-control.js:56
-msgid "Product Variation search results updated."
-msgstr ""
-
-#: blocks/common/tag.js:76
+#: blocks/common/tag.js:77
 msgid "Remove %s"
+msgstr ""
+
+#: blocks/eaa2c-group/block.js:576
+msgid "Content"
+msgstr ""
+
+#: blocks/eaa2c-group/block.js:681
+msgid "Showing AJAX Add to Cart block preview."
+msgstr ""
+
+#: blocks/eaa2c-group/block.js:685
+msgid "AJAX Add to Cart button"
+msgstr ""
+
+#: blocks/eaa2c-group/block.js:709
+msgid "Done"
+msgstr ""
+
+#: blocks/eaa2c-group/block.js:815
+msgid "Edit"
 msgstr ""

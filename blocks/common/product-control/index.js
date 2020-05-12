@@ -115,6 +115,7 @@ export default class ProductControl extends Component {
 		if (nextProps.selected !== this.props.selected) {
 			console.log('selected changed', nextProps.selected);
 			console.log( nextProps.selected )
+			console.log( this.props.selected );
 		}
 	}
 
@@ -129,8 +130,8 @@ export default class ProductControl extends Component {
 		console.log( this.props );
 	
 		// if ( window.persistState ) {
-			// storageUtils.setWithExpiry( persistedStateKey, { list, products, variations, selected } );
-			storageUtils.setWithExpiry( persistedStateKey, state );
+			storageUtils.setWithExpiry( persistedStateKey, { list, products, variations } );
+			// storageUtils.setWithExpiry( persistedStateKey, state );
 			console.log( "window.persistState is true and using storageUtils");
 			console.log( storageUtils.getWithExpiry( persistedStateKey ) );
 		// }
@@ -144,7 +145,7 @@ export default class ProductControl extends Component {
 		return (
 			<Provider store={ this.reduxStore }>
 				<ProductControler
-					// selected={ selected }
+					selected={ selected }
 					onChange={ onChange }
 					multiple={ multiple }
 					dispatch={ this.reduxStore.dispatch }

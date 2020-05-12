@@ -19,6 +19,7 @@ import {
 	REMOVE_SELECTED,
 	SWITCH_TO_PROD,
 	SWITCH_TO_VAR,
+	REMOVE_ALL_SELECTED,
 } from './actions';
 
 
@@ -82,8 +83,8 @@ export default ( state = DEFAULT_STATE, action ) => {
 		case REMOVE_SELECTED:
 			const id = action.product.id;
 			var i = findIndex( selected, { id } );
-			// console.log( "index of remove " + i );
-			// console.log( "selected item: " + selected[i] );
+			console.log( "index of remove " + i );
+			console.log( "selected item: " + selected[i] );
 			return {
 				...state,
 				selected: [
@@ -108,6 +109,11 @@ export default ( state = DEFAULT_STATE, action ) => {
 				...state,
 				isLoading: true,
 			};
+		case REMOVE_ALL_SELECTED:
+			return {
+				...state,
+				selected: [],
+			}
 		default:
 			return state;
 	}

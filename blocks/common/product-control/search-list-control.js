@@ -82,21 +82,30 @@ export class SearchListControl extends Component {
 		const { isSingle, onChange, selected, dispatch } = this.props;
 		const id = item.id;
 		return () => {
-			if ( isSingle ) {
-				onChange( [] );
-			}
-			dispatch( ProductControlActions.removeSelected( item ) );
+			console.log( "executing onremove with id: " + id );
+			if ( this.isSelected( item ) ) {
+				console.log( "item is selected, continuing to remove." );
+				const i = findIndex( selected, { id } );
+				dispatch( ProductControlActions.removeSelected( item ) );
 
-			const i = findIndex( selected, { id } );
-			onChange( [
-				...selected.slice( 0, i ),
-				...selected.slice( i + 1 ),
-			] );
+				if ( isSingle ) {
+					onChange( [] );
+				} else {
+					console.log( "index: " + i );
+					console.log( selected );
+					console.log( "id: " + id );
+					onChange( [
+						...selected.slice( 0, i ),
+						...selected.slice( i + 1 ),
+					] );
+				}
+			}
 		};
 	}
 
 	onSelect( item ) {
 		const { isSingle, onChange, selected, list, dispatch, variations } = this.props;
+		// console.log( "in onSelect" );
 		return () => {
 			if ( this.isSelected( item ) && item.type !== 'variable' ) {
 				// console.log( "calling remove" );
@@ -115,34 +124,35 @@ export class SearchListControl extends Component {
 			}
 			else if ( item.type === 'variation' ) {
 				// console.log( "adding item to selected list as the variation has been clicked." );
-				dispatch( ProductControlActions.setSelected( item, true ) );
-				onChange( [ item ] );
+				dispatch( ProductControlActions.setSelected( item, isSingle ) );
+				if ( isSingle ) {
+					onChange( [ item ] );
+				} else {
+					onChange( [ ...selected, item ] );
+				}
 					// dispatch(ProductControlActions.fetchProductsIfNeeded( selected, '', [] ));
 					// dispatch( ProductControlActions.switchToProducts() );
 				this.backOne();
 				
 			}
 			else {
+				dispatch( ProductControlActions.setSelected( item, isSingle ) );
+				if ( isSingle ) {
+					// console.log( "adding item to selected list" );
+					// console.log( item );
+					onChange( [ item ] );
+					// selected = [ ...selected, item ];
+					// onChange( [ item ] );
+				} else {
+					onChange( [ ...selected, item ] );
+				}
 				// console.log( "it is not a variable product type" );
 			}
-			// else {
-				if ( item.type !== 'variable' && item.type !== 'variation' ) {
-					if ( isSingle ) {
-						// console.log( "adding item to selected list" );
-						// console.log( item );
-						dispatch( ProductControlActions.setSelected( item, true ) );
-						onChange( [ item ] );
-						// selected = [ ...selected, item ];
-						// onChange( [ item ] );
-					} else {
-						// onChange( [ ...selected, item ] );
-					}
-				}
-			// }
 		};
 	}
 
 	onClear() {
+		this.props.dispatch( ProductControlActions.removeAllSelected() );
 		this.props.onChange( [] );
 	}
 
@@ -325,6 +335,7 @@ export class SearchListControl extends Component {
 						key={ i }
 						label={ item.name }
 						id={ item.id }
+						item={ item }
 						remove={ this.onRemove }
 					/>
 				) ) }
@@ -349,22 +360,23 @@ export class SearchListControl extends Component {
 						onChange={ ( value ) => setState( { search: value } ) }
 					/>
 				</div>
-
-				<TransitionGroup className="slider-group">
+				<div className="slider-group">
 					{ (this.state.currentProduct && this.state.currentProduct.id > 0 && this.props.products && this.props.products.length > 0) === true ? '' : 
 							<div className="slider-container">
 								{ this.renderListSection( this.props.products ) }
 							</div>
 					}
 					{ (this.state.currentProduct && this.state.currentProduct.id > 0 && this.props.products && this.props.products.length > 0) === false ? '' : 
-						<CSSTransition nodeRef={this.transitionRef} timeout={500} in appear={true} enter={true} classNames="slider">
-							<div ref={this.transitionRef} className="slider-container">
-								{ this.renderListSection() }
-							</div>
-						</CSSTransition>
+						<TransitionGroup className="slider-group">
+							<CSSTransition nodeRef={this.transitionRef} in timeout={500} appear={true} enter={true} classNames="slider">
+								<div ref={this.transitionRef} className="slider-container">
+									{ this.renderListSection() }
+								</div>
+							</CSSTransition>
+						</TransitionGroup>
 					}
 					<div className="slider-placeholder" />
-				</TransitionGroup>
+				</div>
 			</div>
 		);
 	}

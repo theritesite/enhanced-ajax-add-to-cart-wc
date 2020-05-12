@@ -32,7 +32,6 @@ import ProductControl from '../common/product-control/index.js';
 // import ProductVariationControl from '../common/product-variation-control';
 import { formatPrice } from '../common/price';
 import EAA2CControl from '../common/eaa2c-control';
-import { createTitle } from '../common/title';
 
 import { applyMiddleware, createStore, compose } from 'redux';
 import thunk from 'redux-thunk';
@@ -608,46 +607,6 @@ class AddToCartBlock extends Component {
 				)
 			);
 		};
-
-		// const routeClassName = 'eaa2c-product-control';
-		// const args = { list: {}, products: {}, variations: {}, selected: {}, isLoading: true, error: {} };
-		// const Route = ProductControl( args );
-		// if ( typeof createdStores[ routeClassName ] === 'undefined' ) {
-		// 	const persistedStateKey = Route.getStateKey();
-		// 	const persistedState = storageUtils.getWithExpiry( persistedStateKey );
-		// 	storageUtils.remove( persistedStateKey );
-		// 	const serverState = Route.getInitialState();
-		// 	const initialState = { ...serverState, ...persistedState };
-
-		// 	const middlewares = [
-		// 		thunk.withExtraArgument( args ),
-		// 		localApiMiddleware,
-		// 	];
-
-		// 	if ( Route.getMiddlewares ) {
-		// 		middlewares.push.apply( middlewares, Route.getMiddlewares() );
-		// 	}
-
-		// 	const enhancers = [
-		// 		applyMiddleware( ...middlewares ),
-		// 	].filter( Boolean );
-
-		// 	const store = compose( ...enhancers )( createStore )( Route.getReducer(), initialState );
-		// 	if ( Route.getInitialActions ) {
-		// 		Route.getInitialActions().forEach( store.dispatch );
-		// 	}
-	
-			// window.addEventListener( 'beforeunload', () => {
-			// 	const state = store.getState();
-	
-			// 	if ( window.persistState ) {
-			// 		storageUtils.setWithExpiry( persistedStateKey, Route.getStateForPersisting( state ) );
-			// 	}
-			// } );
-	
-			// createdStores[ routeClassName ] = store;
-	
-		// }
 
 		return (
 			<Placeholder

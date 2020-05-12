@@ -17,6 +17,7 @@ import { withState, withInstanceId } from '@wordpress/compose';
  */
 const Tag = ( {
 	id,
+	item,
 	instanceId,
 	isVisible,
 	label,
@@ -71,7 +72,7 @@ const Tag = ( {
 				<IconButton
 					className="woocommerce-tag__remove"
 					icon={ <Dashicon icon="dismiss" size={ 20 } /> }
-					onClick={ remove( id ) }
+					onClick={ remove( item ) }
 					label={ sprintf(
 						__( 'Remove %s', 'woocommerce-admin' ),
 						label

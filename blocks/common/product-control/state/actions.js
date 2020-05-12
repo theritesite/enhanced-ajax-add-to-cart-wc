@@ -22,6 +22,7 @@ export const SET_VARIATIONS = 'SET_VARIATIONS';
 export const REMOVE_SELECTED = 'REMOVE_SELECTED';
 export const SWITCH_TO_PROD = 'SWITCH_TO_PROD';
 export const SWITCH_TO_VAR  = 'SWITCH_TO_VAR';
+export const REMOVE_ALL_SELECTED = 'REMOVE_ALL_SELECTED';
 
 export function switchToProducts() {
 	// console.log( "switching ot products list" );
@@ -65,7 +66,7 @@ export function fetchVariations( parentProd, selected, search, args ) {
 	// 	search,
 	// 	args,
 	// };
-	// console.log( "hello there variations" );
+	console.log( "hello there variations" );
 	// console.log( parentProd );
 	return dispatch => {
 		dispatch( requestVariations( parentProd, selected, search, args ) )
@@ -134,6 +135,12 @@ export function removeSelected( product, value ) {
 	};
 };
 
+export function removeAllSelected() {
+	return {
+		type: REMOVE_ALL_SELECTED,
+	};
+}
+
 function shouldFetchProducts( state, selected, search, args ) {
 	const { products, isLoading, error } = state;
 	if ( ! products ) {
@@ -184,7 +191,7 @@ function shouldFetchVariations( state, parent, selected, search, args ) {
 }
 
 export function fetchVariationsIfNeeded( parent, selected, search, args ) {
-	// console.log( "in fetchVariationsIfNeeded." );
+	console.log( "in fetchVariationsIfNeeded." );
 	// console.log( parent );
 	return ( dispatch, getState ) => {
 		const { variations } = getState();

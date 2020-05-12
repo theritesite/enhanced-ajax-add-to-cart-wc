@@ -32,7 +32,6 @@ import ProductControl from '../common/product-control/index.js';
 import ProductVariationControl from '../common/product-variation-control';
 import { formatPrice } from '../common/price';
 import EAA2CControl from '../common/eaa2c-control';
-import { createTitle } from '../common/title';
 
 class GroupAddToCartBlock extends Component {
 	constructor( props ) {
@@ -54,11 +53,12 @@ class GroupAddToCartBlock extends Component {
 		const { attributes } = this.props;
 		const { products } = attributes;
 
-		if ( products[0] && products[0].type !== null && products[0].type !== '' ) {
-			if ( products[0].type === 'variable' ) {
-				return true;
-			}
-		}
+		return products.some( prod => ( prod.type === 'variation' || prod.type === 'variable' ) );
+		// if ( products[0] && products[0].type !== null && products[0].type !== '' ) {
+		// 	if ( products[0].type === 'variable' || products[0].type === 'variation' ) {
+		// 		return true;
+		// 	}
+		// }
 
 		return false;
 	}
@@ -571,7 +571,7 @@ class GroupAddToCartBlock extends Component {
 				return(
 					<div className="variations">
 						{console.log(products[0])}
-						<ProductVariationControl
+						{/* <ProductVariationControl
 							parentProd={ products[0] }
 							selected={ variations }
 							onChange={ ( value = [] ) => {
@@ -579,7 +579,7 @@ class GroupAddToCartBlock extends Component {
 								setAttributes( { variations: selected } );
 								// setAttributes( { products: prodDat } );
 							} }
-						/>
+						/> */}
 					</div>
 				);
 			}
@@ -609,13 +609,16 @@ class GroupAddToCartBlock extends Component {
 			>
 				<div className="eaa2c-block">
 					{ this.displayControls() }
-					{ this.displayVariationControls() }
 					<ProductControl
 						selected={ attributes.products }
 						onChange={ ( value = [] ) => {
 							const selected = value;
 							setAttributes( { products: selected } );
 							// setAttributes( { products: prodDat } );
+						} }
+						onListRequest={ (value = [] ) => {
+							const list = value;
+							this.setState( { list } );
 						} }
 						multiple={ true }
 					/>
@@ -632,88 +635,98 @@ class GroupAddToCartBlock extends Component {
 		const { buttonText, contentVisibility, contentOrder, products, quantity, titleType, variations } = attributes;
 		console.log( "In render view mode." );
 
-		if ( products[ 0 ] ) {
-			console.log( "products 'exist'" );
-			if ( products[0].id > 0 ) {
-				// console.log( products );
-				const product = products[0];
-				const variation = variations[0] ? variations[0] : [];
-				const title = createTitle( { product, variation, titleType } );
-				return (
-					<div className={ "enhanced-woocommerce-add-to-cart " + className }>
-						{ contentOrder.map( ( item, index ) => {
-							if ( item === 'title' && contentVisibility[ item ] === true ) {
-								return (
-									<span
-										key={ index }
-										className="ea-line ea-text"
+		if ( products && products.length > 0 ) {
+			console.log( "products in multiple 'exist'" );
+			return (
+				<div className="eaa2c-group-container">
+					{ products.map( ( product ) => {
+						if ( product.id > 0 ) {
+							console.log( "in the mapping of multi[le products." );
+							console.log( product );
+							// const product = products[0];
+							// const variation = variations[0] ? variations[0] : [];
+							// const title = createTitle( { product, variation, titleType } );
+							const title = product[titleType];
+							return (
+								<div key={product.id} className={ "enhanced-woocommerce-add-to-cart " + className }>
+									{ contentOrder.map( ( item, index ) => {
+										if ( item === 'title' && contentVisibility[ item ] === true ) {
+											return (
+												<span
+													key={ index }
+													className="ea-line ea-text"
+												>
+													{ title }
+												</span>
+											);
+										} else if ( item === 'title' && contentVisibility[ item ] === true && title === 'full' ) {
+											const att = item === 'title' ? 'name' : 'price';
+											return (
+												<span
+													key={ index }
+													className="ea-line ea-text"
+												>
+													<span>{ product[ titleType ] }</span>
+													{/* <span>{ product[ att ] }</span> */}
+												</span>
+											);
+										} else if (  item === 'price'  && contentVisibility[ item ] === true ) {
+											return (
+												<span
+													key={ index }
+													className="ea-line ea-text"
+												>
+													{ formatPrice( product['price'] ) }
+												</span>
+											);
+										} else if ( item === 'quantity' ) {
+											return (
+												<span
+													key={ index }
+													className="ea-line quantity-container"
+												>
+													<div className="quantity">
+														<input
+															type="number"
+															id={ products[ 0 ].id }
+															className="input-text qty text"
+															step={ 1 }
+															defaultValue={ quantity['default'] }
+															min={ quantity['min'] }
+															max={ quantity['max'] }
+															name={ 'steven' }
+															title={ 'quantity' }
+															hidden={ ! contentVisibility[ item ] }
+														/>
+													</div>
+												</span>
+											);
+										} else if ( item === 'separator' ) {
+											return (
+												<span key={ index } className="ea-line">
+													<span className="ea-separator"></span>
+												</span>
+											);
+										}
+									} ) }
+									<button
+										type="submit"
+										className="eaa2c_add_to_cart_button button alt"
+										data-pid={ products[ 0 ].parent_id > 0 ? products[ 0 ].parent_id : products[ 0 ].id }
+										data-vid={ products[ 0 ].id }
 									>
-										{ title }
-									</span>
-								);
-							} else if ( item === 'title' && contentVisibility[ item ] === true && title === 'full' ) {
-								const att = item === 'title' ? 'name' : 'price';
-								return (
-									<span
-										key={ index }
-										className="ea-line ea-text"
-									>
-										<span>{ product[ titleType ] }</span>
-										{/* <span>{ product[ att ] }</span> */}
-									</span>
-								);
-							} else if (  item === 'price'  && contentVisibility[ item ] === true ) {
-								return (
-									<span
-										key={ index }
-										className="ea-line ea-text"
-									>
-										{ formatPrice( product['price'] ) }
-									</span>
-								);
-							} else if ( item === 'quantity' ) {
-								return (
-									<span
-										key={ index }
-										className="ea-line quantity-container"
-									>
-										<div className="quantity">
-											<input
-												type="number"
-												id={ products[ 0 ].id }
-												className="input-text qty text"
-												step={ 1 }
-												defaultValue={ quantity['default'] }
-												min={ quantity['min'] }
-												max={ quantity['max'] }
-												name={ 'steven' }
-												title={ 'quantity' }
-												hidden={ ! contentVisibility[ item ] }
-											/>
-										</div>
-									</span>
-								);
-							} else if ( item === 'separator' ) {
-								return (
-									<span key={ index } className="ea-line">
-										<span className="ea-separator"></span>
-									</span>
-								);
-							}
-						} ) }
-						<button
-							type="submit"
-							className="eaa2c_add_to_cart_button button alt"
-							data-pid={ products[ 0 ].parent_id > 0 ? products[ 0 ].parent_id : products[ 0 ].id }
-							data-vid={ products[ 0 ].id }
-						>
-							{ buttonText }
-						</button>
-					</div>
-				);
-			}
+										{ buttonText }
+									</button>
+								</div>
+							);
+						}
+					})}
+				</div>
+			);
+		} else {
+			console.log( "why did we get here?" );
+			return <div className="no-product-found">no products found</div>;
 		}
-		return <div className="no-product-found">no product found</div>;
 	}
 
 	render() {
