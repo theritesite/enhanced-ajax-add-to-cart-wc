@@ -54,13 +54,6 @@ class GroupAddToCartBlock extends Component {
 		const { products } = attributes;
 
 		return products.some( prod => ( prod.type === 'variation' || prod.type === 'variable' ) );
-		// if ( products[0] && products[0].type !== null && products[0].type !== '' ) {
-		// 	if ( products[0].type === 'variable' || products[0].type === 'variation' ) {
-		// 		return true;
-		// 	}
-		// }
-
-		return false;
 	}
 
 	getItemControls( item, index ) {

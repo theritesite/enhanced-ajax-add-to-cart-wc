@@ -40,12 +40,13 @@ export default class ProductControl extends Component {
 		
 		const createdStores = this.createdStores;
 		const routeClassName = 'eaa2c-product-control';
-		const args = { list: {}, products: {}, variations: {}, isLoading: true, error: {} };
+		const args = { list: [], products: [], variations: {}, isLoading: true, error: false };
 		if ( typeof createdStores[ routeClassName ] === 'undefined' ) {
 			const persistedStateKey = routeClassName;
 			const persistedState = storageUtils.getWithExpiry( persistedStateKey );
+			const selected = props.selected;
 			// storageUtils.remove( persistedStateKey );
-			const serverState = reducer.DEFAULT_STATE;
+			const serverState = { ...reducer.DEFAULT_STATE, selected };
 			const initialState = { ...serverState, ...persistedState };
 			console.log( "this is initial state." );
 			console.log( initialState );
@@ -76,24 +77,6 @@ export default class ProductControl extends Component {
 			};
 			const genStore = registerGenericStore( persistedStateKey, genericStore );
 
-			// const store = compose( ...enhancers )( createStore )( reducer, initialState );
-			// const store = registerStore( persistedStateKey, { reducer: reducer, actions: ProductControlActions, selectors: {}, controls: {}, resolvers: {} } );
-			/*window.addEventListener( 'beforeunload', () => {
-				const state = store.getState();
-				const { onChange, selected, multiple, onListRequest } = this.props;
-				const { products, variations, list } = state;
-				console.log( "this is in before unload -- state: " );
-				console.log( state );
-				console.log( "this is in before unload -- props: " );
-				console.log( this.props );
-			
-				// if ( window.persistState ) {
-					// storageUtils.setWithExpiry( persistedStateKey, { list, products, variations, selected } );
-					storageUtils.setWithExpiry( persistedStateKey, state );
-					console.log( "window.persistState is true and using storageUtils")
-				// }
-			} );*/
-	
 			createdStores[ routeClassName ] = genStore;
 			this.store = genStore;
 			this.reduxStore = store;

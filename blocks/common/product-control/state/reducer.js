@@ -28,7 +28,7 @@ export const DEFAULT_STATE = {
 	list: [],
 	products: [],
 	variations: {},
-	selected: {},
+	// selected: [],
 	currentProduct: {},
 };
 

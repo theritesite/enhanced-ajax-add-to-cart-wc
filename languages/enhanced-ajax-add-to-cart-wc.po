@@ -36,3 +36,28 @@ msgstr[1] ""
 #: blocks/common/product-control/search-list-control.js:50
 msgid "Search results updated."
 msgstr ""
+
+#: blocks/eaa2c-group/block.js:570
+#: blocks/eaa2c/block.js:477
+msgid "Content"
+msgstr ""
+
+#: blocks/eaa2c-group/block.js:675
+#: blocks/eaa2c/block.js:598
+msgid "Showing AJAX Add to Cart block preview."
+msgstr ""
+
+#: blocks/eaa2c-group/block.js:679
+#: blocks/eaa2c/block.js:607
+msgid "AJAX Add to Cart button"
+msgstr ""
+
+#: blocks/eaa2c-group/block.js:703
+#: blocks/eaa2c/block.js:633
+msgid "Done"
+msgstr ""
+
+#: blocks/eaa2c-group/block.js:809
+#: blocks/eaa2c/block.js:751
+msgid "Edit"
+msgstr ""

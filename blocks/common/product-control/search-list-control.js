@@ -347,7 +347,6 @@ export class SearchListControl extends Component {
 	render() {
 		const { className = '', search, setState } = this.props;
 		const messages = { ...defaultMessages, ...this.props.messages };
-		const willSlide = ( this.state.currentProduct && this.state.currentProduct.id > 0 && this.props.products && this.props.products.length > 0 ) ? true : false;
 
 		return (
 			<div className={ `woocommerce-search-list ${ className }` }>

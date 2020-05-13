@@ -62,13 +62,7 @@ class AddToCartBlock extends Component {
 		const { attributes } = this.props;
 		const { products } = attributes;
 
-		if ( products[0] && products[0].type !== null && products[0].type !== '' ) {
-			if ( products[0].type === 'variable' || products[0].type === 'variation' ) {
-				return true;
-			}
-		}
-
-		return false;
+		return products.some( prod => ( prod.type === 'variation' || prod.type === 'variable' ) );
 	}
 
 	getItemControls( item, index ) {
