@@ -3,7 +3,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "X-Generator: babel-plugin-makepot\n"
 
-#: blocks/common/product-control/search-list-control.js:384
+#: blocks/common/product-control/search-list-control.js:383
 msgid "Clear all"
 msgstr ""
 
@@ -35,28 +35,4 @@ msgstr[1] ""
 
 #: blocks/common/product-control/search-list-control.js:50
 msgid "Search results updated."
-msgstr ""
-
-#: blocks/common/tag.js:77
-msgid "Remove %s"
-msgstr ""
-
-#: blocks/eaa2c-group/block.js:576
-msgid "Content"
-msgstr ""
-
-#: blocks/eaa2c-group/block.js:681
-msgid "Showing AJAX Add to Cart block preview."
-msgstr ""
-
-#: blocks/eaa2c-group/block.js:685
-msgid "AJAX Add to Cart button"
-msgstr ""
-
-#: blocks/eaa2c-group/block.js:709
-msgid "Done"
-msgstr ""
-
-#: blocks/eaa2c-group/block.js:815
-msgid "Edit"
 msgstr ""

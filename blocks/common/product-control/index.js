@@ -40,7 +40,7 @@ export default class ProductControl extends Component {
 		
 		const createdStores = this.createdStores;
 		const routeClassName = 'eaa2c-product-control';
-		const args = { list: {}, products: {}, variations: {}, selected: {}, isLoading: true, error: {} };
+		const args = { list: {}, products: {}, variations: {}, isLoading: true, error: {} };
 		if ( typeof createdStores[ routeClassName ] === 'undefined' ) {
 			const persistedStateKey = routeClassName;
 			const persistedState = storageUtils.getWithExpiry( persistedStateKey );

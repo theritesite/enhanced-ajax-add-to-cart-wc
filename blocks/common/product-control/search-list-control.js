@@ -60,7 +60,8 @@ export class SearchListControl extends Component {
 			currentProduct: {}
 		}
 
-		this.transitionRef = createRef();;
+		this.transitionRef = createRef();
+		this.transitionRef2 = createRef();
 
 		this.backOne = this.backOne.bind( this );
 		this.onSelect = this.onSelect.bind( this );
@@ -307,10 +308,10 @@ export class SearchListControl extends Component {
 	}
 
 	renderSelectedSection() {
-		const { isLoading, isSingle, selected } = this.props;
+		const { isSingle, selected } = this.props;
 		const messages = { ...defaultMessages, ...this.props.messages };
 
-		if ( isLoading || isSingle || ! selected ) {
+		if ( isSingle || ! selected ) {
 			return null;
 		}
 
@@ -360,23 +361,21 @@ export class SearchListControl extends Component {
 						onChange={ ( value ) => setState( { search: value } ) }
 					/>
 				</div>
-				<div className="slider-group">
-					{ (this.state.currentProduct && this.state.currentProduct.id > 0 && this.props.products && this.props.products.length > 0) === true ? '' : 
-							<div className="slider-container">
-								{ this.renderListSection( this.props.products ) }
-							</div>
-					}
+				<TransitionGroup className="slider-group">
+					<CSSTransition nodeRef={this.transitionRef} timeout={500} in={false} appear={false} enter={false} exit={false}>
+						<div ref={this.transitionRef} className="slider-container">
+							{ this.renderListSection( this.props.products ) }
+						</div>
+					</CSSTransition>
 					{ (this.state.currentProduct && this.state.currentProduct.id > 0 && this.props.products && this.props.products.length > 0) === false ? '' : 
-						<TransitionGroup className="slider-group">
-							<CSSTransition nodeRef={this.transitionRef} in timeout={500} appear={true} enter={true} classNames="slider">
-								<div ref={this.transitionRef} className="slider-container">
-									{ this.renderListSection() }
-								</div>
-							</CSSTransition>
-						</TransitionGroup>
+						<CSSTransition nodeRef={this.transitionRef2} in timeout={500} appear={true} enter={true} exit={true} classNames="slider">
+							<div ref={this.transitionRef2} className="slider-container">
+								{ this.renderListSection() }
+							</div>
+						</CSSTransition>
 					}
-					<div className="slider-placeholder" />
-				</div>
+				</TransitionGroup>
+				<div className="slider-placeholder" />
 			</div>
 		);
 	}
