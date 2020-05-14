@@ -52,7 +52,7 @@ const withSearchedTerm = createHigherOrderComponent( ( OriginalComponent ) => {
 		async setError( e ) {
 			// const error = await formatError( e );
 			const error = await e;
-			console.log( "we are in set error" );
+			// console.log( "we are in set error" );
 			// const error = true;
 
 			this.setState( { list: [], loading: false, error } );

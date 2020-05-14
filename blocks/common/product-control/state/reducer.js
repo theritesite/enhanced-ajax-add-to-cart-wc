@@ -20,6 +20,7 @@ import {
 	SWITCH_TO_PROD,
 	SWITCH_TO_VAR,
 	REMOVE_ALL_SELECTED,
+	CLEAR_LISTS,
 } from './actions';
 
 
@@ -39,7 +40,8 @@ export default ( state = DEFAULT_STATE, action ) => {
 			// console.log( "switching to prod" );
 			return {
 				...state,
-				list: products
+				list: products,
+				isLoading: false,
 			};
 		case SWITCH_TO_VAR:
 			// console.log( "switching to var: " + action.parent.id );
@@ -47,9 +49,11 @@ export default ( state = DEFAULT_STATE, action ) => {
 			// console.log( "that should have been the parent product." );
 			return {
 				...state,
-				list: variations[ action.parent.id ]
+				list: variations[ action.parent.id ],
+				isLoading: false,
 			};
 		case SET_PRODUCTS:
+			console.log( "in set products and isloading should be false now" );
 			return {
 				...state,
 				products: action.products,
@@ -57,6 +61,7 @@ export default ( state = DEFAULT_STATE, action ) => {
 				list: action.products,
 			};
 		case SET_VARIATIONS:
+			console.log( "in set variations and isloading should be false now" );
 			return {
 				...state,
 				variations: {
@@ -98,6 +103,7 @@ export default ( state = DEFAULT_STATE, action ) => {
 				list: action.list,
 			};
 		case GET_PRODUCTS:
+			console.log( "in get products?" );
 			return {
 				...state,
 				// list: products,
@@ -105,6 +111,7 @@ export default ( state = DEFAULT_STATE, action ) => {
 			};
 		case GET_VARIATIONS:
 			// return state;
+			console.log( "in get variations?" );
 			return {
 				...state,
 				isLoading: true,
@@ -113,6 +120,13 @@ export default ( state = DEFAULT_STATE, action ) => {
 			return {
 				...state,
 				selected: [],
+			}
+		case CLEAR_LISTS:
+			return {
+				...state,
+				list: [],
+				products: [],
+				variations: {},
 			}
 		default:
 			return state;

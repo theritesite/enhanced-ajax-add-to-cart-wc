@@ -29,21 +29,18 @@ const getProductsRequests = ( {
 
 	// If we have a large catalog, we might not get all selected products in the first page.
 	if ( getSetting( 'isLargeCatalog' ) && selected.length ) {
-		console.log(
-			'stuff in here' +
-			requests.push(
-					addQueryArgs( '/wc/v3/products', {
-						// catalog_visibility: 'any',
-						status: 'publish',
-						include: selected,
-						// consumer_key:
-						// 	'ck_5f7fbb292d1a17f1d04705314018160d07a65564',
-						// consumer_secret:
-						// 	'cs_2b8e302b8a9ab86ebc16503bcb530aa25ef49821',
-						// query_string_auth: true,
-					} )
-				)
-		);
+		requests.push(
+			addQueryArgs( '/wc/v3/products', {
+				// catalog_visibility: 'any',
+				status: 'publish',
+				include: selected,
+				// consumer_key:
+				// 	'ck_5f7fbb292d1a17f1d04705314018160d07a65564',
+				// consumer_secret:
+				// 	'cs_2b8e302b8a9ab86ebc16503bcb530aa25ef49821',
+				// query_string_auth: true,
+			} )
+		)
 	}
 
 	return requests;
@@ -69,7 +66,7 @@ export const getProducts = ( {
 				type: product.type,
 				// attributes: product.attributes,
 				children: product.variations,
-				raw: product,
+				// raw: product,
 				// ...product,
 				// parent: 0,
 			} ) );

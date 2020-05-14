@@ -52,13 +52,6 @@ export class ProductControler extends Component {
 
 	componentDidMount() {
 		console.log( "ProductControler Mounted." );
-		const { selected, dispatch, onListRequest, products } = this.props;
-		dispatch(ProductControlActions.fetchProductsIfNeeded( selected, '', [] ))
-		// .then(
-			// console.log( "dispatched fetchProductsIfNeeded completed." ),
-			// onListRequest( products ),
-			// console.log( "set parent product list" ),
-		// );
 	}
 
 	render() {

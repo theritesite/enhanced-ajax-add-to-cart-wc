@@ -23,9 +23,10 @@ export const REMOVE_SELECTED = 'REMOVE_SELECTED';
 export const SWITCH_TO_PROD = 'SWITCH_TO_PROD';
 export const SWITCH_TO_VAR  = 'SWITCH_TO_VAR';
 export const REMOVE_ALL_SELECTED = 'REMOVE_ALL_SELECTED';
+export const CLEAR_LISTS = 'CLEAR_LISTS';
 
 export function switchToProducts() {
-	// console.log( "switching ot products list" );
+	console.log( "switching ot products list" );
 	return {
 		type: SWITCH_TO_PROD,
 	}
@@ -143,22 +144,22 @@ export function removeAllSelected() {
 
 function shouldFetchProducts( state, selected, search, args ) {
 	const { products, isLoading, error } = state;
-	if ( ! products ) {
-		// console.log( "no products exist, sending!" );
+	if ( ! products || ( products && products.length < 1 ) ) {
+		console.log( "no products exist, sending!" );
 		return true;
 	} else if ( isLoading ) {
 		return false;
 	} else {
-		// console.log( "there was an error with products fetching." );
+		console.log( "there was an error with products fetching." );
 		return false;
 	}
 }
 
 export function fetchProductsIfNeeded( selected, search, args ) {
-	// console.log( "in fetchProductsIfNeeded." );
+	console.log( "in fetchProductsIfNeeded." );
 	return ( dispatch, getState ) => {
 		if ( shouldFetchProducts( getState(), selected, search, args ) ) {
-			// console.log( "sending fetch dispatch." );
+			console.log( "sending fetch dispatch." );
 			return dispatch( fetchProducts( selected, search, args ) );
 		} else if ( getState().products ) {
 			// return {
@@ -177,7 +178,7 @@ function shouldFetchVariations( state, parent, selected, search, args ) {
 	if ( ! variations ) {
 		// console.log( "no variations exist, sending!" );
 		return true;
-	} else if ( ! variations[parent.id] ) {
+	} else if ( ! variations[parent.id] || ( variations[parent.id] && variations[parent.id].length < 1 ) ) {
 		// console.log( "no variations for this product exist, sending!" );
 		return true;
 	} else if ( variations[parent.id] ) {
@@ -211,4 +212,11 @@ export function fetchVariationsIfNeeded( parent, selected, search, args ) {
 			return dispatch( switchToVariations( parent ) );
 		}
 	}
+}
+
+export function clearLists() {
+	console.log( "in clear lists." );
+	return {
+		type: CLEAR_LISTS,
+	};
 }

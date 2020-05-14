@@ -22,6 +22,7 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 /**
  * Internal dependencies
  */
+import * as storageUtils from '../utils/local-storage';
 import { buildTermsTree } from '../hierarchy';
 import SearchListItem from './search-list-item';
 import Tag from '../tag';
@@ -64,6 +65,7 @@ export class SearchListControl extends Component {
 		this.transitionRef2 = createRef();
 
 		this.backOne = this.backOne.bind( this );
+		this.resetLists = this.resetLists.bind( this );
 		this.onSelect = this.onSelect.bind( this );
 		this.onRemove = this.onRemove.bind( this );
 		this.onClear = this.onClear.bind( this );
@@ -77,6 +79,12 @@ export class SearchListControl extends Component {
 		if ( search !== prevProps.search && typeof onSearch === 'function' ) {
 			onSearch( search );
 		}
+	}
+
+	componentDidMount() {
+		// const { dispatch, selected } = this.props;
+		// console.log( "search list control did mount, going through dispatch now." );
+		// dispatch( ProductControlActions.fetchProductsIfNeeded( selected, '', [] ) );
 	}
 
 	onRemove( item ) {
@@ -105,7 +113,7 @@ export class SearchListControl extends Component {
 	}
 
 	onSelect( item ) {
-		const { isSingle, onChange, selected, list, dispatch, variations } = this.props;
+		const { isSingle, onChange, selected, dispatch } = this.props;
 		// console.log( "in onSelect" );
 		return () => {
 			if ( this.isSelected( item ) && item.type !== 'variable' ) {
@@ -118,7 +126,7 @@ export class SearchListControl extends Component {
 			}
 			if ( item.type === 'variable' ) {
 				this.setState({ currentProduct: item });
-				dispatch(ProductControlActions.fetchVariationsIfNeeded( item, selected, '', [] ))
+				dispatch( ProductControlActions.fetchVariationsIfNeeded( item, selected, '', [] ) )
 				// this.setState({ oldList: list });
 				// this.renderList( list )
 				// console.log( "it is a variable" );
@@ -203,7 +211,6 @@ export class SearchListControl extends Component {
 						search,
 						depth,
 					} ) }
-					{/* { this.renderList( item.children, depth + 1 ) } */}
 				</Fragment>
 			:
 				<Fragment key={ item.id }>
@@ -228,9 +235,24 @@ export class SearchListControl extends Component {
 
 	backOne() {
 		const { dispatch } = this.props;
-		// console.log( "goign back 1 list" );
 		this.setState({ currentProduct: {} });
 		return dispatch( ProductControlActions.switchToProducts() );
+	}
+
+	resetLists() {
+		const { dispatch } = this.props;
+		
+		const persistedStateKey = 'eaa2c-product-control';
+		storageUtils.remove( persistedStateKey );
+		dispatch( ProductControlActions.clearLists() );
+		dispatch( ProductControlActions.fetchProductsIfNeeded() );
+		return;
+	}
+
+	renderRefetchList() {
+		return (
+			<span onClick={ this.resetLists }>Products not up to date? Refresh!</span>
+		);
 	}
 
 	renderListItemHeader( product ) {
@@ -245,7 +267,7 @@ export class SearchListControl extends Component {
 	renderListSection( currList = undefined ) {
 		const { isLoading, search } = this.props;
 		const messages = { ...defaultMessages, ...this.props.messages };
-		const { currentProduct, willSlide } = this.state;
+		const { currentProduct } = this.state;
 
 		if ( isLoading && ( currList === undefined || (currList && currList < 1) ) ) {
 			return (
@@ -261,15 +283,9 @@ export class SearchListControl extends Component {
 			);
 		}
 
-		var list = this.getFilteredList( this.props.list, search );
+		var list = ( currList && currList.length > 0 ) ? currList : this.props.list;
+		list = this.getFilteredList( list, search );
 
-		if ( currList && currList.length > 0 ) {
-			// console.log( "its not the standrd list." );
-			list = currList;
-		}
-		else {
-			// console.log( "no it is not" );
-		}
 		if ( ! list.length && list !== currList ) {
 			return (
 				<MenuGroup
@@ -345,7 +361,7 @@ export class SearchListControl extends Component {
 	}
 
 	render() {
-		const { className = '', search, setState } = this.props;
+		const { className = '', search, setState, list, isLoading } = this.props;
 		const messages = { ...defaultMessages, ...this.props.messages };
 
 		return (
@@ -359,6 +375,7 @@ export class SearchListControl extends Component {
 						value={ search }
 						onChange={ ( value ) => setState( { search: value } ) }
 					/>
+					{ list && !isLoading ? this.renderRefetchList() : '' }
 				</div>
 				<TransitionGroup className="slider-group">
 					<CSSTransition nodeRef={this.transitionRef} timeout={500} in={false} appear={false} enter={false} exit={false}>

@@ -3,61 +3,87 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "X-Generator: babel-plugin-makepot\n"
 
-#: blocks/common/product-control/search-list-control.js:383
+#: blocks/common/product-control/search-list-control.js:398
 msgid "Clear all"
 msgstr ""
 
-#: blocks/common/product-control/search-list-control.js:42
+#: blocks/common/product-control/search-list-control.js:43
 msgid "Clear all selected items"
 msgstr ""
 
-#: blocks/common/product-control/search-list-control.js:43
+#: blocks/common/product-control/search-list-control.js:44
 msgid "Results"
 msgstr ""
 
-#: blocks/common/product-control/search-list-control.js:44
+#: blocks/common/product-control/search-list-control.js:45
 msgid "No items found."
 msgstr ""
 
-#: blocks/common/product-control/search-list-control.js:45
+#: blocks/common/product-control/search-list-control.js:46
 msgid "No results for %s"
 msgstr ""
 
-#: blocks/common/product-control/search-list-control.js:46
+#: blocks/common/product-control/search-list-control.js:47
 msgid "Search for items"
 msgstr ""
 
-#: blocks/common/product-control/search-list-control.js:48
+#: blocks/common/product-control/search-list-control.js:49
 msgid "%d item selected"
 msgid_plural "%d items selected"
 msgstr[0] ""
 msgstr[1] ""
 
-#: blocks/common/product-control/search-list-control.js:50
+#: blocks/common/product-control/search-list-control.js:51
 msgid "Search results updated."
 msgstr ""
 
-#: blocks/eaa2c-group/block.js:570
-#: blocks/eaa2c/block.js:477
+#: blocks/common/product-control/view.js:27
+msgid "Clear all products"
+msgstr ""
+
+#: blocks/common/product-control/view.js:28
+msgid "Products"
+msgstr ""
+
+#: blocks/common/product-control/view.js:29
+msgid "Your store doesn't have any products."
+msgstr ""
+
+#: blocks/common/product-control/view.js:30
+msgid "Search for products to display"
+msgstr ""
+
+#: blocks/common/product-control/view.js:32
+msgid "%d product selected"
+msgid_plural "%d products selected"
+msgstr[0] ""
+msgstr[1] ""
+
+#: blocks/common/product-control/view.js:34
+msgid "Product search results updated."
+msgstr ""
+
+#: blocks/eaa2c-group/block.js:556
+#: blocks/eaa2c/block.js:565
 msgid "Content"
 msgstr ""
 
-#: blocks/eaa2c-group/block.js:675
-#: blocks/eaa2c/block.js:598
+#: blocks/eaa2c-group/block.js:644
+#: blocks/eaa2c/block.js:653
 msgid "Showing AJAX Add to Cart block preview."
 msgstr ""
 
-#: blocks/eaa2c-group/block.js:679
-#: blocks/eaa2c/block.js:607
+#: blocks/eaa2c-group/block.js:648
+#: blocks/eaa2c/block.js:657
 msgid "AJAX Add to Cart button"
 msgstr ""
 
-#: blocks/eaa2c-group/block.js:703
-#: blocks/eaa2c/block.js:633
+#: blocks/eaa2c-group/block.js:672
+#: blocks/eaa2c/block.js:682
 msgid "Done"
 msgstr ""
 
-#: blocks/eaa2c-group/block.js:809
-#: blocks/eaa2c/block.js:751
+#: blocks/eaa2c-group/block.js:773
+#: blocks/eaa2c/block.js:778
 msgid "Edit"
 msgstr ""

@@ -12,7 +12,6 @@ import { InspectorControls, BlockControls } from '@wordpress/block-editor';
 import {
 	PanelBody,
 	PanelRow,
-	ToggleControl,
 	Button,
 	ButtonGroup,
 	Disabled,
@@ -27,19 +26,9 @@ import _ from 'lodash';
 
 import { Component, Fragment } from '@wordpress/element';
 import PropTypes from 'prop-types';
-// import ProductControl from '../common/product-control';
-import ProductControl from '../common/product-control/index.js';
-// import ProductVariationControl from '../common/product-variation-control';
+import ProductControl from '../common/product-control';
 import { formatPrice } from '../common/price';
 import EAA2CControl from '../common/eaa2c-control';
-
-import { applyMiddleware, createStore, compose } from 'redux';
-import thunk from 'redux-thunk';
-import { Provider } from 'react-redux';
-
-import * as storageUtils from '../common/utils/local-storage';
-import localApiMiddleware from '../common/utils/local-api-middleware';
-
 
 class AddToCartBlock extends Component {
 	constructor( props ) {
@@ -110,7 +99,7 @@ class AddToCartBlock extends Component {
 								/>
 								<button
 									onClick={ (e) => {
-										this.setState( { editItem: 'none' } ); console.log("should close");
+										this.setState( { editItem: 'none' } );
 									} }
 								>
 									done
@@ -281,7 +270,7 @@ class AddToCartBlock extends Component {
 								/>
 								<button
 									onClick={ (e) => {
-										this.setState( { editItem: 'none' } ); console.log("should close");
+										this.setState( { editItem: 'none' } );
 									} }
 								>
 									done
@@ -564,34 +553,8 @@ class AddToCartBlock extends Component {
 		);
 	}
 
-	displayVariationControls() {
-		const { attributes, setAttributes } = this.props;
-		const { products, variations } = attributes;
-
-		if ( products.length > 0 ) {
-			if ( products[ 0 ].type === 'variable' ) {
-				return(
-					<div className="variations">
-						{console.log(products[0])}
-						{/* <ProductVariationControl
-							parentProd={ products[0] }
-							selected={ variations }
-							onChange={ ( value = [] ) => {
-								const selected = value;
-								setAttributes( { variations: selected } );
-								// setAttributes( { products: prodDat } );
-							} }
-						/> */}
-					</div>
-				);
-			}
-		}
-
-	}
-
 	renderEditMode() {
 		const { attributes, debouncedSpeak, setAttributes } = this.props;
-		// const createdStores = {};
 		const onDone = () => {
 			setAttributes( { editMode: false } );
 			debouncedSpeak(
@@ -613,22 +576,19 @@ class AddToCartBlock extends Component {
 				<div className="eaa2c-block">
 					{ this.displayControls() }
 					
-					{/* <Provider store={ this.store }> */}
-						<ProductControl
-							selected={ attributes.products }
-							onChange={ ( value = [] ) => {
-								const selected = value;
-								console.log( "about to set products attribute from selected products" );
-								setAttributes( { products: selected } );
-								// setAttributes( { products: prodDat } );
-							} }
-							onListRequest={ (value = [] ) => {
-								const list = value;
-								this.setState( { list } );
-							} }
-							multiple={ false }
-						/>
-					{/* </Provider> */}
+					<ProductControl
+						selected={ attributes.products }
+						onChange={ ( value = [] ) => {
+							const selected = value;
+							// console.log( "about to set products attribute from selected products" );
+							setAttributes( { products: selected } );
+						} }
+						onListRequest={ (value = [] ) => {
+							const list = value;
+							this.setState( { list } );
+						} }
+						multiple={ false }
+					/>
 					<Button onClick={ onDone }>
 						{ __( 'Done', 'enhanced-ajax-add-to-cart-wc' ) }
 					</Button>
@@ -640,14 +600,13 @@ class AddToCartBlock extends Component {
 	renderViewMode() {
 		const { attributes, className } = this.props;
 		const { buttonText, contentVisibility, contentOrder, products, quantity, titleType, variations } = attributes;
-		console.log( "In render view mode." );
+		// console.log( "In render view mode." );
 
 		if ( products[ 0 ] ) {
-			console.log( "products 'exist'" );
+			// console.log( "products 'exist'" );
 			if ( products[0].id > 0 ) {
 				// console.log( products );
 				const product = products[0];
-				// const title = createTitle( { product, variation, titleType } );
 				const title = product[titleType];
 				return (
 					<div className={ "enhanced-woocommerce-add-to-cart " + className }>

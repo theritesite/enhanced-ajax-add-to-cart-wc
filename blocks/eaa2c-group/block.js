@@ -1,18 +1,8 @@
-/*const { __ } = wp.i18n;
-const { InspectorControls, BlockControls } = wp.blockEditor;
-const { PanelBody, PanelRow, ToggleControl, Button, Disabled, Toolbar, withSpokenMessages, Placeholder } = wp.components;
-var {
-	Component,
-	Fragment
-} = wp.element;
-*/
-
 import { __ } from '@wordpress/i18n';
 import { InspectorControls, BlockControls } from '@wordpress/block-editor';
 import {
 	PanelBody,
 	PanelRow,
-	ToggleControl,
 	Button,
 	ButtonGroup,
 	Disabled,
@@ -27,9 +17,7 @@ import _ from 'lodash';
 
 import { Component, Fragment } from '@wordpress/element';
 import PropTypes from 'prop-types';
-// import ProductControl from '../common/product-control';
-import ProductControl from '../common/product-control/index.js';
-import ProductVariationControl from '../common/product-variation-control';
+import ProductControl from '../common/product-control';
 import { formatPrice } from '../common/price';
 import EAA2CControl from '../common/eaa2c-control';
 
@@ -101,7 +89,7 @@ class GroupAddToCartBlock extends Component {
 								/>
 								<button
 									onClick={ (e) => {
-										this.setState( { editItem: 'none' } ); console.log("should close");
+										this.setState( { editItem: 'none' } );
 									} }
 								>
 									done
@@ -272,7 +260,7 @@ class GroupAddToCartBlock extends Component {
 								/>
 								<button
 									onClick={ (e) => {
-										this.setState( { editItem: 'none' } ); console.log("should close");
+										this.setState( { editItem: 'none' } );
 									} }
 								>
 									done
@@ -555,31 +543,6 @@ class GroupAddToCartBlock extends Component {
 		);
 	}
 
-	displayVariationControls() {
-		const { attributes, setAttributes } = this.props;
-		const { products, variations } = attributes;
-
-		if ( products.length > 0 ) {
-			if ( products[ 0 ].type === 'variable' ) {
-				return(
-					<div className="variations">
-						{console.log(products[0])}
-						{/* <ProductVariationControl
-							parentProd={ products[0] }
-							selected={ variations }
-							onChange={ ( value = [] ) => {
-								const selected = value;
-								setAttributes( { variations: selected } );
-								// setAttributes( { products: prodDat } );
-							} }
-						/> */}
-					</div>
-				);
-			}
-		}
-
-	}
-
 	renderEditMode() {
 		const { attributes, debouncedSpeak, setAttributes } = this.props;
 		const onDone = () => {
@@ -626,19 +589,16 @@ class GroupAddToCartBlock extends Component {
 	renderViewMode() {
 		const { attributes, className } = this.props;
 		const { buttonText, contentVisibility, contentOrder, products, quantity, titleType, variations } = attributes;
-		console.log( "In render view mode." );
+		// console.log( "In render view mode." );
 
 		if ( products && products.length > 0 ) {
-			console.log( "products in multiple 'exist'" );
+			// console.log( "products in multiple 'exist'" );
 			return (
 				<div className="eaa2c-group-container">
 					{ products.map( ( product ) => {
 						if ( product.id > 0 ) {
-							console.log( "in the mapping of multi[le products." );
-							console.log( product );
-							// const product = products[0];
-							// const variation = variations[0] ? variations[0] : [];
-							// const title = createTitle( { product, variation, titleType } );
+							// console.log( "in the mapping of multi[le products." );
+							// console.log( product );
 							const title = product[titleType];
 							return (
 								<div key={product.id} className={ "enhanced-woocommerce-add-to-cart " + className }>
@@ -660,7 +620,6 @@ class GroupAddToCartBlock extends Component {
 													className="ea-line ea-text"
 												>
 													<span>{ product[ titleType ] }</span>
-													{/* <span>{ product[ att ] }</span> */}
 												</span>
 											);
 										} else if (  item === 'price'  && contentVisibility[ item ] === true ) {
@@ -717,7 +676,6 @@ class GroupAddToCartBlock extends Component {
 				</div>
 			);
 		} else {
-			console.log( "why did we get here?" );
 			return <div className="no-product-found">no products found</div>;
 		}
 	}

@@ -1,26 +1,22 @@
 import ProductControler from './view';
 import reducer from './state/reducer';
-import { Provider } from 'react-redux'
-// import { createStore } from 'redux';
 import { Component } from '@wordpress/element';
 
+import { Provider } from 'react-redux'
 import { applyMiddleware, createStore, compose } from 'redux';
 import thunk from 'redux-thunk';
 
 import * as storageUtils from '../utils/local-storage';
 import localApiMiddleware from '../utils/local-api-middleware';
 import * as ProductControlActions from './state/actions';
-const { registerGenericStore } = wp.data;
-// import { registerStore } from '@wordpress/data';
+// const { registerGenericStore } = wp.data;
+import { registerGenericStore } from '@wordpress/data';
 
 import { setNonce, setBaseURL } from '../api/request';
 
 export default class ProductControl extends Component {
-// export default ( { list, products, variations, selected, isLoading, error } ) => ( {
-// export default ( { inProgress, stepSize, totalSteps, orders, ordersCompleted, error } ) => ( {
 	constructor( props ) {
 		super(props);
-		// this.store = createStore(reducer);
 		this.store = null;
 		this.createdStores = {};
 		this.reduxStore = null;
@@ -40,11 +36,11 @@ export default class ProductControl extends Component {
 		
 		const createdStores = this.createdStores;
 		const routeClassName = 'eaa2c-product-control';
-		const args = { list: [], products: [], variations: {}, isLoading: true, error: false };
+		const args = { products: [], variations: {} };
 		if ( typeof createdStores[ routeClassName ] === 'undefined' ) {
 			const persistedStateKey = routeClassName;
 			const persistedState = storageUtils.getWithExpiry( persistedStateKey );
-			const selected = props.selected;
+			const { selected } = props;
 			// storageUtils.remove( persistedStateKey );
 			const serverState = { ...reducer.DEFAULT_STATE, selected };
 			const initialState = { ...serverState, ...persistedState };
@@ -90,22 +86,21 @@ export default class ProductControl extends Component {
 		const routeClassName = 'eaa2c-product-control';
 		const persistedStateKey = routeClassName;
 		// const persistedState = storageUtils.getWithExpiry( persistedStateKey );
-		storageUtils.remove( persistedStateKey );
+		// storageUtils.remove( persistedStateKey );
+		const { selected } = this.props;
+		const dispatch = this.reduxStore.dispatch;
+		console.log( "ProductControl did mount, going through dispatch now." );
+		dispatch( ProductControlActions.fetchProductsIfNeeded( selected, '', [] ) );
 
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.selected !== this.props.selected) {
-			console.log('selected changed', nextProps.selected);
-			console.log( nextProps.selected )
-			console.log( this.props.selected );
-		}
+	componentDidUpdate() {
+
 	}
 
 	componentWillUnmount() {
 		const state = this.reduxStore.getState();
-		const { onChange, selected, multiple, onListRequest } = this.props;
-		const { products, variations, list } = state;
+		const { products, variations } = state;
 		const persistedStateKey = 'eaa2c-product-control';
 		console.log( "this is in before unload -- state: " );
 		console.log( state );
@@ -113,7 +108,7 @@ export default class ProductControl extends Component {
 		console.log( this.props );
 	
 		// if ( window.persistState ) {
-			storageUtils.setWithExpiry( persistedStateKey, { list, products, variations } );
+			storageUtils.setWithExpiry( persistedStateKey, { products, variations } );
 			// storageUtils.setWithExpiry( persistedStateKey, state );
 			console.log( "window.persistState is true and using storageUtils");
 			console.log( storageUtils.getWithExpiry( persistedStateKey ) );
