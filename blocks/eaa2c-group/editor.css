@@ -189,3 +189,7 @@ span.preview-text:first-child {
 .is-back-button {
 	background-color: #eee;
 }
+
+.remove-margins .components-base-control__field {
+	margin-bottom: 0;
+}

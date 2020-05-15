@@ -86,7 +86,7 @@ export default class ProductControl extends Component {
 		const routeClassName = 'eaa2c-product-control';
 		const persistedStateKey = routeClassName;
 		// const persistedState = storageUtils.getWithExpiry( persistedStateKey );
-		// storageUtils.remove( persistedStateKey );
+		storageUtils.remove( persistedStateKey );
 		const { selected } = this.props;
 		const dispatch = this.reduxStore.dispatch;
 		console.log( "ProductControl did mount, going through dispatch now." );

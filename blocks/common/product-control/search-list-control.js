@@ -75,16 +75,20 @@ export class SearchListControl extends Component {
 	}
 
 	componentDidUpdate( prevProps ) {
-		const { onSearch, search } = this.props;
+		const { onSearch, search, products, variations } = this.props;
+		const persistedStateKey = 'eaa2c-product-control';
 		if ( search !== prevProps.search && typeof onSearch === 'function' ) {
 			onSearch( search );
+		}
+		if ( products !== prevProps.products && products.length > 0 ) {
+			storageUtils.setWithExpiry( persistedStateKey, { products, variations } );
+		}
+		if ( variations !== prevProps.variations && Object.keys(variations).length > 0 ) {
+			storageUtils.setWithExpiry( persistedStateKey, { products, variations } );
 		}
 	}
 
 	componentDidMount() {
-		// const { dispatch, selected } = this.props;
-		// console.log( "search list control did mount, going through dispatch now." );
-		// dispatch( ProductControlActions.fetchProductsIfNeeded( selected, '', [] ) );
 	}
 
 	onRemove( item ) {
@@ -251,7 +255,7 @@ export class SearchListControl extends Component {
 
 	renderRefetchList() {
 		return (
-			<span onClick={ this.resetLists }>Products not up to date? Refresh!</span>
+			<span className='search-product-reset' onClick={ this.resetLists }>Products not up to date? <a href='#'>Refresh!</a></span>
 		);
 	}
 
@@ -368,7 +372,7 @@ export class SearchListControl extends Component {
 			<div className={ `woocommerce-search-list ${ className }` }>
 				{ this.renderSelectedSection() }
 
-				<div className="woocommerce-search-list__search">
+				<div className="woocommerce-search-list__search remove-margins">
 					<TextControl
 						label={ messages.search }
 						type="search"

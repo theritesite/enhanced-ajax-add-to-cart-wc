@@ -5,7 +5,7 @@
 import localStoragePolyfill from './local-storage-polyfill';
 // localStoragePolyfill();
 
-export const MAX_AGE = 86400000;
+export const MAX_AGE = 3600000;
 
 export const setWithExpiry = ( key, obj ) => {
 	if ( ! obj ) {
