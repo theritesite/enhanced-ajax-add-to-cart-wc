@@ -18,6 +18,10 @@
     padding: 8px 0;
 }
 
+.enhanced-woocommerce-add-to-cart {
+    padding: 0.25em 0;
+}
+
 .enhanced-woocommerce-add-to-cart button.eaa2c_add_to_cart_button {
     vertical-align: baseline;
 }

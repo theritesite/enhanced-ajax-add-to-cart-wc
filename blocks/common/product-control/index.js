@@ -27,12 +27,6 @@ export default class ProductControl extends Component {
 		}
 
 
-		if ( global.EAA2C ) {
-			console.log( "we made it into the global setarea" );
-			setNonce( global.EAA2C.nonce );
-			setBaseURL( global.EAA2C.baseURL );
-			console.log( global.EAA2C.baseURL + " base url" );
-		}
 		
 		const createdStores = this.createdStores;
 		const routeClassName = 'eaa2c-product-control';
@@ -86,7 +80,7 @@ export default class ProductControl extends Component {
 		const routeClassName = 'eaa2c-product-control';
 		const persistedStateKey = routeClassName;
 		// const persistedState = storageUtils.getWithExpiry( persistedStateKey );
-		storageUtils.remove( persistedStateKey );
+		// storageUtils.remove( persistedStateKey );
 		const { selected } = this.props;
 		const dispatch = this.reduxStore.dispatch;
 		console.log( "ProductControl did mount, going through dispatch now." );

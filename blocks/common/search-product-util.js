@@ -5,7 +5,7 @@ import apiFetch from '@wordpress/api-fetch';
 import { addQueryArgs } from '@wordpress/url';
 import { getSetting } from '@woocommerce/settings';
 import { flatten, uniqBy } from 'lodash';
-import { createTitle } from './title';
+import { createTitle } from './formatting/title';
 
 const getProductsRequests = ( {
 	selected = [],

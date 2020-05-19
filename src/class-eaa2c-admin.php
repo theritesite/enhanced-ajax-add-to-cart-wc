@@ -146,10 +146,11 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 
 		wp_localize_script( 'eaa2c-block-editor', 'EAA2C', array(
 			'debug'		=> 'true',
-			'curr_user' => get_current_user_id(),
 			'route'		=> get_site_url(),
 			'baseURL'	=> get_rest_url() ,
 			'nonce' 	=> wp_create_nonce( 'wp_rest' ),
+			'image'		=> get_option( 'eaa2c_image_field' ),
+			'custom'	=> get_option( 'eaa2c_custom_field' ),
 		) );
 
 		$dir = plugin_dir_path( dirname( __FILE__ ) ) . 'blocks/eaa2c/';
@@ -288,10 +289,11 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 		);
 
 		wp_localize_script( 'eaa2c-group-block-editor', 'EAA2CGROUP', array(
-			'curr_user' => get_current_user_id(),
 			'route'		=> get_site_url(),
 			'baseURL'	=> get_rest_url(),
 			'nonce' 	=> wp_create_nonce( 'wp_rest' ),
+			'image'		=> get_option( 'eaa2c_image_field' ),
+			'custom'	=> get_option( 'eaa2c_custom_field' ),
 		) );
 
 		$dir = plugin_dir_path( dirname( __FILE__ ) ) . 'blocks/eaa2c-group/';

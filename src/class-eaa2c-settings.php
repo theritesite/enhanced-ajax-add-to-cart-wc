@@ -81,6 +81,24 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Settings {
 				// 'default' => false
 			)
 		);
+		register_setting(
+			'eaa2c_settings',
+			'eaa2c_image_field',
+			array(
+				'type' => 'boolean',
+				'description' => '',
+				'show_in_rest' => true,
+			)
+		);
+		register_setting(
+			'eaa2c_settings',
+			'eaa2c_custom_field',
+			array(
+				'type' => 'boolean',
+				'description' => '',
+				'show_in_rest' => true,
+			)
+		);
 		add_settings_section(
 			'eaa2c_settings',
 			// __( 'General Settings', EAA2C_NAME ),
@@ -118,7 +136,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Settings {
 			array(
 				'name' => 'eaa2c_custom_class',
 				'type' => 'text',
-				'value' => get_option( 'eaa2c_custom_class')
+				'value' => get_option( 'eaa2c_custom_class' )
 			)
 		);
 		add_settings_field(
@@ -131,7 +149,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Settings {
 				'name' => 'eaa2c_default_text',
 				'type' => 'text',
 				'desc' => $this->get_premium_description_link(),
-				'value' => get_option( 'eaa2c_default_text'),
+				'value' => get_option( 'eaa2c_default_text' ),
 				'class' => 'disabled',
 				'disabled' => true
 			)
@@ -150,7 +168,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Settings {
 				'title' => __( 'Element Options', EAA2C_NAME )
 			)
 		);
-		$image_field = empty( get_option( 'eaa2c_image_field') ) ? 0 : get_option( 'eaa2c_image_field');
+		$image_field = empty( get_option( 'eaa2c_image_field' ) ) ? 0 : get_option( 'eaa2c_image_field' );
 		add_settings_field(
 			'eaa2c_image_field',
 			__( 'Allow images to be used on shortcodes and blocks?', EAA2C_NAME ),
@@ -160,13 +178,11 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Settings {
 			array(
 				'name' => 'eaa2c_image_field',
 				'type' => 'checkbox',
-				'desc' => $this->get_premium_description_link(),
+				// 'desc' => $this->get_premium_description_link(),
 				'value' => $image_field,
-				'class' => 'disabled',
-				'disabled' => true
 			)
 		);
-		$custom_field = empty( get_option( 'eaa2c_custom_field') ) ? 0 : get_option( 'eaa2c_custom_field');
+		$custom_field = empty( get_option( 'eaa2c_custom_field' ) ) ? 0 : get_option( 'eaa2c_custom_field' );
 		add_settings_field(
 			'eaa2c_custom_field',
 			__( 'Allow custom text input to be used on blocks?', EAA2C_NAME ),
@@ -176,10 +192,8 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Settings {
 			array(
 				'name' => 'eaa2c_custom_field',
 				'type' => 'checkbox',
-				'desc' => $this->get_premium_description_link(),
+				// 'desc' => $this->get_premium_description_link(),
 				'value' => $custom_field,
-				'class' => 'disabled',
-				'disabled' => true
 			)
 		);
 		add_settings_field(
@@ -211,7 +225,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Settings {
 				'title' => __( 'General Settings', EAA2C_NAME )
 			)
 		);
-		$blocking = empty( get_option( 'eaa2c_button_blocking') ) ? 0 : get_option( 'eaa2c_button_blocking' );
+		$blocking = empty( get_option( 'eaa2c_button_blocking' ) ) ? 0 : get_option( 'eaa2c_button_blocking' );
 		add_settings_field(
 			'eaa2c_button_blocking',
 			__( 'Block buttons per request?', EAA2C_NAME ),
@@ -249,7 +263,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Settings {
 				'value' => get_option( 'eaa2c_custom_class')
 			)
 		);
-		$debug = empty( get_option( 'eaa2c_debug') ) ? 0 : get_option( 'eaa2c_debug');
+		$debug = empty( get_option( 'eaa2c_debug' ) ) ? 0 : get_option( 'eaa2c_debug' );
 		add_settings_field(
 			'eaa2c_debug',
 			__( 'Enable debug mode?', EAA2C_NAME ),
@@ -262,7 +276,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Settings {
 				'value' => $debug
 			)
 		);
-		$dom_check = empty( get_option( 'eaa2c_dom_check') ) ? 0 : get_option( 'eaa2c_dom_check');
+		$dom_check = empty( get_option( 'eaa2c_dom_check' ) ) ? 0 : get_option( 'eaa2c_dom_check' );
 		add_settings_field(
 			'eaa2c_dom_check',
 			__( 'Check if DOM was updated per request?', EAA2C_NAME ),
@@ -287,7 +301,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Settings {
 			array(
 				'name' => 'eaa2c_default_text',
 				'type' => 'text',
-				'value' => get_option( 'eaa2c_default_text'),
+				'value' => get_option( 'eaa2c_default_text' ),
 				'desc' => $this->get_premium_description_link(),
 				'class' => 'disabled',
 				'disabled' => true
@@ -332,7 +346,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Settings {
 	}
 
 	public function get_premium_description_link() {
-		$link = sprintf( wp_kses( __( 'To us this setting, get <a href="%s">premium</a>!', EAA2C_NAME ), array( 'a' => array( 'href' => array() ) ) ), esc_url( 'https://www.theritesites.com/plugins/enhanced-ajax-add-to-cart-woocommerce' ) );
+		$link = sprintf( wp_kses( __( 'To use this setting, get <a href="%s">premium</a>!', EAA2C_NAME ), array( 'a' => array( 'href' => array() ) ) ), esc_url( 'https://www.theritesites.com/plugins/enhanced-ajax-add-to-cart-woocommerce' ) );
 		return $link;
 	}
 }

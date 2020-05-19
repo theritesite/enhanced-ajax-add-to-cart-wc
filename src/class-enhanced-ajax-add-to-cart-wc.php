@@ -122,7 +122,20 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 	}
 
     public function register_routes() {
-        $namespace = 'eaa2c/v1';
+		$namespace = 'eaa2c/v1';
+		
+		register_rest_route( $namespace, '/settings', array(
+			array(
+				'methods'   => WP_REST_Server::READABLE,
+                'callback'  => array( $this, 'get_eaa2c_settings' ),
+                // 'permissions_callback    => array( $this, '' ),
+                // 'args'      => array(
+                //     'context' => array(
+                //         'default'   => 'view',
+                //     ),
+                // ),
+            )
+		) );
 
         register_rest_route( $namespace, '/connect', array(
             array(
@@ -148,6 +161,22 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
                 // ),
             )
 		) );
+	}
+
+	public function get_eaa2c_settings( WP_REST_Request $request ) {
+		// $params = $request->get_params();
+
+		$image_sizes = apply_filters( 'image_size_names_choose',
+			array(
+				'thumbnail' => __( 'Thumbnail' ),
+				'medium'    => __( 'Medium' ),
+				'large'     => __( 'Large' ),
+				'full'      => __( 'Full Size' ),
+			)
+		);
+
+		$dat = array( 'image_sizes' => $image_sizes );
+		return wp_send_json_success( $dat );
 	}
 
 	public function get_all_products_and_variations( WP_REST_Request $request ) {

@@ -14,6 +14,39 @@ import { registerBlockType } from '@wordpress/blocks';
 
 import AddToCartBlock from './block';
 
+let trs_eaa2c_defaultContentOrder = [
+	'title',
+	'separator',
+	'price',
+	'quantity',
+	'button',
+];
+
+let trs_eaa2c_defaultContentVisibility = {
+	title: true,
+	separator: true,
+	price: true,
+	quantity: true,
+	button: true,
+}
+
+if ( global.EAA2C ) {
+	console.log( "we made it into the global setarea" );
+	let imageVal = global.EAA2C.image;
+	let customVal = global.EAA2C.custom;
+	let i = 1;
+
+	if ( imageVal === 'on' ) {
+		trs_eaa2c_defaultContentOrder.splice( 0, 0, 'image' );
+		trs_eaa2c_defaultContentVisibility = { ...trs_eaa2c_defaultContentVisibility, image: false };
+		i++;
+	}
+	if ( customVal === 'on' ) {
+		trs_eaa2c_defaultContentOrder.splice( i, 0, 'custom' );
+		trs_eaa2c_defaultContentVisibility = { ...trs_eaa2c_defaultContentVisibility, custom: false };
+	}
+}
+
 registerBlockType( 'enhanced-ajax-add-to-cart-for-wc/eaa2c', {
 	title: 'AJAX Add to Cart Block',
 	icon: 'cart',
@@ -38,27 +71,23 @@ registerBlockType( 'enhanced-ajax-add-to-cart-for-wc/eaa2c', {
 		},
 		contentVisibility: {
 			type: 'object',
-			default: {
-				title: true,
-				separator: true,
-				price: true,
-				quantity: true,
-				button: true,
-			},
+			default: trs_eaa2c_defaultContentVisibility,
 		},
 		contentOrder: {
 			type: 'array',
-			default: [
-				'title',
-				'separator',
-				'price',
-				'quantity',
-				'button',
-			],
+			default: trs_eaa2c_defaultContentOrder,
+		},
+		custom: {
+			type: 'string',
+			default: '',
 		},
 		buttonText: {
 			type: 'string',
 			default: 'Add to cart',
+		},
+		image: {
+			type: 'string',
+			default: 'thumbnail',
 		},
 		quantity: {
 			type: 'object',

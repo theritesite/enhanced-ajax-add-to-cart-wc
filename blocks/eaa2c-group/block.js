@@ -6,6 +6,7 @@ import {
 	Button,
 	ButtonGroup,
 	Disabled,
+	TextControl,
 	Toolbar,
 	withSpokenMessages,
 	Placeholder,
@@ -18,8 +19,11 @@ import _ from 'lodash';
 import { Component, Fragment } from '@wordpress/element';
 import PropTypes from 'prop-types';
 import ProductControl from '../common/product-control';
-import { formatPrice } from '../common/price';
+import { formatPrice } from '../common/formatting/price';
 import EAA2CControl from '../common/eaa2c-control';
+
+import * as api from '../common/api';
+import { setNonce, setBaseURL } from '../common/api/request';
 
 class GroupAddToCartBlock extends Component {
 	constructor( props ) {
@@ -29,6 +33,17 @@ class GroupAddToCartBlock extends Component {
 			selectedComponent: '',
 		}
 		this.onDragEnd = this.onDragEnd.bind( this );
+
+	}
+
+	componentDidMount() {
+
+		if ( global.EAA2C ) {
+			console.log( "we made it into the global setarea" );
+			setNonce( global.EAA2C.nonce );
+			setBaseURL( global.EAA2C.baseURL );
+			console.log( global.EAA2C.baseURL + " base url" );
+		}
 	}
 
 	handleTextChange(e) {
@@ -46,7 +61,7 @@ class GroupAddToCartBlock extends Component {
 
 	getItemControls( item, index ) {
 		const { attributes, setAttributes } = this.props;
-		const { contentVisibility, buttonText, quantity, titleType } = attributes;
+		const { contentVisibility, buttonText, custom, image, quantity, titleType } = attributes;
 		const { editItem, selectedComponent } = this.state;
 		const itemClassList = contentVisibility[ item ] === true ? 'trs-inner-wrapper' : 'trs-inner-wrapper disabled-item';
 		const tempItem = editItem !== 'min' && editItem !== 'max' ? 'default' : editItem;
@@ -212,6 +227,36 @@ class GroupAddToCartBlock extends Component {
 						</div>
 					: '' }
 				</div> : '' }
+				{ ( item === 'custom' ) ?
+					<div>
+						{ ( item === 'custom' && ( selectedComponent !== 'custom' || ( selectedComponent === 'custom' && editItem !== 'custom' ) ) ) ?
+							<div className="edit-component btn-cmp" onClick={ (e) => { this.setState( { editItem: 'custom' } ) } }>
+								<p className="edit-component">edit</p>
+								<p className="edit-component">custom text</p>
+							</div>
+						: '' }
+						{ ( item === 'custom' && selectedComponent === 'custom' && editItem === 'custom' ) ?
+							<div className="edit-component btn-cmp input-area">
+								<p className="edit-component">custom text</p>
+								<input
+									type="text"
+									value={ custom }
+									className={ "input-text text custom" }
+									onChange={ ( e ) => {
+										setAttributes( { custom: e.target.value } );
+									} }
+								/>
+								<button
+									onClick={ (e) => {
+										this.setState( { editItem: 'none' } );
+									} }
+								>
+									done
+								</button>
+							</div>
+						: '' }
+					</div>
+				: '' }
 			</div>
 		);
 	}
@@ -640,13 +685,13 @@ class GroupAddToCartBlock extends Component {
 													<div className="quantity">
 														<input
 															type="number"
-															id={ products[ 0 ].id }
+															id={ product.id }
 															className="input-text qty text"
 															step={ 1 }
 															defaultValue={ quantity['default'] }
 															min={ quantity['min'] }
 															max={ quantity['max'] }
-															name={ 'steven' }
+															name={ 'quantity' }
 															title={ 'quantity' }
 															hidden={ ! contentVisibility[ item ] }
 														/>
@@ -664,8 +709,8 @@ class GroupAddToCartBlock extends Component {
 									<button
 										type="submit"
 										className="eaa2c_add_to_cart_button button alt"
-										data-pid={ products[ 0 ].parent_id > 0 ? products[ 0 ].parent_id : products[ 0 ].id }
-										data-vid={ products[ 0 ].id }
+										data-pid={ product.parent_id > 0 ? product.parent_id : product.id }
+										data-vid={ product.id }
 									>
 										{ buttonText }
 									</button>

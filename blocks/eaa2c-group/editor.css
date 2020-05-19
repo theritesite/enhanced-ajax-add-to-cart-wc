@@ -73,7 +73,7 @@ label.content-element {
 	align-self: start;
 }
 
-.input-text.qty {
+.input-text.qty, .input-text.custom {
 	width: 5em;
 }
 

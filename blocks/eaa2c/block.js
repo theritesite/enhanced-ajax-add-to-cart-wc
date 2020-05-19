@@ -27,7 +27,7 @@ import _ from 'lodash';
 import { Component, Fragment } from '@wordpress/element';
 import PropTypes from 'prop-types';
 import ProductControl from '../common/product-control';
-import { formatPrice } from '../common/price';
+import { formatPrice } from '../common/formatting/price';
 import EAA2CControl from '../common/eaa2c-control';
 
 class AddToCartBlock extends Component {
@@ -36,7 +36,6 @@ class AddToCartBlock extends Component {
 		this.state = {
 			editItem: 'default',
 			selectedComponent: '',
-			list: [],
 		}
 		this.onDragEnd = this.onDragEnd.bind( this );
 	}
@@ -602,7 +601,7 @@ class AddToCartBlock extends Component {
 		const { buttonText, contentVisibility, contentOrder, products, quantity, titleType, variations } = attributes;
 		// console.log( "In render view mode." );
 
-		if ( products[ 0 ] ) {
+		if ( products[0] ) {
 			// console.log( "products 'exist'" );
 			if ( products[0].id > 0 ) {
 				// console.log( products );
@@ -628,7 +627,6 @@ class AddToCartBlock extends Component {
 										className="ea-line ea-text"
 									>
 										<span>{ product[ titleType ] }</span>
-										{/* <span>{ product[ att ] }</span> */}
 									</span>
 								);
 							} else if (  item === 'price'  && contentVisibility[ item ] === true ) {
@@ -649,13 +647,13 @@ class AddToCartBlock extends Component {
 										<div className="quantity">
 											<input
 												type="number"
-												id={ products[ 0 ].id }
+												id={ product.id }
 												className="input-text qty text"
 												step={ 1 }
 												defaultValue={ quantity['default'] }
 												min={ quantity['min'] }
 												max={ quantity['max'] }
-												name={ 'steven' }
+												name={ 'quantity' }
 												title={ 'quantity' }
 												hidden={ ! contentVisibility[ item ] }
 											/>
@@ -673,8 +671,8 @@ class AddToCartBlock extends Component {
 						<button
 							type="submit"
 							className="eaa2c_add_to_cart_button button alt"
-							data-pid={ products[ 0 ].parent_id > 0 ? products[ 0 ].parent_id : products[ 0 ].id }
-							data-vid={ products[ 0 ].id }
+							data-pid={ product.parent_id > 0 ? product.parent_id : product.id }
+							data-vid={ product.id }
 						>
 							{ buttonText }
 						</button>
