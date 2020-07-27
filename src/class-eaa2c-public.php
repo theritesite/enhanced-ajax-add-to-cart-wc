@@ -72,12 +72,18 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Public {
 				$blocking = true;
 			}
 
+			$dom_check = get_option( 'eaa2c_dom_check', false );
+			if ( strcmp( $dom_check, 'on' ) === 0 || strcmp( $dom_check, 'true' ) === 0 ) {
+				$dom_check = true;
+			}
+
 			wp_register_script( EAA2C_NAME . '-js-bundle' , $js_file, array( 'jquery', 'wc-add-to-cart' ), $this->version, false );
 			
 			wp_localize_script( EAA2C_NAME . '-js-bundle', 'EAA2C', array(
 				'ajax_url'	=> admin_url( 'admin-ajax.php' ),
-				'blocking'	=> $blocking  ,
+				'blocking'	=> $blocking,
 				'debug'		=> EAA2C_DEBUG,
+				'domCheck'	=> $dom_check,
 			));
 		}
 	}

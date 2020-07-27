@@ -20,15 +20,26 @@ We have changed the design to condense some code and make things more simple. We
 These are from how the Add to Cart button was different between variations and other types of products. They now use the same code for different product types. This will effect the selectors for styling or any other custom code relying on classes used by this plugin.
 
 = Block Documentation =
-**New "AJAX Add to Cart Block"!**
+**New "AJAX Add to Cart Block"!** and **New "Group AJAX Add to Cart Block"!**
 New and improved interface to create flexible components on any page of your website that has the block editor enabled!
 Easily toggle displays and drag-and-drop to move around objects to change the appearance of the add to cart component on the front end.
+
+The major difference between the blocks is the Group AJAX add to cart block allows the selection of multiple products. The selected display settings and stylign will be applied to all products the same in that block.
 
 Not only does the block have all the features the shortcode does, but expands further upon that allowing you to change the display order of each individual component using a visual editor!
 The block also has a product select tool so you no longer have to remember individual product or variation IDs
 
+Block fields available:
+- Title
+- Separator
+- Price
+- Quantity
+- Button
+- Image (premium setting)
+- Custom text field (premium setting)
+
 = Shortcode Documentation =
-**New Shorter Shortcode: ajax_add_to_cart is now an option for enh_ajax_add_to_cart_button**
+**New Shorter Shortcode: [ajax_add_to_cart /] is now an option for [enh_ajax_add_to_cart_button /]**
 The required field for every button is the product, with six optional fields:
 - variation (used for variable products)
 - title (to reflect the label before the button)
@@ -137,7 +148,7 @@ If your theme styles are not being applied to the quantity input, you can use th
 
 Yes!
 Shortcode: To use variable products, you must specify both the product id and the variation id in the shortcode parameters.
-Block: Select the product you want to use in the product selector!
+Block: Select the product(s) you want to use in the product selector!
 
 = Some attributes for variable products are not appearing =
 
@@ -168,9 +179,11 @@ At this point, no. This is designed to supplement your store to let the buttons 
 == Changelog ==
 
 = 2.0.0 =
-* Added AJAX Add to Cart block
-* Added "base" title option for variable products
+* Added AJAX Add to Cart block.
+* Added additional display order controls, only available in the block.
+* Added "base" title option for variable products.
 * Added extra class parameter "class" to add to the wrapper element.
+* Added min/max fields for quantity to have basic controls.
 * Fixed bug when attribute title was selected but undefined, now printing parent product name rather than nothing.
 
 = 1.5.0 =

@@ -124,7 +124,9 @@ export class SearchListControl extends Component {
 				// console.log( "calling remove" );
 				this.onRemove( item )();
 				if ( item.type === 'variation' ) {
-					this.backOne();
+					if ( isSingle ) {
+						this.backOne();
+					}
 				}
 				return;
 			}
@@ -145,7 +147,9 @@ export class SearchListControl extends Component {
 				}
 					// dispatch(ProductControlActions.fetchProductsIfNeeded( selected, '', [] ));
 					// dispatch( ProductControlActions.switchToProducts() );
-				this.backOne();
+				if ( isSingle ) {
+					this.backOne();
+				}
 				
 			}
 			else {

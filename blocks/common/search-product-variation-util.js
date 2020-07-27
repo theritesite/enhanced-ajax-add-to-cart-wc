@@ -75,6 +75,7 @@ export const getProductVariations = ( {
 				parent_id: parentProd.id,
 				type: 'variation',
 				attributes: variation.attributes,
+				images: (parentProd.images ? parentProd.images.map(image => (image.id) ) : []),
 				// raw: variation,
 				// name: parentProd.name + product.attributes.map( ( attribute ) => " " + attribute.option ),
 				// name: parentProd.name,

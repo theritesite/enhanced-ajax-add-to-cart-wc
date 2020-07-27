@@ -61,6 +61,21 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
+		
+		
+		$this->define_constants();
+		$this->plugin_name = EAA2C_NAME;
+
+		$this->load_dependencies();
+		$this->set_locale();
+		$this->register_settings();
+		$this->define_admin_hooks();
+		$this->define_public_hooks();
+		$this->start_updater();
+
+	}
+
+	public function define_constants() {
 		if ( defined( 'ENHANCED_AJAX_ADD_TO_CART' ) ) {
 			$this->version = ENHANCED_AJAX_ADD_TO_CART;
 		} else {
@@ -77,15 +92,49 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 			}
 			define( 'EAA2C_DEBUG', $debug );
 		}
+
+		if ( ! defined( 'EAA2C_UPDATER_URL' ) ) {
+			// define( 'EAA2C_UPDATER_URL', 'https://www.theritesites.com' );
+			define( 'EAA2C_UPDATER_URL', 'https://test-theritesites.pantheonsite.io' );
+		}
+
+		if ( ! defined( 'EAA2C_ITEM_ID' ) ) {
+			define( 'EAA2C_ITEM_ID', 1952 );
+		}
+
+		if ( ! defined( 'EAA2C_LICENSE_PAGE' ) ) {
+			define( 'EAA2C_LICENSE_PAGE', 'the_rite_plugins_settings' );
+		}
+
+		if ( ! defined( 'EAA2C_ITEM_NAME' ) ) {
+			define( 'EAA2C_ITEM_NAME', 'Enhanced AJAX Add to Cart for WooCommerce' );
+		}
+
+		if ( ! defined( 'EAA2C_LICENSE_KEY' ) ) {
+			define( 'EAA2C_LICENSE_KEY', 'trs_eaa2c_license_key' );
+		}
+
+		if ( ! defined( 'EAA2C_LICENSE_STATUS' ) ) {
+			define( 'EAA2C_LICENSE_STATUS', 'trs_eaa2c_license_status' );
+		}
+	}
+
+	public function start_updater() {
+		if ( ! class_exists( 'EAA2C_Plugin_Updater' ) ) {
+			// load our custom updater
+			include( dirname( __FILE__ ) . '/class-eaa2c-plugin-updater.php' );
+		}
 		
-		$this->plugin_name = EAA2C_NAME;
-
-		$this->load_dependencies();
-		$this->set_locale();
-		$this->register_settings();
-		$this->define_admin_hooks();
-		$this->define_public_hooks();
-
+		$license_key = get_option( EAA2C_LICENSE_KEY );
+		
+		$this->plugin_updater = new EAA2C_Plugin_Updater( EAA2C_UPDATER_URL, __FILE__, array(
+							'version'	=> ENHANCED_AJAX_ADD_TO_CART,
+							'license'	=> $license_key,
+							'item_id'	=> EAA2C_ITEM_ID,
+							'author'	=> 'TheRiteSites',
+							'url'		=> home_url()
+				)
+		);
 	}
 
 	/**
@@ -137,6 +186,19 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
             )
 		) );
 
+		register_rest_route( $namespace, '/product-image/' . '(?P<id>[\d-]+)', array(
+			array(
+				'methods'   => WP_REST_Server::READABLE,
+                'callback'  => array( $this, 'get_eaa2c_product_image' ),
+                // 'permissions_callback    => array( $this, '' ),
+                // 'args'      => array(
+                //     'context' => array(
+                //         'default'   => 'view',
+                //     ),
+                // ),
+            )
+		) );
+
         register_rest_route( $namespace, '/connect', array(
             array(
                 'methods'   => WP_REST_Server::ALLMETHODS,
@@ -161,6 +223,44 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
                 // ),
             )
 		) );
+	}
+
+	public function get_eaa2c_product_image( WP_REST_Request $request ) {
+		global $_wp_additional_image_sizes;
+		$image = array( 'src' => '', 'width' => 0, 'height' => 0 );
+		$params = $request->get_params();
+		$sizes = apply_filters( 'image_size_names_choose',
+			array(
+				'thumbnail' => __( 'Thumbnail' ),
+				'medium'    => __( 'Medium' ),
+				'large'     => __( 'Large' ),
+				'full'      => __( 'Full Size' ),
+			)
+		);
+		// $params['sizes'] = $_wp_additional_image_sizes;
+		$params['sizes'] = $sizes;
+
+		$product = wc_get_product( $params['id'] );
+		if ( $product ) {
+			$image_id = $product->get_image_id();
+
+			if ( $image_id > 0 && in_array( $params['type'] , array_keys( $sizes ) ) ) {
+				$temp = wp_get_attachment_image_src( $image_id, $params['type'] );
+				if ( is_array( $temp ) ) {
+					if ( isset( $temp[0] ) ) {
+						$image['src'] = $temp[0];
+					}
+					if ( isset( $temp[1] ) ) {
+						$image['width'] = $temp[1];
+					}
+					if ( isset( $temp[2] ) ) {
+						$image['height'] = $temp[2];
+					}
+				}
+			}
+		}
+
+		return wp_send_json_success( $image );
 	}
 
 	public function get_eaa2c_settings( WP_REST_Request $request ) {
@@ -266,6 +366,9 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 
 		$this->loader->add_action( 'init', $this->plugin_admin, 'register_eaa2c_single', 9999 );
 		$this->loader->add_action( 'init', $this->plugin_admin, 'register_eaa2c_group', 9999 );
+		$this->loader->add_action( 'admin_notices', $this->plugin_admin, 'handle_admin_notices' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $this->plugin_admin, 'register_scripts' );
+
 		// add_action( 'admin_notices', array( $this, 'register_app_rest' ) );
 		add_action( 'rest_api_init', array( $this, 'register_routes' ) );
 

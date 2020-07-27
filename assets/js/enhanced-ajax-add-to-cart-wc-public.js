@@ -16,6 +16,18 @@ jQuery( function( $ ) {
 		self.showValidation = self.showValidation.bind( self );
 		self.showNotices = self.showNotices.bind( self );
 		self.scrollToNotices = self.scrollToNotices.bind( self );
+		self.blockButtons = self.blockButtons.bind( self );
+		self.unblockButtons = self.unblockButtons.bind( self );
+
+		if ( true == EAA2C.blocking ) {
+			$( document.body )
+				.on( 'click', '.variable_add_to_cart_button', this.blockButtons )
+				.on( 'click', '.simple_add_to_cart_button', this.blockButtons )
+				.on( 'click', '.eaa2c_add_to_cart_button', this.blockButtons )
+				.on( 'added_to_cart', this.unblockButtons )
+				.on( 'notices_received', this.unblockButtons );
+		}
+
 		$( document.body )
 			.on( 'click', '.variable_add_to_cart_button', this.onAddAnyToCart )
 			.on( 'click', '.simple_add_to_cart_button', this.onAddAnyToCart )
@@ -26,13 +38,6 @@ jQuery( function( $ ) {
 			.on( 'notices_received', this.showNotices )
 			.on( 'validation_message', this.showValidation );
 
-		if ( true == EAA2C.blocking ) {
-			$( document.body )
-				.on( 'click', '.variable_add_to_cart_button', this.blockButtons )
-				.on( 'click', '.simple_add_to_cart_button', this.blockButtons )
-				.on( 'click', '.eaa2c_add_to_cart_button', this.blockButtons )
-				.on( 'added_to_cart', this.unblockButtons );
-		}
 	};
 
 	AddToCartHandler.prototype.blockButtons = function( e ) {
@@ -66,9 +71,14 @@ jQuery( function( $ ) {
 		var min = 0;
 		var max = 0;
 
-		$.each( $thisbutton.data(), function( key, value ) {
-			data[ key ] = value;
-		});
+		if ( true === EAA2C.domCheck ) {
+			data['pid'] = parseInt( $thisbutton.data('pid') );
+			data['vid'] = parseInt( $thisbutton.data('vid') );
+		} else {
+			$.each( $( this ).data(), function( key, value ) {
+				data[ key ] = value;
+			});
+		}
 
 		qty = $( this ).siblings( '.quantity-container' ).find( 'input.input-text.qty.text' );
 		data[ 'action' ] = 'eaa2c_add_to_cart';
@@ -101,6 +111,8 @@ jQuery( function( $ ) {
 					variable: data[ 'vid' ],
 					quantity: data[ 'qty' ],
 					action:   'eaa2c_add_to_cart',
+					eaa2c_action: true,
+					'wc-ajax': true,
 				},
 				success: function( response ) {
 					if ( EAA2C.debug ) {
@@ -145,9 +157,14 @@ jQuery( function( $ ) {
 
 		var data = {};
 
-		$.each( $( this ).data(), function( key, value ) {
-			data[ key ] = value;
-		});
+		if ( true === EAA2C.domCheck ) {
+			data['pid'] = parseInt( $thisbutton.data('pid') );
+			data['vid'] = parseInt( $thisbutton.data('vid') );
+		} else {
+			$.each( $( this ).data(), function( key, value ) {
+				data[ key ] = value;
+			});
+		}
 
 		data[ 'qty' ]	 = $thisbutton.siblings( '.quantity-container' ).find( 'input' ).val();
 		data[ 'action' ] = 'variable_add_to_cart';
@@ -163,6 +180,8 @@ jQuery( function( $ ) {
 				variable: data[ 'vid' ],
 				quantity: data[ 'qty' ],
 				action:   'variable_add_to_cart',
+				eaa2c_action: true,
+				'wc-ajax': true,
 			},
 			success: function( response ) {
 				if ( EAA2C.debug ) {
@@ -196,9 +215,14 @@ jQuery( function( $ ) {
 
 		var data = {};
 
-		$.each( $thisbutton.data(), function( key, value ) {
-			data[ key ] = value;
-		});
+		if ( true === EAA2C.domCheck ) {
+			data['pid'] = parseInt( $thisbutton.data('pid') );
+			data['vid'] = parseInt( $thisbutton.data('vid') );
+		} else {
+			$.each( $( this ).data(), function( key, value ) {
+				data[ key ] = value;
+			});
+		}
 
 		data[ 'qty' ]    = $( this ).siblings( '.quantity-container' ).find( 'input.input-text.qty.text' ).val();
 		data[ 'action' ] = 'simple_add_to_cart';
@@ -212,7 +236,9 @@ jQuery( function( $ ) {
 			data:{
 				product:  data['pid'],
 				quantity: data['qty'],
-				action:   'simple_add_to_cart'
+				action:   'simple_add_to_cart',
+				eaa2c_action: true,
+				'wc-ajax': true,
 			},
 			success: function( response ) {
 				if ( EAA2C.debug ) {
@@ -299,9 +325,10 @@ jQuery( function( $ ) {
 		$( '.woocommerce-error, .woocommerce-message' ).remove();
 		var domTarget = $( '.content-area' );
 		console.log( target );
-
+		console.log( "showing notices" );
 		domTarget.before( target );
 		this.scrollToNotices();
+		// this.unblockButtons();
 	}
 
 	AddToCartHandler.prototype.scrollToNotices = function( e ) {

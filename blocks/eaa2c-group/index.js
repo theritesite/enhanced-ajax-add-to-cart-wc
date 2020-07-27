@@ -22,10 +22,13 @@ let trs_eaa2c_defaultContentVisibility = {
 	button: true,
 }
 
+let trs_eaa2c_defaultButtonText = 'Add to cart';
+
 if ( global.EAA2CGROUP ) {
 	console.log( "we made it into the global setarea" );
 	let imageVal = global.EAA2CGROUP.image;
 	let customVal = global.EAA2CGROUP.custom;
+	let trs_eaa2c_buttonText = global.EAA2CGROUP.buttonText;
 	let i = 1;
 
 	if ( imageVal === 'on' ) {
@@ -36,6 +39,9 @@ if ( global.EAA2CGROUP ) {
 	if ( customVal === 'on' ) {
 		trs_eaa2c_defaultContentOrder.splice( i, 0, 'custom' );
 		trs_eaa2c_defaultContentVisibility = { ...trs_eaa2c_defaultContentVisibility, custom: false };
+	}
+	if ( trs_eaa2c_buttonText && trs_eaa2c_buttonText !== undefined && trs_eaa2c_buttonText.length > 0 ) {
+		trs_eaa2c_defaultButtonText = trs_eaa2c_buttonText;
 	}
 }
 
@@ -75,7 +81,7 @@ registerBlockType( 'enhanced-ajax-add-to-cart-for-wc/eaa2c-group', {
 		},
 		buttonText: {
 			type: 'string',
-			default: 'Add to cart',
+			default: trs_eaa2c_defaultButtonText,
 		},
 		image: {
 			type: 'string',

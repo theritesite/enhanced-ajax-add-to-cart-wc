@@ -72,6 +72,17 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Settings {
 		);
 		register_setting(
 			'eaa2c_settings',
+			'eaa2c_default_text',
+			array(
+				'type' => 'text',
+				'description' => '',
+				// 'sanitize_callback' => array( $this, '' ),
+				'show_in_rest' => true
+				// 'default' => false
+			)
+		);
+		register_setting(
+			'eaa2c_settings',
 			'eaa2c_out_of_stock',
 			array(
 				'type' => 'boolean',
@@ -99,6 +110,15 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Settings {
 				'show_in_rest' => true,
 			)
 		);
+		register_setting(
+			'eaa2c_settings',
+			EAA2C_LICENSE_KEY,
+			array(
+				'type' => 'text',
+				'description' => '',
+				'show_in_rest' => true,
+			)
+		);
 		add_settings_section(
 			'eaa2c_settings',
 			// __( 'General Settings', EAA2C_NAME ),
@@ -116,6 +136,18 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Settings {
 	}
 
 	public function render_display_options() {
+		add_settings_field(
+			EAA2C_LICENSE_KEY,
+			'Premium License Key?',
+			array( $this, 'trs_license_setting_field' ),
+			$this->settings_page,
+			'eaa2c_settings',
+			array(
+				'name' => EAA2C_LICENSE_KEY,
+				'type' => 'license',
+				'value' => get_option( EAA2C_LICENSE_KEY ),
+			)
+		);
 		add_settings_field(
 			'eaa2c_display_subheading',
 			// __( 'Display Options', EAA2C_NAME ),
@@ -148,10 +180,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Settings {
 			array(
 				'name' => 'eaa2c_default_text',
 				'type' => 'text',
-				'desc' => $this->get_premium_description_link(),
 				'value' => get_option( 'eaa2c_default_text' ),
-				'class' => 'disabled',
-				'disabled' => true
 			)
 		);
 	}
@@ -159,7 +188,6 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Settings {
 	public function render_element_options() {
 		add_settings_field(
 			'eaa2c_element_subheading',
-			// __( 'Element Options', EAA2C_NAME ),
 			'',
 			array( $this, 'subheading' ),
 			$this->settings_page,
@@ -194,21 +222,6 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Settings {
 				'type' => 'checkbox',
 				// 'desc' => $this->get_premium_description_link(),
 				'value' => $custom_field,
-			)
-		);
-		add_settings_field(
-			'eaa2c_default_text',
-			__( 'Change default "Add to Cart" text?', EAA2C_NAME ),
-			array( $this, 'text_input' ),
-			$this->settings_page,
-			'eaa2c_settings',
-			array(
-				'name' => 'eaa2c_default_text',
-				'type' => 'text',
-				'desc' => $this->get_premium_description_link(),
-				'value' => get_option( 'eaa2c_default_text'),
-				'class' => 'disabled',
-				'disabled' => true
 			)
 		);
 	}
@@ -287,12 +300,12 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Settings {
 				'name' => 'eaa2c_dom_check',
 				'type' => 'checkbox',
 				'value' => $dom_check,
-				'class' => 'disabled',
-				'desc' => $this->get_premium_description_link(),
-				'disabled' => true
+				// 'class' => 'disabled',
+				// 'desc' => $this->get_premium_description_link(),
+				// 'disabled' => true
 			)
 		);
-		add_settings_field(
+		/*add_settings_field(
 			'eaa2c_default_text',
 			__( 'Change default "Add to Cart" text?', EAA2C_NAME ),
 			array( $this, 'text_input' ),
@@ -302,11 +315,11 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Settings {
 				'name' => 'eaa2c_default_text',
 				'type' => 'text',
 				'value' => get_option( 'eaa2c_default_text' ),
-				'desc' => $this->get_premium_description_link(),
-				'class' => 'disabled',
-				'disabled' => true
+				// 'desc' => $this->get_premium_description_link(),
+				// 'class' => 'disabled',
+				// 'disabled' => true
 			)
-		);
+		);*/
 	}
 
 	public function toggle_button( $args ) {
@@ -328,6 +341,28 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Settings {
 
 	public function subheading( $args ) {
 		echo '<h3>' . $args['title'] . '</h3>';
+	}
+
+	public function trs_license_setting_field( $args ) {
+		if ( ! is_admin() )
+			return;
+		$license_status = get_option( EAA2C_LICENSE_STATUS );
+		$license_key = get_option( EAA2C_LICENSE_KEY );
+		
+		wp_enqueue_script( 'eaa2c-settings' );
+
+		echo '<input type="text" id="trs_eaa2c_key" name="' . $args['name'] . '" value="' . esc_attr($license_key) . '" />';
+
+		if ( $license_status !== 'valid' ) {
+			// echo wp_nonce_field( 'trs_activate_eaa2c', 'eaa2c_nonce' );
+			echo '<input type="submit" class="button-secondary" id="eaa2c_activate" name="eaa2c_activate" value="Activate" />';
+		}
+		else {
+			// echo wp_nonce_field( 'trs_deactivate_eaa2c', 'eaa2c_nonce' );
+			echo '<input type="submit" class="button-secondary" id="eaa2c_deactivate" name="eaa2c_deactivate" value="Deactivate" />';
+			
+		}
+		echo '<span>License status: ' . $license_status . '</span>';
 	}
 
 	public function eaa2c_settings_page_callback() {

@@ -55,17 +55,19 @@ export const getProducts = ( {
 	return Promise.all( requests.map( ( path ) => apiFetch( { path } ) ) )
 		.then( ( data ) => {
 			const products = uniqBy( flatten( data ), 'id' );
+			var title = '';
 			// console.log( "we are after the flatten" );
 			const list = products.map( ( product ) => ( {
-				name: createTitle( { product: product, variation: [], titleType: 'base' } ),
+				name: title = createTitle( { product: product, variation: [], titleType: 'base' } ),
 				id: product.id,
-				full: createTitle( { product: product, variation: [], titleType: 'base' } ),
-				base: createTitle( { product: product, variation: [], titleType: 'base' } ),
-				att: createTitle( { product: product, variation: [], titleType: 'base' } ),
+				full: title,
+				base: title,
+				att: title,
 				price: product.price,
 				type: product.type,
 				// attributes: product.attributes,
 				children: product.variations,
+				images: (product.images ? product.images.map(image => (image.id) ) : []),
 				// raw: product,
 				// ...product,
 				// parent: 0,

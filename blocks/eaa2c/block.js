@@ -15,6 +15,7 @@ import {
 	Button,
 	ButtonGroup,
 	Disabled,
+	SelectControl,
 	Toolbar,
 	withSpokenMessages,
 	Placeholder,
@@ -29,6 +30,7 @@ import PropTypes from 'prop-types';
 import ProductControl from '../common/product-control';
 import { formatPrice } from '../common/formatting/price';
 import EAA2CControl from '../common/eaa2c-control';
+import { setNonce, setBaseURL } from '../common/api/request';
 
 class AddToCartBlock extends Component {
 	constructor( props ) {
@@ -38,6 +40,16 @@ class AddToCartBlock extends Component {
 			selectedComponent: '',
 		}
 		this.onDragEnd = this.onDragEnd.bind( this );
+	}
+	
+	componentDidMount() {
+		if ( global.EAA2C ) {
+			// console.log( "we made it into the global setarea" );
+			setNonce( global.EAA2C.nonce );
+			setBaseURL( global.EAA2C.baseURL );
+			this.setState( { imageSizes: global.EAA2C.imageSizes } );
+			// console.log( global.EAA2C.baseURL + " base url" );
+		}
 	}
 
 	handleTextChange(e) {
@@ -55,8 +67,8 @@ class AddToCartBlock extends Component {
 
 	getItemControls( item, index ) {
 		const { attributes, setAttributes } = this.props;
-		const { contentVisibility, buttonText, quantity, titleType } = attributes;
-		const { editItem, selectedComponent } = this.state;
+		const { contentVisibility, buttonText, custom, image, quantity, titleType } = attributes;
+		const { editItem, imageSizes, selectedComponent } = this.state;
 		const itemClassList = contentVisibility[ item ] === true ? 'trs-inner-wrapper' : 'trs-inner-wrapper disabled-item';
 		const tempItem = editItem !== 'min' && editItem !== 'max' ? 'default' : editItem;
 
@@ -221,6 +233,63 @@ class AddToCartBlock extends Component {
 						</div>
 					: '' }
 				</div> : '' }
+				{ ( item === 'custom' ) ?
+					<div>
+						{ ( item === 'custom' && ( selectedComponent !== 'custom' || ( selectedComponent === 'custom' && editItem !== 'custom' ) ) ) ?
+							<div className="edit-component btn-cmp" onClick={ (e) => { this.setState( { editItem: 'custom' } ) } }>
+								<p className="edit-component">edit</p>
+								<p className="edit-component">custom text</p>
+							</div>
+						: '' }
+						{ ( item === 'custom' && selectedComponent === 'custom' && editItem === 'custom' ) ?
+							<div className="edit-component btn-cmp input-area">
+								<p className="edit-component">custom text</p>
+								<input
+									type="text"
+									value={ custom }
+									className={ "input-text text custom" }
+									onChange={ ( e ) => {
+										setAttributes( { custom: e.target.value } );
+									} }
+								/>
+								<button
+									onClick={ (e) => {
+										this.setState( { editItem: 'none' } );
+									} }
+								>
+									done
+								</button>
+							</div>
+						: '' }
+					</div>
+				: '' }
+				{ ( item === 'image' ) ?
+					<div>
+						{ ( item === 'image' && ( selectedComponent !== 'image' || ( selectedComponent === 'image' && editItem !== 'image' ) ) ) ?
+							<div className="edit-component btn-cmp" onClick={ (e) => { this.setState( { editItem: 'image' } ) } }>
+								<p className="edit-component">edit type</p>
+							</div>
+						: '' }
+						{ ( item === 'image' && selectedComponent === 'image' && editItem === 'image' ) ?
+							<div className="edit-component btn-cmp input-area">
+								<p className="edit-component">select image type...</p>
+								<SelectControl
+									className='eaa2c-select image-size'
+									value={ image }
+									onChange={ ( imageSize ) => { setAttributes({ image: imageSize }) } }
+									options={ Object.keys(imageSizes).map( (key) => ({ value: key, label: imageSizes[key] })) }
+								/>
+								<button
+									onClick={ (e) => {
+										this.setState( { editItem: 'none' } );
+									} }
+								>
+									done
+								</button>
+							</div>
+						: '' }
+					</div>
+				: '' }
 			</div>
 		);
 	}
@@ -588,7 +657,7 @@ class AddToCartBlock extends Component {
 						} }
 						multiple={ false }
 					/>
-					<Button onClick={ onDone }>
+					<Button isSecondary onClick={ onDone }>
 						{ __( 'Done', 'enhanced-ajax-add-to-cart-wc' ) }
 					</Button>
 				</div>
@@ -598,8 +667,14 @@ class AddToCartBlock extends Component {
 
 	renderViewMode() {
 		const { attributes, className } = this.props;
-		const { buttonText, contentVisibility, contentOrder, products, quantity, titleType, variations } = attributes;
+		const { buttonText, contentVisibility, contentOrder, custom, image, products, quantity, titleType, variations } = attributes;
 		// console.log( "In render view mode." );
+		let customClass = '';
+
+		if ( global.EAA2C && global.EAA2C.customClass !== undefined && global.EAA2C.customClass.length > 0 ) {
+			let customClassSetting = global.EAA2C.customClass;
+			customClass = customClassSetting.replace(/(<([^>]+)>)/ig,"");
+		}
 
 		if ( products[0] ) {
 			// console.log( "products 'exist'" );
@@ -608,7 +683,7 @@ class AddToCartBlock extends Component {
 				const product = products[0];
 				const title = product[titleType];
 				return (
-					<div className={ "enhanced-woocommerce-add-to-cart " + className }>
+					<div className={ "enhanced-woocommerce-add-to-cart " + className + " " + customClass }>
 						{ contentOrder.map( ( item, index ) => {
 							if ( item === 'title' && contentVisibility[ item ] === true ) {
 								return (
@@ -666,16 +741,44 @@ class AddToCartBlock extends Component {
 										<span className="ea-separator"></span>
 									</span>
 								);
+							} else if ( item === 'custom' && contentVisibility[ item ] === true ) {
+								return (
+									<span
+										key={ index }
+										className="ea-line ea-text"
+									>
+										<span>{ custom }</span>
+									</span>
+								);
+							} else if ( item === 'image' && contentVisibility[ item ] === true ) {
+								
+								if ( imageSrc[product.id] === undefined ) {
+									return ( 
+										<span key={index} className="ea-line ea-image loading">
+											<span> loading </span>
+										</span>
+									);
+								}
+								else {
+									return (
+										<span key={index} className="ea-line ea-image">
+											<img src={ imageSrc[product.id][image].src } width={ imageSrc[product.id][image].width } height={ imageSrc[product.id][image].height } />
+										</span>
+									);
+								}
+							} else if ( item === 'button' && contentVisibility[ item ] === true ) {
+								return (
+									<button
+										type="submit"
+										className="eaa2c_add_to_cart_button button alt"
+										data-pid={ product.parent_id > 0 ? product.parent_id : product.id }
+										data-vid={ product.id }
+									>
+										{ buttonText }
+									</button>
+								);
 							}
 						} ) }
-						<button
-							type="submit"
-							className="eaa2c_add_to_cart_button button alt"
-							data-pid={ product.parent_id > 0 ? product.parent_id : product.id }
-							data-vid={ product.id }
-						>
-							{ buttonText }
-						</button>
 					</div>
 				);
 			}

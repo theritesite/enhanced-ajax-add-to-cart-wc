@@ -7,6 +7,7 @@ const namespace = 'eaa2c/v1/';
 const wc_namespace = 'wc/v3/';
 
 export const products = () => `${ wc_namespace }products`
+export const productImage = () => `${ wc_namespace }product-image/${ product.ID }?type=${ attribute.image }`
 export const variations = () => `${ wc_namespace }products/${ product.ID }/variations`
 export const settings = () => `${ namespace }settings`
 
