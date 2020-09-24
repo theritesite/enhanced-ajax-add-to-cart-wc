@@ -13,7 +13,7 @@ Creates a new block and shortcode that allows customers to add WooCommerce produ
 
 == Description ==
 
-This extension for [WooCommerce](https://www.woocommerce.com) allows you to render an AJAX button with an associated quantity field. Create effective and functional buttons to use for your or your customers convenience anywhere on your site you want!
+This extension for [WooCommerce](https://www.woocommerce.com) allows you to render a non-redirect button with an associated quantity field. Create effective and functional buttons to use for your or your customers convenience anywhere on your site you want!
 
 **Breaking Changes in 2.0**
 We have changed the design to condense some code and make things more simple. We have deprecated some javascript and server side PHP functions and have added deprecated notices.
@@ -24,7 +24,7 @@ These are from how the Add to Cart button was different between variations and o
 New and improved interface to create flexible components on any page of your website that has the block editor enabled!
 Easily toggle displays and drag-and-drop to move around objects to change the appearance of the add to cart component on the front end.
 
-The major difference between the blocks is the Group AJAX add to cart block allows the selection of multiple products. The selected display settings and stylign will be applied to all products the same in that block.
+The major difference between the blocks is the Group AJAX add to cart block allows the selection of multiple products. The selected display settings and styling will be applied to all products the same in that block.
 
 Not only does the block have all the features the shortcode does, but expands further upon that allowing you to change the display order of each individual component using a visual editor!
 The block also has a product select tool so you no longer have to remember individual product or variation IDs
@@ -37,6 +37,7 @@ Block fields available:
 - Button
 - Image (premium setting)
 - Custom text field (premium setting)
+- Short Description (premium setting)
 
 = Shortcode Documentation =
 **New Shorter Shortcode: [ajax_add_to_cart /] is now an option for [enh_ajax_add_to_cart_button /]**
@@ -182,8 +183,13 @@ At this point, no. This is designed to supplement your store to let the buttons 
 * Added AJAX Add to Cart block.
 * Added additional display order controls, only available in the block.
 * Added "base" title option for variable products.
-* Added extra class parameter "class" to add to the wrapper element.
+* Added extra class parameter "class" to add to the wrapper element for all button blocks/shortcodes.
 * Added min/max fields for quantity to have basic controls.
+* Added "custom", "image", and "short description" fields to be displayable.
+* Added php filter 'eaa2c_button_row_additional_fields' to display additional content on a shortcode or block (filter is passed a blank string and the product id)
+* Added php filter 'eaa2c_button_row_custom_field' to allow for the custom field to be flexible with the product (filter is passed default html and the product id)
+* Added php filter 'eaa2c_button_row_wrap_override' to disable the new Group EAA2C display wrapping element.
+* Standardized printing of shortcodes and blocks, along with product types.
 * Fixed bug when attribute title was selected but undefined, now printing parent product name rather than nothing.
 
 = 1.5.0 =

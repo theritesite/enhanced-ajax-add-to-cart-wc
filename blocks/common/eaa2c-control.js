@@ -36,6 +36,9 @@ const EAA2CControl = ( { error, onChange, item, value, title } ) => {
 				checked={ value }
 				onChange={ onChange }
 				className="trs-toggle"
+				role="checkbox"
+				aria-label={ _.startCase( _.lowerCase( item ) ) + " toggle switch" }
+				aria-describedby="This button will toggle if the element is visible"
 			/>
 		</div>
 	);

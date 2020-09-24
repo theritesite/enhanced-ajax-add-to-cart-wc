@@ -8,6 +8,10 @@
 	width: 100%;
 }
 
+.eaa2c-block-placeholder .components-placeholder__fieldset {
+	max-width: 100%;
+}
+
 /* Makes the displayable options container pop out */
 .trs-display-controls {
 	border: 1px solid lightgray;

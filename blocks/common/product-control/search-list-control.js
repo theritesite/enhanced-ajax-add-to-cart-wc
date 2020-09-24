@@ -95,18 +95,18 @@ export class SearchListControl extends Component {
 		const { isSingle, onChange, selected, dispatch } = this.props;
 		const id = item.id;
 		return () => {
-			console.log( "executing onremove with id: " + id );
+			// console.log( "executing onremove with id: " + id );
 			if ( this.isSelected( item ) ) {
-				console.log( "item is selected, continuing to remove." );
+				// console.log( "item is selected, continuing to remove." );
 				const i = findIndex( selected, { id } );
 				dispatch( ProductControlActions.removeSelected( item ) );
 
 				if ( isSingle ) {
 					onChange( [] );
 				} else {
-					console.log( "index: " + i );
-					console.log( selected );
-					console.log( "id: " + id );
+					// console.log( "index: " + i );
+					// console.log( selected );
+					// console.log( "id: " + id );
 					onChange( [
 						...selected.slice( 0, i ),
 						...selected.slice( i + 1 ),

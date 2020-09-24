@@ -112,6 +112,15 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Settings {
 		);
 		register_setting(
 			'eaa2c_settings',
+			'eaa2c_short_description',
+			array(
+				'type' => 'boolean',
+				'description' => '',
+				'show_in_rest' => true,
+			)
+		);
+		register_setting(
+			'eaa2c_settings',
 			EAA2C_LICENSE_KEY,
 			array(
 				'type' => 'text',
@@ -193,7 +202,8 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Settings {
 			$this->settings_page,
 			'eaa2c_settings',
 			array(
-				'title' => __( 'Element Options', EAA2C_NAME )
+				'title' => __( 'Element Options', EAA2C_NAME ),
+				'desc' => __( 'Warning: disabling these elements might cause you to lose some data, like the order and visibility of these elements.')
 			)
 		);
 		$image_field = empty( get_option( 'eaa2c_image_field' ) ) ? 0 : get_option( 'eaa2c_image_field' );
@@ -222,6 +232,20 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Settings {
 				'type' => 'checkbox',
 				// 'desc' => $this->get_premium_description_link(),
 				'value' => $custom_field,
+			)
+		);
+		$short_description = empty( get_option( 'eaa2c_short_description' ) ) ? 0 : get_option( 'eaa2c_short_description' );
+		add_settings_field(
+			'eaa2c_short_description',
+			__( 'Allow WC Product Short Description to be used on blocks?', EAA2C_NAME ),
+			array( $this, 'toggle_button' ),
+			$this->settings_page,
+			'eaa2c_settings',
+			array(
+				'name' => 'eaa2c_short_description',
+				'type' => 'checkbox',
+				// 'desc' => $this->get_premium_description_link(),
+				'value' => $short_description,
 			)
 		);
 	}
@@ -341,6 +365,9 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Settings {
 
 	public function subheading( $args ) {
 		echo '<h3>' . $args['title'] . '</h3>';
+		if ( ! empty( $args['desc'] ) ) {
+			echo '<p class="description">' . $args['desc'] . '</p>';
+		}
 	}
 
 	public function trs_license_setting_field( $args ) {

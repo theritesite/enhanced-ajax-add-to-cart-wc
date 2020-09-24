@@ -26,7 +26,7 @@ export const REMOVE_ALL_SELECTED = 'REMOVE_ALL_SELECTED';
 export const CLEAR_LISTS = 'CLEAR_LISTS';
 
 export function switchToProducts() {
-	console.log( "switching ot products list" );
+	// console.log( "switching to products list" );
 	return {
 		type: SWITCH_TO_PROD,
 	}
@@ -41,7 +41,7 @@ export function switchToVariations( parent ) {
 }
 
 export function fetchProducts( selected, search, args ) {
-	console.log( "hello there" );
+	// console.log( "fetching products" );
 	return dispatch => {
 		dispatch( requestProducts( selected, search, args ) )
 		return getProducts( { selected, search, args } )
@@ -67,7 +67,7 @@ export function fetchVariations( parentProd, selected, search, args ) {
 	// 	search,
 	// 	args,
 	// };
-	console.log( "hello there variations" );
+	// console.log( "fetching variations of parent product:" );
 	// console.log( parentProd );
 	return dispatch => {
 		dispatch( requestVariations( parentProd, selected, search, args ) )
@@ -88,7 +88,7 @@ function requestVariations( parent, selected, search, args ) {
 }
 
 export function setSelected( product, single ) {
-	console.log( "called and reached setSelected." );
+	// console.log( "called and reached setSelected." );
 	return {
 		type: SET_SELECTED,
 		product,
@@ -145,21 +145,21 @@ export function removeAllSelected() {
 function shouldFetchProducts( state, selected, search, args ) {
 	const { products, isLoading, error } = state;
 	if ( ! products || ( products && products.length < 1 ) ) {
-		console.log( "no products exist, sending!" );
+		// console.log( "no products exist, sending!" );
 		return true;
 	} else if ( isLoading ) {
 		return false;
 	} else {
-		console.log( "there was an error with products fetching." );
+		console.error( "there was an error with products fetching." );
 		return false;
 	}
 }
 
 export function fetchProductsIfNeeded( selected, search, args ) {
-	console.log( "in fetchProductsIfNeeded." );
+	// console.log( "in fetchProductsIfNeeded." );
 	return ( dispatch, getState ) => {
 		if ( shouldFetchProducts( getState(), selected, search, args ) ) {
-			console.log( "sending fetch dispatch." );
+			// console.log( "sending fetch dispatch." );
 			return dispatch( fetchProducts( selected, search, args ) );
 		} else if ( getState().products ) {
 			// return {
@@ -192,7 +192,7 @@ function shouldFetchVariations( state, parent, selected, search, args ) {
 }
 
 export function fetchVariationsIfNeeded( parent, selected, search, args ) {
-	console.log( "in fetchVariationsIfNeeded." );
+	// console.log( "in fetchVariationsIfNeeded." );
 	// console.log( parent );
 	return ( dispatch, getState ) => {
 		const { variations } = getState();
@@ -215,7 +215,7 @@ export function fetchVariationsIfNeeded( parent, selected, search, args ) {
 }
 
 export function clearLists() {
-	console.log( "in clear lists." );
+	// console.log( "in clear lists." );
 	return {
 		type: CLEAR_LISTS,
 	};

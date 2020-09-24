@@ -51,7 +51,7 @@ export class ProductControler extends Component {
 	}
 
 	componentDidMount() {
-		console.log( "ProductControler Mounted." );
+		// console.log( "ProductController Mounted." );
 	}
 
 	render() {

@@ -20,8 +20,11 @@ export default ( response ) => {
 		try {
 			return JSON.parse( text );
 		} catch ( error ) {
-			console.error( error ); // eslint-disable-line no-console
-			console.error( text ); // eslint-disable-line no-console
+			if ( global.EAA2C && global.EAA2C.debug && 'false' !== global.EAA2C.debug ) {
+				console.error( "Error parsing the JSON passed from the response." ); // eslint-disable-line no-console
+				console.error( error ); // eslint-disable-line no-console
+				console.error( text ); // eslint-disable-line no-console
+			}
 			throw  'Unexpected server error.' ;
 		}
 	} );

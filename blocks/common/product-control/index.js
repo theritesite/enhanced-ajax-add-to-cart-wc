@@ -38,8 +38,8 @@ export default class ProductControl extends Component {
 			// storageUtils.remove( persistedStateKey );
 			const serverState = { ...reducer.DEFAULT_STATE, selected };
 			const initialState = { ...serverState, ...persistedState };
-			console.log( "this is initial state." );
-			console.log( initialState );
+			// console.log( "this is initial state." );
+			// console.log( initialState );
 
 			const middlewares = [
 				thunk.withExtraArgument( args ),
@@ -70,8 +70,8 @@ export default class ProductControl extends Component {
 			createdStores[ routeClassName ] = genStore;
 			this.store = genStore;
 			this.reduxStore = store;
-			console.log( "at the end of store -- store: " );
-			console.log( store );
+			// console.log( "at the end of store -- store: " );
+			// console.log( store );
 	
 		}
 	}
@@ -83,7 +83,7 @@ export default class ProductControl extends Component {
 		// storageUtils.remove( persistedStateKey );
 		const { selected } = this.props;
 		const dispatch = this.reduxStore.dispatch;
-		console.log( "ProductControl did mount, going through dispatch now." );
+		// console.log( "ProductControl did mount, going through dispatch now." );
 		dispatch( ProductControlActions.fetchProductsIfNeeded( selected, '', [] ) );
 
 	}
@@ -96,18 +96,18 @@ export default class ProductControl extends Component {
 		const state = this.reduxStore.getState();
 		const { products, variations } = state;
 		const persistedStateKey = 'eaa2c-product-control';
-		console.log( "this is in before unload -- state: " );
-		console.log( state );
-		console.log( "this is in before unload -- props: " );
-		console.log( this.props );
+		// console.log( "this is in before unload -- state: " );
+		// console.log( state );
+		// console.log( "this is in before unload -- props: " );
+		// console.log( this.props );
 	
 		// if ( window.persistState ) {
 			storageUtils.setWithExpiry( persistedStateKey, { products, variations } );
 			// storageUtils.setWithExpiry( persistedStateKey, state );
-			console.log( "window.persistState is true and using storageUtils");
-			console.log( storageUtils.getWithExpiry( persistedStateKey ) );
+			// console.log( "window.persistState is true and using storageUtils");
+			// console.log( storageUtils.getWithExpiry( persistedStateKey ) );
 		// }
-		console.log( "this is unmounting" );
+		// console.log( "this is unmounting" );
 	}
 	
 	render() {

@@ -83,12 +83,32 @@ abstract class Abstract_EAA2C_Button {
 	 * @since 2.0.0
 	 */
 	protected function renderHtml( $attributes = array() ) {
-		$contentOrder 	   = $attributes['contentOrder'];
-		$contentVisibility = $attributes['contentVisibility'];
+		$contentOrder 	    = $attributes['contentOrder'];
+		$contentVisibility  = $attributes['contentVisibility'];
+
+		$available_elements = [ 'title', 'separator', 'price', 'quantity', 'button' ];
+		if ( get_option( 'eaa2c_image_field' ) === 'on' ) {
+			$available_elements[] = 'image';
+		}
+		if ( get_option( 'eaa2c_custom_field' ) === 'on' ) {
+			$available_elements[] = 'custom';
+		}
+		if ( get_option( 'eaa2c_short_description' ) === 'on' ) {
+			$available_elements[] = 'short_description';
+		}
 
 		ob_start();
 			
 		if ( is_array( $attributes['products'] ) && isset( $attributes['products'][0] ) ) {
+
+			// If there is more than 1 product, by definition its a group block. We should wrap this block.
+			// by default, and apply a filter allowing for an override of the wrap flag. Return false to disable the wrap.
+			$wrap_group = apply_filters( 'eaa2c_button_row_wrap_override', 1 < count( $attributes['products'] ), count( $attributes['products'] ) );
+			if ( $wrap_group === true ) {
+				?>
+				<div class="eaa2c-group">
+				<?php
+			}
 			foreach( $attributes['products'] as $product_raw ) {
 				// $product_raw   = $attributes['products'][0];
 				$product_id		= isset( $product_raw['id'] ) ? $product_raw['id'] : 0;
@@ -102,6 +122,7 @@ abstract class Abstract_EAA2C_Button {
 				$extraClasses  .= isset( $attributes['align'] ) && ! empty( $attributes['align'] ) ? ' align' . $attributes['align'] : '';
 				$extraClasses  .= empty( get_option( 'eaa2c_custom_class') ) ? '' : ' ' . get_option( 'eaa2c_custom_class' );
 				$titleType 	    = isset( $attributes['titleType'] ) ? $attributes['titleType'] : 'full';
+				$titleAction	= isset( $attributes['titleAction'] ) ? $attributes['titleAction'] : '';
 
 				$customText		= '';
 				$image			= array();
@@ -154,9 +175,8 @@ abstract class Abstract_EAA2C_Button {
 						$customText = ! empty( $attributes['custom'] ) ? $attributes['custom'] : '';
 					}
 
-					if ( isset( $attributes['image'] ) && ! empty( $attributes['image'] ) && $contentVisibility['image'] === true ) {
+					if ( isset( $attributes['image'] ) && ! empty( $attributes['image'] ) && $contentVisibility['image'] === true && in_array( 'image', $available_elements ) ) {
 						$imageType = $attributes['image'];
-						// $product = wc_get_product( $params['id'] );
 						if ( $product ) {
 							$image_id = $product->get_image_id();
 							if ( strcmp( 'inline', $imageType ) === 0 ) {
@@ -197,74 +217,96 @@ abstract class Abstract_EAA2C_Button {
 						}
 					}
 
+					$titleDisplay = esc_html( $titleDisplay );
+					if ( '' !== $titleAction ) {
+						if ( strcmp( $titleAction, 'link' ) === 0 ) {
+							$titleDisplay = '<a href="' . $product->get_permalink() . '">' . $titleDisplay . '</a>'; 
+						}
+					}
+
 					?>
 					<div class="enhanced-woocommerce-add-to-cart <?php echo esc_attr( $extraClasses ); ?>">
 						<?php foreach( $contentOrder as $item ) : ?>
-							<?php if ( strcmp( $item, 'title' ) === 0 && $contentVisibility[ $item ] === true  ) : ?>
-								<span class="ea-line ea-text">
-									<span><?php esc_html_e( $titleDisplay ); ?></span>
-								</span>
-							<?php endif; ?>
-							<?php if ( strcmp( $item, 'price' ) === 0 && $contentVisibility[ $item ] === true   ) : ?>
-								<span class="ea-line ea-text">
-									<span><?php esc_html_e( $priceDisplay ); ?></span>
-								</span>
-							<?php endif; ?>
-							<?php if ( strcmp( $item, 'quantity' ) === 0 ) : ?>
-								<?php $hidden = ( $contentVisibility[ $item ] ? '' : 'hidden="true"' ); ?>
-								<span class="ea-line quantity-container">
-									<div class="quantity">
-										<input
-											type="number"
-											id="<?php esc_attr_e( $input_id ); ?>"
-											class="input-text qty text"
-											value="<?php esc_attr_e( $quantity['default'] ); ?>"
-											step="<?php esc_attr_e( $step ) ?>"
-											min="<?php esc_attr_e( $min_value ); ?>"
-											max="<?php esc_attr_e( (int)$max_value === -1 ? '' : $max_value ); ?>"
-											name="quantity"
-											title="<?php esc_attr_x( 'Qty', 'Product quantity input tooltip', 'woocommerce' ) ?>"
-											size="4"
-											pattern="<?php esc_attr_e( $pattern ) ?>"
-											inputmode="<?php esc_attr_e( $inputmode ) ?>"
-											<?php esc_attr_e( $hidden ); ?>
-										/>
-									</div>
-								</span>
-							<?php endif; ?>
-							<?php if( strcmp( $item, 'separator' ) === 0 && true === $contentVisibility[ $item ] ) : ?>
-								<span class="ea-line ea-separator">
-								</span>
-							<?php endif; ?>
-							<?php if( strcmp( $item, 'button' ) === 0 && true === $contentVisibility[ $item ] ) : ?>
-								<button
-									type="submit"
-									class="eaa2c_add_to_cart_button button alt"
-									data-pid="<?php esc_attr_e( $product_id ); ?>"
-									data-vid="<?php esc_attr_e( $variation_id ); ?>"
-									<?php esc_attr_e( $disable_button ) ?>
-								>
-									<?php esc_html_e( $buttonText ); ?>
-								</button>
-							<?php endif; ?>
-							<?php if ( strcmp( $item, 'custom' ) === 0 && $contentVisibility[ $item ] === true  ) : ?>
-								<span class="ea-line ea-text ea-custom">
-									<span><?php esc_html_e( $customText ); ?></span>
-								</span>
-							<?php endif; ?>
-							<?php if ( strcmp( $item, 'image' ) === 0 && $contentVisibility[ $item ] === true  ) : ?>
-								<span class="ea-line ea-image">
-									<?php if ( strcmp( 'inline', $attributes['image'] ) === 0 ) : ?>
-										<img class="<?php strcmp( 'inline', $attributes['image'] ) === 0 ? esc_attr_e( 'ea-inline-image' ) : ''; ?>" src="<?php echo $image['src']; ?>"/>
-									<?php else : ?>
-										<img src="<?php echo $image['src']; ?>" width="<?php esc_attr_e( $image['width'] ); ?>" height="<?php esc_attr_e( $image['height'] ); ?>"/>
-									<?php endif; ?>
-								</span>
+							<?php if ( in_array( $item, $available_elements ) ) : ?>
+								<?php if ( strcmp( $item, 'title' ) === 0 && $contentVisibility[ $item ] === true  ) : ?>
+									<span class="ea-line ea-text ea-title">
+										<span><?php echo $titleDisplay; ?></span>
+									</span>
+								<?php endif; ?>
+								<?php if ( strcmp( $item, 'price' ) === 0 && $contentVisibility[ $item ] === true   ) : ?>
+									<span class="ea-line ea-text ea-price">
+										<span><?php esc_html_e( $priceDisplay ); ?></span>
+									</span>
+								<?php endif; ?>
+								<?php if ( strcmp( $item, 'quantity' ) === 0 ) : ?>
+									<?php $hidden = ( $contentVisibility[ $item ] ? 'number' : 'hidden' ); ?>
+									<span class="ea-line quantity-container">
+										<div class="quantity">
+											<input
+												type="<?php esc_attr_e( $hidden ); ?>"
+												id="<?php esc_attr_e( $input_id ); ?>"
+												class="input-text qty text"
+												value="<?php esc_attr_e( $quantity['default'] ); ?>"
+												step="<?php esc_attr_e( $step ) ?>"
+												min="<?php esc_attr_e( $min_value ); ?>"
+												max="<?php esc_attr_e( (int)$max_value === -1 ? '' : $max_value ); ?>"
+												name="quantity"
+												title="<?php esc_attr_x( 'Qty', 'Product quantity input tooltip', 'woocommerce' ) ?>"
+												size="4"
+												pattern="<?php esc_attr_e( $pattern ) ?>"
+												inputmode="<?php esc_attr_e( $inputmode ) ?>"
+											/>
+										</div>
+									</span>
+								<?php endif; ?>
+								<?php if( strcmp( $item, 'separator' ) === 0 && true === $contentVisibility[ $item ] ) : ?>
+									<span class="ea-line ea-separator">
+									</span>
+								<?php endif; ?>
+								<?php if( strcmp( $item, 'button' ) === 0 && true === $contentVisibility[ $item ] ) : ?>
+									<button
+										type="submit"
+										class="eaa2c_add_to_cart_button button alt"
+										data-pid="<?php esc_attr_e( $product_id ); ?>"
+										data-vid="<?php esc_attr_e( $variation_id ); ?>"
+										<?php esc_attr_e( $disable_button ) ?>
+									>
+										<?php esc_html_e( $buttonText ); ?>
+									</button>
+								<?php endif; ?>
+								<?php if ( strcmp( $item, 'custom' ) === 0 && $contentVisibility[ $item ] === true  ) : ?>
+									<span class="ea-line ea-custom">
+										<?php echo apply_filters( 'eaa2c_button_row_custom_field', '<span>' . esc_html_e( $customText ) . '</span>', $product_id ); ?>
+									</span>
+								<?php endif; ?>
+								<?php if ( strcmp( $item, 'image' ) === 0 && $contentVisibility[ $item ] === true  ) : ?>
+									<span class="ea-line ea-image">
+										<?php if ( isset( $image['src'] ) ) : ?>
+											<?php if ( strcmp( 'inline', $attributes['image'] ) === 0 ) : ?>
+												<img class="<?php strcmp( 'inline', $attributes['image'] ) === 0 ? esc_attr_e( 'ea-inline-image' ) : ''; ?>" src="<?php echo $image['src']; ?>"/>
+											<?php else : ?>
+												<img src="<?php echo $image['src']; ?>" width="<?php esc_attr_e( $image['width'] ); ?>" height="<?php esc_attr_e( $image['height'] ); ?>"/>
+											<?php endif; ?>
+										<?php endif; ?>
+									</span>
+								<?php endif; ?>
+								<?php if ( strcmp( $item, 'short_description' ) === 0 && $contentVisibility[ $item ] === true  ) : ?>
+									<span class="ea-line ea-text ea-short_description">
+										<!-- <span><?php /*esc_html_e( $product_raw[ 'short_description' ] );*/ ?></span> This would be for if we want these to be non-dynamic aka what the description was when the block was saved -->
+										<span><?php echo $product->get_short_description(); ?></span>
+									</span>
+								<?php endif; ?>
 							<?php endif; ?>
 						<?php endforeach; ?>
+						<?php echo apply_filters( 'eaa2c_button_row_additional_fields', '', $product_id ); ?>
 					</div>
 					<?php
 				}
+			}
+			if ( $wrap_group === true ) {
+				?>
+				</div>
+				<?php
 			}
 		}
 		$html = ob_get_contents();

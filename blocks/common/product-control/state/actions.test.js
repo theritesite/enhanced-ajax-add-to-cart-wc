@@ -1,3 +1,6 @@
+
+/*
+// This file was brought from another project and will not work. It is for reference.
 import '@babel/polyfill'
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
@@ -26,3 +29,4 @@ describe("Order Actions", () => {
         });
     });
 });
+*/

@@ -14,7 +14,7 @@ import { registerBlockType } from '@wordpress/blocks';
 
 import AddToCartBlock from './block';
 
-let trs_eaa2c_defaultContentOrder = [
+let trs_eaa2c_availableElements, trs_eaa2c_defaultContentOrder = [
 	'title',
 	'separator',
 	'price',
@@ -33,21 +33,7 @@ let trs_eaa2c_defaultContentVisibility = {
 let trs_eaa2c_defaultButtonText = 'Add to cart';
 
 if ( global.EAA2C ) {
-	console.log( "we made it into the global setarea" );
-	let trs_eaa2c_imageVal = global.EAA2C.image;
-	let trs_eaa2c_customVal = global.EAA2C.custom;
 	let trs_eaa2c_buttonText = global.EAA2C.buttonText;
-	let i = 1;
-
-	if ( trs_eaa2c_imageVal === 'on' ) {
-		trs_eaa2c_defaultContentOrder.splice( 0, 0, 'image' );
-		trs_eaa2c_defaultContentVisibility = { ...trs_eaa2c_defaultContentVisibility, image: false };
-		i++;
-	}
-	if ( trs_eaa2c_customVal === 'on' ) {
-		trs_eaa2c_defaultContentOrder.splice( i, 0, 'custom' );
-		trs_eaa2c_defaultContentVisibility = { ...trs_eaa2c_defaultContentVisibility, custom: false };
-	}
 	if ( trs_eaa2c_buttonText && trs_eaa2c_buttonText !== undefined && trs_eaa2c_buttonText.length > 0 ) {
 		trs_eaa2c_defaultButtonText = trs_eaa2c_buttonText;
 	}
@@ -58,7 +44,7 @@ registerBlockType( 'enhanced-ajax-add-to-cart-for-wc/eaa2c', {
 	icon: 'cart',
 	category: 'widgets',
 	description: __(
-		'AJAXifies your add to cart button!',
+		'Non-redirect add to cart button wherever you want!',
 		'enhanced-ajax-add-to-cart-wc'
 	),
 	supports: {
@@ -75,6 +61,10 @@ registerBlockType( 'enhanced-ajax-add-to-cart-for-wc/eaa2c', {
 			type: 'boolean',
 			default: false,
 		},
+		// availableElements: {
+		// 	type: 'array',
+		// 	default: trs_eaa2c_availableElements,
+		// },
 		contentVisibility: {
 			type: 'object',
 			default: trs_eaa2c_defaultContentVisibility,
@@ -102,6 +92,14 @@ registerBlockType( 'enhanced-ajax-add-to-cart-for-wc/eaa2c', {
 				min: 1,
 				max: -1,
 			},
+		},
+		short_description: {
+			type: 'string',
+			default: '',
+		},
+		titleAction: {
+			type: 'string',
+			default: '',
 		},
 		titleType: {
 			type: 'string',

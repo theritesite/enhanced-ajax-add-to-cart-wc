@@ -53,7 +53,7 @@ export default ( state = DEFAULT_STATE, action ) => {
 				isLoading: false,
 			};
 		case SET_PRODUCTS:
-			console.log( "in set products and isloading should be false now" );
+			// console.log( "in set products and isloading should be false now" );
 			return {
 				...state,
 				products: action.products,
@@ -61,7 +61,7 @@ export default ( state = DEFAULT_STATE, action ) => {
 				list: action.products,
 			};
 		case SET_VARIATIONS:
-			console.log( "in set variations and isloading should be false now" );
+			// console.log( "in set variations and isloading should be false now" );
 			return {
 				...state,
 				variations: {
@@ -88,8 +88,8 @@ export default ( state = DEFAULT_STATE, action ) => {
 		case REMOVE_SELECTED:
 			const id = action.product.id;
 			var i = findIndex( selected, { id } );
-			console.log( "index of remove " + i );
-			console.log( "selected item: " + selected[i] );
+			// console.log( "index of remove " + i );
+			// console.log( "selected item: " + selected[i] );
 			return {
 				...state,
 				selected: [
@@ -103,7 +103,7 @@ export default ( state = DEFAULT_STATE, action ) => {
 				list: action.list,
 			};
 		case GET_PRODUCTS:
-			console.log( "in get products?" );
+			// console.log( "in get products?" );
 			return {
 				...state,
 				// list: products,
@@ -111,7 +111,7 @@ export default ( state = DEFAULT_STATE, action ) => {
 			};
 		case GET_VARIATIONS:
 			// return state;
-			console.log( "in get variations?" );
+			// console.log( "in get variations?" );
 			return {
 				...state,
 				isLoading: true,

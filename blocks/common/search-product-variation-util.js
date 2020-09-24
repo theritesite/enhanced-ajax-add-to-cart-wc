@@ -6,6 +6,7 @@ import { addQueryArgs } from '@wordpress/url';
 import { getSetting } from '@woocommerce/settings';
 import { flatten, uniqBy } from 'lodash';
 import { createTitle } from './formatting/title';
+import { createValidHtml } from './formatting/html';
 
 const getProductVariationsRequests = ( {
 	parentProd = [],
@@ -74,6 +75,8 @@ export const getProductVariations = ( {
 				price: variation.price,
 				parent_id: parentProd.id,
 				type: 'variation',
+				// short_description: unescape( parentProd.short_description ),
+				short_description: createValidHtml( { inputHtml: parentProd.short_description } ),
 				attributes: variation.attributes,
 				images: (parentProd.images ? parentProd.images.map(image => (image.id) ) : []),
 				// raw: variation,

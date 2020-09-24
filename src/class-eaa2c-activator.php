@@ -22,8 +22,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Activator {
 	 */
 	public static function activate() {
 
-		add_action( 'admin_notices', array( __CLASS__, 'register_app_rest' ) );
-		error_log( "stuff2" );
+		// add_action( 'admin_notices', array( __CLASS__, 'register_app_rest' ) );
 		
 	}
 
@@ -33,7 +32,6 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Activator {
 
         	<p>OH HELLO!
 			<?php
-				error_log( "stuff" );
 				$store_url = get_admin_url();
 				$endpoint = '/wc-auth/v1/authorize';
 				$params = [

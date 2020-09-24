@@ -267,10 +267,12 @@ class Enhanced_Ajax_Add_To_Cart_Wc_AJAX {
 	 * @since
 	 */
 	public static function eaa2c_maybe_deactivate_callback() {
-		if( isset($_POST['action']) && isset($_POST['key']) ) {
-            error_log( "this is request['security'] " . $_REQUEST['security'] );
+		if ( isset($_POST['action']) && isset($_POST['key']) ) {
+            if ( EAA2C_DEBUG || WP_DEBUG ) {
+                error_log( "this is request['security'] " . $_REQUEST['security'] );
+            }
 			
-			if( ! check_admin_referer( 'eaa2c_nonce', 'security' ) )
+			if ( ! check_admin_referer( 'eaa2c_nonce', 'security' ) )
 				return wp_send_json_success( array( 'error' => 'nonce mismatch' ) );
 			
 			$license = get_option( EAA2C_LICENSE_KEY );
@@ -305,7 +307,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc_AJAX {
 			// decode the license data
 			$license_data = json_decode( wp_remote_retrieve_body( $response ) );
 			
-			if( $license_data->license == 'failed' ) {
+			if ( $license_data->license == 'failed' ) {
 				$message = __( 'An error occurred, that license does not seem valid, please try again.' );
 				
                 wp_send_json_success( array( 'message' => $message ) );
@@ -313,7 +315,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc_AJAX {
 			}
 	
 			// $license_data->license will be either "deactivated" or "failed"
-			if( $license_data->license == 'deactivated' ) {
+			if ( $license_data->license == 'deactivated' ) {
 				delete_option( EAA2C_LICENSE_STATUS );
 			}
 	

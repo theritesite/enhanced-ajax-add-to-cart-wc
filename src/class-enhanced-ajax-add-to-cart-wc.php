@@ -227,7 +227,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 
 	public function get_eaa2c_product_image( WP_REST_Request $request ) {
 		global $_wp_additional_image_sizes;
-		$image = array( 'src' => '', 'width' => 0, 'height' => 0 );
+		$image = array( 'src' => '', 'width' => 0, 'height' => 0, 'pid' => 0 );
 		$params = $request->get_params();
 		$sizes = apply_filters( 'image_size_names_choose',
 			array(
@@ -256,6 +256,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 					if ( isset( $temp[2] ) ) {
 						$image['height'] = $temp[2];
 					}
+					$image['pid'] = $product->get_id();
 				}
 			}
 		}
@@ -284,16 +285,20 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 
 		$q = `SELECT p.post_parent as pp, GROUP_CONCAT(DISTINCT p.ID) FROM wp_posts as p WHERE p.post_type = 'product_variation' AND p.post_status = 'publish' GROUP BY pp;`;
 		
-		error_log( 'parameters to get all products and variations: ' . wc_print_r( $params, true ) );
+		if ( WP_DEBUG || EAA2C_DEBUG ) {
+			error_log( 'parameters to get all products and variations: ' . wc_print_r( $params, true ) );
+		}
 		return true;
 	}
 
 	public function error_check_route( WP_REST_Request $request ) {
 		$params = $request->get_params();
 		
-		error_log( 'consumer key: ' . $params['consumer_key'] );
-		error_log( 'consumer secret: ' . $params['consumer_secret'] );
-		error_log( 'key id: ' . $params['key_id'] );
+		if ( WP_DEBUG || EAA2C_DEBUG ) {
+			error_log( 'consumer key: ' . $params['consumer_key'] );
+			error_log( 'consumer secret: ' . $params['consumer_secret'] );
+			error_log( 'key id: ' . $params['key_id'] );
+		}
 		return true;
 	}
 
@@ -303,7 +308,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 
         	<p>OH HELLO!
 			<?php
-				error_log( "stuff" );
+				// error_log( "stuff" );
 				$store_url = get_site_url();
 				$endpoint = '/wc-auth/v1/authorize';
 				$params = [

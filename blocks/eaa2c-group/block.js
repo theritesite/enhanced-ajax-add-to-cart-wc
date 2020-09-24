@@ -5,9 +5,9 @@ import {
 	PanelRow,
 	Button,
 	ButtonGroup,
+	CheckboxControl,
 	Disabled,
 	SelectControl,
-	TextControl,
 	Toolbar,
 	withSpokenMessages,
 	Placeholder,
@@ -26,7 +26,7 @@ import EAA2CControl from '../common/eaa2c-control';
 import * as api from '../common/api';
 import { setNonce, setBaseURL } from '../common/api/request';
 
-import { getProductImage } from '../common/query-product-image-util';
+import { getProductImages } from '../common/query-product-image-util';
 
 class GroupAddToCartBlock extends Component {
 	constructor( props ) {
@@ -36,20 +36,111 @@ class GroupAddToCartBlock extends Component {
 			selectedComponent: '',
 			imageSizes: {},
 			imageSrc: {},
+			queriedProducts: [],
 		}
 		this.onDragEnd = this.onDragEnd.bind( this );
 
 	}
 
+	/** 
+	 * Using componentDidMount() as the global set area. From here,
+	 * we will check if variables exist and set them as configuration
+	 * that can be executed on a page load basis. This will include
+	 * adding and removing elements, as well as variables needed to
+	 * make requests happen with correct authorities.
+	 */
 	componentDidMount() {
 		if ( global.EAA2CGROUP ) {
-			// console.log( "we made it into the global setarea" );
 			setNonce( global.EAA2CGROUP.nonce );
 			setBaseURL( global.EAA2CGROUP.baseURL );
-			// this.setState( { imageSizes: Object.keys(global.EAA2CGROUP.imageSizes).map((key) => global.EAA2CGROUP.imageSizes[key]) } );
 			this.setState( { imageSizes: global.EAA2CGROUP.imageSizes } );
-			// console.log( global.EAA2CGROUP.baseURL + " base url" );
+			const { attributes, setAttributes } = this.props;
+
+			const { tempVis, tempOrder } = this.addAvailableElements();
+
+			if ( tempVis !== attributes.contentVisibility || tempOrder !== attributes.contentOrder ) {
+				setAttributes( { contentVisibility: tempVis, contentOrder: tempOrder } );
+			}
 		}
+	}
+
+	/**
+	 * This section is dedicated to the removable portions of the plugin.
+	 * After some experimentation, this was the method that was deemed most
+	 * compatible with the settings page and ensuring that the elements would
+	 * appear and be sortable if there were no "invisible" elements.
+	 * 
+	 * The goal for this section would be to remove the elements completely
+	 * and make them functionaly add and remove using filters from WordPress,
+	 * but as this is version 1 we are learning to implement these things and
+	 * found the WordPress JavaScript filters late in the game.
+	 */
+	addAvailableElements() {
+		const { attributes } = this.props;
+		let tempVis = attributes.contentVisibility;
+		let tempOrder = attributes.contentOrder;
+
+		if ( global.EAA2CGROUP ) {
+			const { shortDescription, image, custom } = global.EAA2CGROUP;
+
+			if ( shortDescription === 'on' ) {
+				if ( ! ( "short_description" in tempVis ) ) {
+					tempOrder.indexOf( 'short_description' ) === -1 ? tempOrder.splice( tempOrder.length, 0, 'short_description' ) : '';
+					tempVis['short_description'] = false;
+				}
+			} else {
+				if ( "short_description" in tempVis ) {
+					let index = tempOrder.indexOf( 'short_description' );
+					// create a new array or object for each
+					tempVis = _.omit( tempVis, 'short_description' );
+					if ( index !== -1 ) {
+						// console.log( "removing short_description from listed elements as it was found" );
+						// console.log( tempOrder );
+						tempOrder = [ ...tempOrder.slice( 0, index ), ...tempOrder.slice( index + 1 ) ];
+						// console.log( tempOrder );
+					}
+				}
+			}
+
+			if ( custom === 'on' ) {
+				if ( ! ( "custom" in tempVis ) ) {
+					tempOrder.indexOf( 'custom' ) === -1 ? tempOrder.splice( tempOrder.length, 0, 'custom' ) : '';
+					tempVis['custom'] = false;
+				}
+			} else {
+				if ( "custom" in tempVis ) {
+					let index = tempOrder.indexOf( 'custom' );
+					// create a new array or object for each
+					tempVis = _.omit( tempVis, 'custom' );
+					if ( index !== -1 ) {
+						// console.log( "removing custom from listed elements as it was found" );
+						// console.log( tempOrder );
+						tempOrder = [ ...tempOrder.slice( 0, index ), ...tempOrder.slice( index + 1 ) ];
+						// console.log( tempOrder );
+					}
+				}
+			}
+
+			if ( image === 'on' ) {
+				if ( ! ( "image" in tempVis ) ) {
+					tempOrder.indexOf( 'image' ) === -1 ? tempOrder.splice( tempOrder.length, 0, 'image' ) : '';
+					tempVis['image'] = false;
+				}
+			} else {
+				if ( "image" in tempVis ) {
+					let index = tempOrder.indexOf( 'image' );
+					// create a new array or object for each
+					tempVis = _.omit( tempVis, 'image' );
+					if ( index !== -1 ) {
+						// console.log( "removing image from listed elements as it was found" );
+						// console.log( tempOrder );
+						tempOrder = [ ...tempOrder.slice( 0, index ), ...tempOrder.slice( index + 1 ) ];
+						// console.log( tempOrder );
+					}
+				}
+			}
+		}
+		return { tempVis, tempOrder };
 	}
 
 	handleTextChange(e) {
@@ -67,7 +158,7 @@ class GroupAddToCartBlock extends Component {
 
 	getItemControls( item, index ) {
 		const { attributes, setAttributes } = this.props;
-		const { contentVisibility, buttonText, custom, image, quantity, titleType } = attributes;
+		const { contentVisibility, buttonText, custom, image, quantity, titleAction, titleType } = attributes;
 		const { editItem, selectedComponent, imageSizes } = this.state;
 		const itemClassList = contentVisibility[ item ] === true ? 'trs-inner-wrapper' : 'trs-inner-wrapper disabled-item';
 		const tempItem = editItem !== 'min' && editItem !== 'max' ? 'default' : editItem;
@@ -87,15 +178,14 @@ class GroupAddToCartBlock extends Component {
 					value={ contentVisibility[ item ] }
 					item={ item }
 				/>
-				{ this.isVariableProduct() === false ? '' :
-					<div>
-						{ ( item === 'title' && ( selectedComponent !== 'title' || ( selectedComponent === 'title' && editItem !== 'title' ) ) ) ?
-							<div className="edit-component btn-cmp" onClick={ (e) => { this.setState( { editItem: 'title' } ) } }>
-								<p className="edit-component">edit</p>
-								<p className="edit-component">title text</p>
-							</div>
-						: '' }
-						{ ( item === 'title' && selectedComponent === 'title' && editItem === 'title' ) ?
+				{ ( item === 'title' && ( selectedComponent !== 'title' || ( selectedComponent === 'title' && editItem !== 'title' ) ) ) ?
+					<div className="edit-component btn-cmp" onClick={ (e) => { this.setState( { editItem: 'title' } ) } }>
+						<button className="edit-component">edit title</button>
+					</div>
+				: '' }
+				{ ( item === 'title' && selectedComponent === 'title' && editItem === 'title' ) ?
+					<div className="edit-component btn-cmp">
+						{ this.isVariableProduct() === false ? '' :
 							<div className="edit-component btn-cmp">
 								<p className="edit-component">title text</p>
 								<RadioControl
@@ -108,21 +198,27 @@ class GroupAddToCartBlock extends Component {
 									] }
 									onChange={ ( titleType ) => { setAttributes( { titleType } ) } }
 								/>
-								<button
-									onClick={ (e) => {
-										this.setState( { editItem: 'none' } );
-									} }
-								>
-									done
-								</button>
+								<hr />
 							</div>
-						: '' }
+						}
+						<CheckboxControl
+							className="trs-checkbox"
+							heading="Link?"
+							checked={ titleAction === 'link' }
+							onChange={ ( titleAction ) => { setAttributes( { titleAction: titleAction === true ? 'link' : '' } ) } }
+						/>
+						<button
+							onClick={ (e) => {
+								this.setState( { editItem: 'none' } );
+							} }
+						>
+							done
+						</button>
 					</div>
-				}
+				: '' }
 				{ ( item === 'button' && ( selectedComponent !== 'button' || ( selectedComponent === 'button' && editItem !== 'button' ) ) ) ?
 					<div className="edit-component btn-cmp" onClick={ (e) => { this.setState( { editItem: 'button' } ) } }>
-						<p className="edit-component">edit</p>
-						<p className="edit-component">button text</p>
+						<button className="edit-component">edit text</button>
 					</div>
 				: '' }
 				{ ( item === 'button' && selectedComponent === 'button' && editItem === 'button' ) ?
@@ -150,7 +246,7 @@ class GroupAddToCartBlock extends Component {
 				{ ( item === 'quantity' && selectedComponent !== 'quantity'  ) || ( item === 'quantity' && selectedComponent === 'quantity' && editItem === 'none' ) ?
 				<div className="edit-component"> 
 					<p className="edit-component">
-						<span className="preview-text" onClick={ (e) => { this.setState({ editItem: 'default' }) }}>edit</span>
+						<button className="preview-text" onClick={ (e) => { this.setState({ editItem: 'default' }) }}>edit</button>
 						<span className="preview-text" onClick={ (e) => { this.setState({ editItem: 'default' }) }}>default: {quantity['default']}</span>
 					</p>
 					<p className="edit-component">
@@ -237,8 +333,7 @@ class GroupAddToCartBlock extends Component {
 					<div>
 						{ ( item === 'custom' && ( selectedComponent !== 'custom' || ( selectedComponent === 'custom' && editItem !== 'custom' ) ) ) ?
 							<div className="edit-component btn-cmp" onClick={ (e) => { this.setState( { editItem: 'custom' } ) } }>
-								<p className="edit-component">edit</p>
-								<p className="edit-component">custom text</p>
+								<button className="edit-component">edit text</button>
 							</div>
 						: '' }
 						{ ( item === 'custom' && selectedComponent === 'custom' && editItem === 'custom' ) ?
@@ -267,7 +362,7 @@ class GroupAddToCartBlock extends Component {
 					<div>
 						{ ( item === 'image' && ( selectedComponent !== 'image' || ( selectedComponent === 'image' && editItem !== 'image' ) ) ) ?
 							<div className="edit-component btn-cmp" onClick={ (e) => { this.setState( { editItem: 'image' } ) } }>
-								<p className="edit-component">edit type</p>
+								<button className="edit-component">edit type</button>
 							</div>
 						: '' }
 						{ ( item === 'image' && selectedComponent === 'image' && editItem === 'image' ) ?
@@ -290,6 +385,7 @@ class GroupAddToCartBlock extends Component {
 						: '' }
 					</div>
 				: '' }
+				{/* There is no need for controls for short_description and the price currently */}
 			</div>
 		);
 	}
@@ -574,8 +670,15 @@ class GroupAddToCartBlock extends Component {
 		const { attributes } = this.props;
 		const { contentOrder } = attributes;
 
+		// const availableOrder = contentOrder.filter( item => {
+		// 	return -1 !== availableElements.indexOf( item );
+		// } );
+
+		// Filtering (js function) does not work on the click and draggable portion of the product.
+		// We assume its due to the invisible elements causing a conflict.
+		// const items = availableOrder.map( ( item, index ) => ( {
 		const items = contentOrder.map( ( item, index ) => ( {
-			id: item,
+				id: item,
 			component: this.getItemControls( item, index ),
 		} ) );
 
@@ -583,8 +686,12 @@ class GroupAddToCartBlock extends Component {
 	}
 
 	getInspectorControls() {
-		const { attributes, setAttributes } = this.props;
-		const { editMode, contentOrder, contentVisibility, quantity, buttonText } = attributes;
+		const { attributes } = this.props;
+		const { contentOrder } = attributes;
+
+		// const availableOrder = contentOrder.filter( item => {
+		// 	return -1 !== availableElements.indexOf( item );
+		// } );
 
 		return (
 			<InspectorControls>
@@ -593,6 +700,7 @@ class GroupAddToCartBlock extends Component {
 					className="eaa2c-content-container"
 					initialOpen
 				>
+					{/* { availableOrder.map( ( item, index ) => { */}
 					{ contentOrder.map( ( item, index ) => {
 						return ( <PanelRow key={index}>
 							<label className="content-element " htmlFor={"content-order-form-" + item}>
@@ -714,7 +822,7 @@ class GroupAddToCartBlock extends Component {
 						} }
 						multiple={ true }
 					/>
-					<Button isSecondary onClick={ onDone }>
+					<Button onClick={ onDone }>
 						{ __( 'Done', 'enhanced-ajax-add-to-cart-wc' ) }
 					</Button>
 				</div>
@@ -723,12 +831,16 @@ class GroupAddToCartBlock extends Component {
 	}
 
 	renderViewMode() {
-		const { imageSrc } = this.state;
+		const { imageSrc, queriedProducts } = this.state;
 		const { attributes, className } = this.props;
-		const { buttonText, contentVisibility, contentOrder, custom, image, products, quantity, titleType, variations } = attributes;
+		const { buttonText, contentVisibility, contentOrder, custom, image, products, quantity, short_description, titleType, variations } = attributes;
 		// console.log( "In render view mode." );
+
+		// const availableOrder = contentOrder.filter( item => {
+		// 	return -1 !== availableElements.indexOf( item );
+		// } );
+
 		let customClass = '';
-		let data = {};
 
 		if ( global.EAA2CGROUP && global.EAA2CGROUP.customClass !== undefined && global.EAA2CGROUP.customClass.length > 0 ) {
 			let customClassSetting = global.EAA2C.customClass;
@@ -738,28 +850,21 @@ class GroupAddToCartBlock extends Component {
 		if ( products && products.length > 0 ) {
 			// console.log( "products in multiple 'exist'" );
 			return (
-				<div className={ "eaa2c-group-container " + customClass }>
+				<div key={products.length} className={ "eaa2c-group-container " + customClass }>
 					{ products.map( ( product ) => {
 						if ( product.id > 0 ) {
 							// console.log( "in the mapping of multiple products." );
 							// console.log( product );
 							const title = product[titleType];
-							if ( contentVisibility.image === true && imageSrc[product.id] === undefined ) {
-								getProductImage( { id: product['id'], type: image } ).then( 
-									(ret) => {
-										let newSrc = {[image]: ret[0].data};
-										let newImageSrc = { ...imageSrc, [product['id']]: { ...newSrc} };
-										this.setState({imageSrc: newImageSrc });
-									}
-								);
-							}
+							
 							return (
 								<div key={product.id} className={ "enhanced-woocommerce-add-to-cart " + className + " " + customClass }>
+									{/* { availableOrder.map( ( item, index ) => { */}
 									{ contentOrder.map( ( item, index ) => {
 										if ( item === 'title' && contentVisibility[ item ] === true ) {
 											return (
 												<span
-													key={ index }
+													key={ index + "_" + item }
 													className="ea-line ea-text"
 												>
 													{ title }
@@ -769,7 +874,7 @@ class GroupAddToCartBlock extends Component {
 											const att = item === 'title' ? 'name' : 'price';
 											return (
 												<span
-													key={ index }
+													key={ index + "_" + item  }
 													className="ea-line ea-text"
 												>
 													<span>{ product[ titleType ] }</span>
@@ -778,7 +883,7 @@ class GroupAddToCartBlock extends Component {
 										} else if (  item === 'price'  && contentVisibility[ item ] === true ) {
 											return (
 												<span
-													key={ index }
+													key={ index + "_" + item  }
 													className="ea-line ea-text"
 												>
 													{ formatPrice( product['price'] ) }
@@ -787,7 +892,7 @@ class GroupAddToCartBlock extends Component {
 										} else if ( item === 'quantity' ) {
 											return (
 												<span
-													key={ index }
+													key={ index + "_" + item  }
 													className="ea-line quantity-container"
 												>
 													<div className="quantity">
@@ -808,31 +913,43 @@ class GroupAddToCartBlock extends Component {
 											);
 										} else if ( item === 'separator' ) {
 											return (
-												<span key={ index } className="ea-line">
+												<span key={ index + "_" + item  } className="ea-line">
 													<span className="ea-separator"></span>
 												</span>
 											);
 										} else if ( item === 'custom' && contentVisibility[ item ] === true ) {
 											return (
 												<span
-													key={ index }
+													key={ index + "_" + item  }
 													className="ea-line ea-text"
 												>
 													<span>{ custom }</span>
+												</span>
+											);
+										} else if ( item === 'short_description' && contentVisibility[ item ] === true ) {
+											return (
+												<span
+													key={ index + "_" + item  }
+													className="ea-line ea-text"
+												>
+													<span>{ product[ 'short_description' ] }</span>
 												</span>
 											);
 										} else if ( item === 'image' && contentVisibility[ item ] === true ) {
 											
 											if ( imageSrc[product.id] === undefined ) {
 												return ( 
-													<span key={index} className="ea-line ea-image loading">
+													<span key={ index + "_" + item } className="ea-line ea-image loading">
 														<span> loading </span>
 													</span>
 												);
-											}
-											else {
+											} else if ( imageSrc[product.id] === "" || ! imageSrc[product.id] ) {
+													<span key={ index + "_" + item } className="ea-line ea-image empty">
+														<span> (empty to front end, no image) </span>
+													</span>
+											} else {
 												return (
-													<span key={index} className="ea-line ea-image">
+													<span key={ index + "_" + item } className="ea-line ea-image">
 														<img src={ imageSrc[product.id][image].src } width={ imageSrc[product.id][image].width } height={ imageSrc[product.id][image].height } />
 													</span>
 												);
@@ -840,6 +957,7 @@ class GroupAddToCartBlock extends Component {
 										} else if ( item === 'button' && contentVisibility[ item ] === true ) {
 											return (
 												<button
+													key={ index + "_" + item }
 													type="submit"
 													className="eaa2c_add_to_cart_button button alt"
 													data-pid={ product.parent_id > 0 ? product.parent_id : product.id }
@@ -862,11 +980,23 @@ class GroupAddToCartBlock extends Component {
 	}
 
 	render() {
-		const { attributes } = this.props;
+		const { attributes, setAttributes } = this.props;
+		const { contentVisibility, editMode, image, products } = attributes;
+
+		const onEdit = () => {
+			setAttributes( { editMode: ! editMode } );
+			if ( products.length > 0 ) {
+				if ( contentVisibility.image === true ) {
+					getProductImages( { products: products, type: image } ).then( 
+						(ret) => {
+							this.setState({imageSrc: ret });
+						}
+					);
+				}
+			}
+		};
 
 		if ( this.props.isEditor ) {
-			const { setAttributes } = this.props;
-			const { editMode } = attributes;
 
 			if ( attributes.isPreview ) {
 				return (
@@ -884,10 +1014,7 @@ class GroupAddToCartBlock extends Component {
 								{
 									icon: 'edit',
 									title: __( 'Edit' ),
-									onClick: () =>
-										setAttributes( {
-											editMode: ! editMode,
-										} ),
+									onClick: onEdit,
 									isActive: editMode,
 								},
 							] }

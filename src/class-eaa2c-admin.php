@@ -168,16 +168,27 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 			filemtime( "$dir/$index_js" )
 		);
 
+		// $available_elements = [ 'title', 'separator', 'price', 'quantity', 'button' ];
+		// if ( get_option( 'eaa2c_image_field' ) === 'on' ) {
+		// 	$available_elements[] = 'image';
+		// }
+		// if ( get_option( 'eaa2c_custom_field' ) === 'on' ) {
+		// 	$available_elements[] = 'custom';
+		// }
+		// if ( get_option( 'eaa2c_short_description' ) === 'on' ) {
+		// 	$available_elements[] = 'short_description';
+		// }
 
 		wp_localize_script( 'eaa2c-block-editor', 'EAA2C', array(
-			'debug'			=> 'true',
-			'route'			=> get_site_url(),
-			'baseURL'		=> get_rest_url() ,
-			'nonce' 		=> wp_create_nonce( 'wp_rest' ),
-			'image'			=> get_option( 'eaa2c_image_field' ),
-			'custom'		=> get_option( 'eaa2c_custom_field' ),
-			'customClass'	=> get_option( 'eaa2c_custom_class' ),
-			'imageSizes'	=> $this->get_filtered_image_sizes(),
+			'debug'				=> EAA2C_DEBUG,
+			'route'				=> get_site_url(),
+			'baseURL'			=> get_rest_url() ,
+			'nonce' 			=> wp_create_nonce( 'wp_rest' ),
+			'image'				=> get_option( 'eaa2c_image_field' ),
+			'custom'			=> get_option( 'eaa2c_custom_field' ),
+			'shortDescription'	=> get_option( 'eaa2c_short_description' ),
+			'customClass'		=> get_option( 'eaa2c_custom_class' ),
+			'imageSizes'		=> $this->get_filtered_image_sizes(),
 		) );
 
 		$dir = plugin_dir_path( dirname( __FILE__ ) ) . 'blocks/eaa2c/';
@@ -206,6 +217,16 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 				'type' => 'boolean',
 				'default' => false,
 			),
+			// 'availableElements' => array(
+			// 	'type' => 'array',
+			// 	'default' => array(
+			// 		'title',
+			// 		'separator',
+			// 		'price',
+			// 		'quantity',
+			// 		'button',
+			// 	),
+			// ),
 			'buttonText' => array(
 				'type' => 'string',
 				'default' => 'Add to cart',
@@ -262,6 +283,10 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 					'type'	=> 'int',
 				),
 			),
+			'titleAction' => array(
+				'type' => 'string',
+				'default' => '',
+			),
 			'titleType' => array(
 				'type' => 'string',
 				'default' => 'full',
@@ -295,6 +320,20 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 			array_push( $attributes['contentVisibility']['default'], $inserted );
 			$inserted = 'custom';
 			array_splice( $attributes['contentOrder'], 1, 0, $inserted );
+		}
+
+		if ( 'on' === get_option( 'eaa2c_short_description' ) ) {
+			$attributes['short_description'] = array(
+				'type'	=> 'string',
+				'default' => '',
+			);
+			// $inserted = array( 'custom' => false );
+			if ( ! isset( $attributes['contentVisibility']['default']['short_description'] ) ) {
+				$attributes['contentVisibility']['default']['short_description'] = false;
+			}
+			// array_push( $attributes['contentVisibility']['default'], $inserted );
+			$inserted = array('short_description');
+			array_splice( $attributes['contentOrder']['default'], 2, 0, $inserted );
 		}
 
 		register_block_type( 'enhanced-ajax-add-to-cart-for-wc/eaa2c', array(
@@ -347,14 +386,26 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 			filemtime( "$dir/$index_js" )
 		);
 
+		// $available_elements = [ 'title', 'separator', 'price', 'quantity', 'button' ];
+		// if ( get_option( 'eaa2c_image_field' ) === 'on' ) {
+		// 	$available_elements[] = 'image';
+		// }
+		// if ( get_option( 'eaa2c_custom_field' ) === 'on' ) {
+		// 	$available_elements[] = 'custom';
+		// }
+		// if ( get_option( 'eaa2c_short_description' ) === 'on' ) {
+		// 	$available_elements[] = 'short_description';
+		// }
+
 		wp_localize_script( 'eaa2c-group-block-editor', 'EAA2CGROUP', array(
-			'route'			=> get_site_url(),
-			'baseURL'		=> get_rest_url(),
-			'nonce' 		=> wp_create_nonce( 'wp_rest' ),
-			'image'			=> get_option( 'eaa2c_image_field' ),
-			'custom'		=> get_option( 'eaa2c_custom_field' ),
-			'customClass'	=> get_option( 'eaa2c_custom_class' ),
-			'imageSizes'	=> $this->get_filtered_image_sizes(),
+			'route'				=> get_site_url(),
+			'baseURL'			=> get_rest_url(),
+			'nonce' 			=> wp_create_nonce( 'wp_rest' ),
+			'image'				=> get_option( 'eaa2c_image_field' ),
+			'custom'			=> get_option( 'eaa2c_custom_field' ),
+			'shortDescription'	=> get_option( 'eaa2c_short_description' ),
+			'customClass'		=> get_option( 'eaa2c_custom_class' ),
+			'imageSizes'		=> $this->get_filtered_image_sizes(),
 		) );
 
 		$dir = plugin_dir_path( dirname( __FILE__ ) ) . 'blocks/eaa2c-group/';
@@ -400,6 +451,16 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 				'type' => 'boolean',
 				'default' => false,
 			),
+			// 'availableElements' => array(
+			// 	'type' => 'array',
+			// 	'default' => array(
+			// 		'title',
+			// 		'separator',
+			// 		'price',
+			// 		'quantity',
+			// 		'button',
+			// 	),
+			// ),
 			'buttonText' => array(
 				'type' => 'string',
 				'default' => 'Add to cart',
@@ -444,6 +505,10 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 					'type'	=> 'int',
 				),
 			),
+			'titleAction' => array(
+				'type' => 'string',
+				'default' => '',
+			),
 			'titleType' => array(
 				'type' => 'string',
 				'default' => 'full',
@@ -484,6 +549,20 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 			array_splice( $attributes['contentOrder']['default'], 1, 0, $inserted );
 		}
 
+		if ( 'on' === get_option( 'eaa2c_short_description' ) ) {
+			$attributes['short_description'] = array(
+				'type'	=> 'string',
+				'default' => '',
+			);
+			// $inserted = array( 'custom' => false );
+			if ( ! isset( $attributes['contentVisibility']['default']['short_description'] ) ) {
+				$attributes['contentVisibility']['default']['short_description'] = false;
+			}
+			// array_push( $attributes['contentVisibility']['default'], $inserted );
+			$inserted = array('short_description');
+			array_splice( $attributes['contentOrder']['default'], 1, 0, $inserted );
+		}
+
 		register_block_type( 'enhanced-ajax-add-to-cart-for-wc/eaa2c-group', array(
 			'editor_script'   => 'eaa2c-group-block-editor',
 			'editor_style'    => 'eaa2c-group-block-editor-style',
@@ -519,7 +598,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 					'medium'    => __( 'Medium' ),
 					'large'     => __( 'Large' ),
 					'full'      => __( 'Full Size' ),
-					'inline'	=> __( 'Inline' ),
+					// 'inline'	=> __( 'Inline' ),
 				)
 			);
 		}

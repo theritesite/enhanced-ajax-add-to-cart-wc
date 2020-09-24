@@ -1,5 +1,8 @@
+/*
 import orderReducer from './reducer';
 import expectExport from 'expect';
+
+// This file was brought from another project and will not work. It is for reference.
 
 describe("order connector reducer", () => {
     let initialState = {
@@ -86,4 +89,4 @@ describe("order connector reducer", () => {
         });
     });
 
-})
+})*/

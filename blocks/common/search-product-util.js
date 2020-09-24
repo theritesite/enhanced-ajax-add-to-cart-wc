@@ -6,6 +6,7 @@ import { addQueryArgs } from '@wordpress/url';
 import { getSetting } from '@woocommerce/settings';
 import { flatten, uniqBy } from 'lodash';
 import { createTitle } from './formatting/title';
+import { createValidHtml } from './formatting/html';
 
 const getProductsRequests = ( {
 	selected = [],
@@ -65,9 +66,11 @@ export const getProducts = ( {
 				att: title,
 				price: product.price,
 				type: product.type,
+				// short_description: unescape( product.short_description ),
+				short_description: createValidHtml( { inputHtml: product.short_description } ),
 				// attributes: product.attributes,
 				children: product.variations,
-				images: (product.images ? product.images.map(image => (image.id) ) : []),
+				images: ( product.images ? product.images.map( image => (image.id) ) : [] ),
 				// raw: product,
 				// ...product,
 				// parent: 0,

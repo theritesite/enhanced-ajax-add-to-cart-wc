@@ -6,7 +6,7 @@ import { registerBlockType } from '@wordpress/blocks';
 
 import GroupAddToCartBlock from './block';
 
-let trs_eaa2c_defaultContentOrder = [
+let trs_eaa2c_g_availableElements, trs_eaa2c_g_defaultContentOrder = [
 	'title',
 	'separator',
 	'price',
@@ -14,7 +14,7 @@ let trs_eaa2c_defaultContentOrder = [
 	'button',
 ];
 
-let trs_eaa2c_defaultContentVisibility = {
+let trs_eaa2c_g_defaultContentVisibility = {
 	title: true,
 	separator: true,
 	price: true,
@@ -22,27 +22,19 @@ let trs_eaa2c_defaultContentVisibility = {
 	button: true,
 }
 
-let trs_eaa2c_defaultButtonText = 'Add to cart';
+let trs_eaa2c_g_defaultButtonText = 'Add to cart';
 
 if ( global.EAA2CGROUP ) {
-	console.log( "we made it into the global setarea" );
-	let imageVal = global.EAA2CGROUP.image;
-	let customVal = global.EAA2CGROUP.custom;
-	let trs_eaa2c_buttonText = global.EAA2CGROUP.buttonText;
-	let i = 1;
+	
+	let trs_eaa2c_g_buttonText = global.EAA2CGROUP.buttonText;
 
-	if ( imageVal === 'on' ) {
-		trs_eaa2c_defaultContentOrder.splice( 0, 0, 'image' );
-		trs_eaa2c_defaultContentVisibility = { ...trs_eaa2c_defaultContentVisibility, image: false };
-		i++;
+	if ( trs_eaa2c_g_buttonText && trs_eaa2c_g_buttonText !== undefined && trs_eaa2c_g_buttonText.length > 0 ) {
+		trs_eaa2c_g_defaultButtonText = trs_eaa2c_g_buttonText;
 	}
-	if ( customVal === 'on' ) {
-		trs_eaa2c_defaultContentOrder.splice( i, 0, 'custom' );
-		trs_eaa2c_defaultContentVisibility = { ...trs_eaa2c_defaultContentVisibility, custom: false };
-	}
-	if ( trs_eaa2c_buttonText && trs_eaa2c_buttonText !== undefined && trs_eaa2c_buttonText.length > 0 ) {
-		trs_eaa2c_defaultButtonText = trs_eaa2c_buttonText;
-	}
+
+	// if ( global.EAA2CGROUP.availableElements.length > 0 ) {
+	// 	trs_eaa2c_g_availableElements = global.EAA2CGROUP.availableElements;
+	// }
 }
 
 registerBlockType( 'enhanced-ajax-add-to-cart-for-wc/eaa2c-group', {
@@ -50,7 +42,7 @@ registerBlockType( 'enhanced-ajax-add-to-cart-for-wc/eaa2c-group', {
 	icon: 'list-view',
 	category: 'widgets',
 	description: __(
-		'Easy to use form with many dynamic add to cart buttons!',
+		'Easy to use form with many dynamic non-redirect add to cart buttons!',
 		'enhanced-ajax-add-to-cart-wc'
 	),
 	supports: {
@@ -67,13 +59,17 @@ registerBlockType( 'enhanced-ajax-add-to-cart-for-wc/eaa2c-group', {
 			type: 'boolean',
 			default: false,
 		},
+		// availableElements: {
+		// 	type: 'array',
+		// 	default: trs_eaa2c_g_availableElements,
+		// },
 		contentVisibility: {
 			type: 'object',
-			default: trs_eaa2c_defaultContentVisibility,
+			default: trs_eaa2c_g_defaultContentVisibility,
 		},
 		contentOrder: {
 			type: 'array',
-			default: trs_eaa2c_defaultContentOrder,
+			default: trs_eaa2c_g_defaultContentOrder,
 		},
 		custom: {
 			type: 'string',
@@ -81,7 +77,7 @@ registerBlockType( 'enhanced-ajax-add-to-cart-for-wc/eaa2c-group', {
 		},
 		buttonText: {
 			type: 'string',
-			default: trs_eaa2c_defaultButtonText,
+			default: trs_eaa2c_g_defaultButtonText,
 		},
 		image: {
 			type: 'string',
@@ -94,6 +90,14 @@ registerBlockType( 'enhanced-ajax-add-to-cart-for-wc/eaa2c-group', {
 				min: 1,
 				max: -1,
 			},
+		},
+		short_description: {
+			type: 'string',
+			default: '',
+		},
+		titleAction: {
+			type: 'string',
+			default: '',
 		},
 		titleType: {
 			type: 'string',

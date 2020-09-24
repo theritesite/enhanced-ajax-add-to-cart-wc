@@ -7,6 +7,26 @@ msgstr ""
 msgid "Remove %s"
 msgstr ""
 
-#: blocks/eaa2c-group/index.js:52
-msgid "Easy to use form with many dynamic add to cart buttons!"
+#: blocks/eaa2c-group/index.js:44
+msgid "Easy to use form with many dynamic non-redirect add to cart buttons!"
+msgstr ""
+
+#: blocks/eaa2c/block.js:684
+msgid "Content"
+msgstr ""
+
+#: blocks/eaa2c/block.js:780
+msgid "Showing AJAX Add to Cart block preview."
+msgstr ""
+
+#: blocks/eaa2c/block.js:789
+msgid "AJAX Add to Cart button"
+msgstr ""
+
+#: blocks/eaa2c/block.js:812
+msgid "Done"
+msgstr ""
+
+#: blocks/eaa2c/block.js:988
+msgid "Edit"
 msgstr ""
