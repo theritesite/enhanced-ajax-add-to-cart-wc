@@ -11,7 +11,10 @@
  * @author     TheRiteSites <contact@theritesites.com>
  */
 
-class Enhanced_Ajax_Add_To_Cart_Wc_Group extends Abstract_EAA2C_Button {
+namespace TRS\EAA2C;
+use TRS\EAA2C\Abstract_EAA2C_Button;
+
+class Group extends Abstract_Button {
 
 	/**
 	 * The version of this plugin.

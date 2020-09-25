@@ -10,9 +10,11 @@
  * @author     TheRiteSites <contact@theritesites.com>
  */
 
+namespace TRS\EAA2C;
+
 defined('ABSPATH') || exit;
 
-class Enhanced_Ajax_Add_To_Cart_Wc_AJAX {
+class Ajax {
 
     public static function init() {
 
@@ -359,4 +361,4 @@ class Enhanced_Ajax_Add_To_Cart_Wc_AJAX {
      */
 }
 
-Enhanced_Ajax_Add_To_Cart_Wc_AJAX::init();
+AJAX::init();

@@ -10,7 +10,8 @@
  * @author     TheRiteSites <contact@theritesites.com>
  */
 
-abstract class Abstract_EAA2C_Button {
+namespace TRS\EAA2C;
+abstract class Abstract_Button {
 
 	/**
 	 * The ID of this plugin.
@@ -128,7 +129,7 @@ abstract class Abstract_EAA2C_Button {
 				$image			= array();
 				$imageType		= '';
 
-				if ( $product instanceof WC_Product ) {
+				if ( $product instanceof \WC_Product ) {
 					$sizes = apply_filters( 'image_size_names_choose',
 						array(
 							'thumbnail' => __( 'Thumbnail' ),
@@ -148,13 +149,13 @@ abstract class Abstract_EAA2C_Button {
 
 					$out_of_stock_check = empty( get_option( 'eaa2c_out_of_stock') ) ? false : get_option( 'eaa2c_out_of_stock' );
 					if ( false === $out_of_stock_check || strcmp( 'false', $out_of_stock_check ) === 0 ) {
-						if ( $variation !== false && $variation instanceof WC_Product_Variation ) {
+						if ( $variation !== false && $variation instanceof \WC_Product_Variation ) {
 							if ( false === $variation->is_in_stock() ) {
 								$buttonText = __( 'Out of stock', 'enhanced-ajax-add-to-cart-wc' );
 								$disable_button = 'disabled';
 							}
 						}
-						elseif ( $product !== false && $variation === false && $product instanceof WC_Product ) {
+						elseif ( $product !== false && $variation === false && $product instanceof \WC_Product ) {
 							if ( false === $product->is_in_stock() ) {
 								$buttonText = __( 'Out of stock', 'enhanced-ajax-add-to-cart-wc' );
 								$disable_button = 'disabled';
@@ -175,32 +176,34 @@ abstract class Abstract_EAA2C_Button {
 						$customText = ! empty( $attributes['custom'] ) ? $attributes['custom'] : '';
 					}
 
-					if ( isset( $attributes['image'] ) && ! empty( $attributes['image'] ) && $contentVisibility['image'] === true && in_array( 'image', $available_elements ) ) {
-						$imageType = $attributes['image'];
-						if ( $product ) {
-							$image_id = $product->get_image_id();
-							if ( strcmp( 'inline', $imageType ) === 0 ) {
-								$imageType = 'thumbnail';
-							}
+					if ( isset( $attributes['image'] ) ) {
+						if ( ! empty( $attributes['image'] ) && $contentVisibility['image'] === true && in_array( 'image', $available_elements ) ) {
+							$imageType = $attributes['image'];
+							if ( $product ) {
+								$image_id = $product->get_image_id();
+								if ( strcmp( 'inline', $imageType ) === 0 ) {
+									$imageType = 'thumbnail';
+								}
 
-							if ( $image_id > 0 && in_array( $imageType , array_keys( $sizes ) ) ) {
-								$temp = wp_get_attachment_image_src( $image_id, $imageType );
-								if ( is_array( $temp ) ) {
-									if ( isset( $temp[0] ) ) {
-										$image['src'] = $temp[0];
-									}
-									if ( isset( $temp[1] ) ) {
-										$image['width'] = $temp[1];
-									}
-									if ( isset( $temp[2] ) ) {
-										$image['height'] = $temp[2];
+								if ( $image_id > 0 && in_array( $imageType , array_keys( $sizes ) ) ) {
+									$temp = wp_get_attachment_image_src( $image_id, $imageType );
+									if ( is_array( $temp ) ) {
+										if ( isset( $temp[0] ) ) {
+											$image['src'] = $temp[0];
+										}
+										if ( isset( $temp[1] ) ) {
+											$image['width'] = $temp[1];
+										}
+										if ( isset( $temp[2] ) ) {
+											$image['height'] = $temp[2];
+										}
 									}
 								}
 							}
 						}
 					}
 
-					$priceDisplay = get_woocommerce_currency_symbol() . $product->get_price();
+					$priceDisplay = wc_price( $product->get_price() );
 					$titleDisplay = $product->get_name();
 					if ( $variation !== null && $variation !== false ) {
 						$priceDisplay = get_woocommerce_currency_symbol() . $variation->get_price();
@@ -210,7 +213,7 @@ abstract class Abstract_EAA2C_Button {
 						}
 						elseif ( strcmp( $titleType, 'att' ) === 0 ) {
 							$titleDisplay = '';
-							if ( $variation instanceof WC_Product ) {
+							if ( $variation instanceof \WC_Product ) {
 								foreach ( $variation->get_variation_attributes() as $key => $attribute )
 									$titleDisplay .= ucfirst( $attribute ) . ' ';
 							}
@@ -235,7 +238,7 @@ abstract class Abstract_EAA2C_Button {
 								<?php endif; ?>
 								<?php if ( strcmp( $item, 'price' ) === 0 && $contentVisibility[ $item ] === true   ) : ?>
 									<span class="ea-line ea-text ea-price">
-										<span><?php esc_html_e( $priceDisplay ); ?></span>
+										<?php echo $priceDisplay; ?>
 									</span>
 								<?php endif; ?>
 								<?php if ( strcmp( $item, 'quantity' ) === 0 ) : ?>

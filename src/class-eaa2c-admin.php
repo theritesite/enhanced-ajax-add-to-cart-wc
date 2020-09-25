@@ -11,7 +11,12 @@
  * @author     TheRiteSites <contact@theritesites.com>
  */
 
-class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
+namespace TRS\EAA2C;
+
+use TRS\EAA2C\Single;
+use TRS\EAA2C\Group;
+
+class Admin {
 
 	/**
 	 * The ID of this plugin.
@@ -94,18 +99,8 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 			'class'			=> ''  // Added in version 2.0.0
 		), $atts);
 
-		// $args = $this->parse_shortcode_args_to_new( $att_array );
-
-		// wp_enqueue_style( EAA2C_NAME );
-		// wp_enqueue_script( EAA2C_NAME . '-js-bundle' );
 
 		return $this->render_from_shortcode( $att_array, $content );
-		// return $this->renderHtml( $args );
-
-		// if ( ! empty( $att_array['product'] ) )
-		// 	$add_to_cart_html = $this->display_variable_product_add_to_cart( $att_array );
-		
-		// return $add_to_cart_html;
 	}
 
 	/**
@@ -134,8 +129,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 	 */
 	public function render_from_shortcode( $att_array = array(), $content = '' ) {
 		if ( ! empty( $att_array ) ) {
-			$block = new Enhanced_Ajax_Add_To_Cart_Wc_Single( $att_array );
-			// $block->parse_shortcode_args_to_block_args( $att_array );
+			$block = new Single( $att_array );
 			return $block->render();
 		}
 	}
@@ -305,9 +299,10 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 				'type'	=> 'string',
 				'default' => 'thumbnail',
 			);
-			$inserted = array( 'image' => false );
-			array_push( $attributes['contentVisibility']['default'], $inserted );
-			$inserted = 'image';
+			if ( ! isset( $attributes['contentVisibility']['default']['image'] ) ) {
+				$attributes['contentVisibility']['default']['image'] = false;
+			}
+			$inserted = array( 'image' );
 			array_splice( $attributes['contentOrder'], 0, 0, $inserted );
 		}
 
@@ -316,9 +311,10 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 				'type'	=> 'string',
 				'default' => '',
 			);
-			$inserted = array( 'custom' => false );
-			array_push( $attributes['contentVisibility']['default'], $inserted );
-			$inserted = 'custom';
+			if ( ! isset( $attributes['contentVisibility']['default']['custom'] ) ) {
+				$attributes['contentVisibility']['default']['custom'] = false;
+			}
+			$inserted = array( 'custom' );
 			array_splice( $attributes['contentOrder'], 1, 0, $inserted );
 		}
 
@@ -327,12 +323,10 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 				'type'	=> 'string',
 				'default' => '',
 			);
-			// $inserted = array( 'custom' => false );
 			if ( ! isset( $attributes['contentVisibility']['default']['short_description'] ) ) {
 				$attributes['contentVisibility']['default']['short_description'] = false;
 			}
-			// array_push( $attributes['contentVisibility']['default'], $inserted );
-			$inserted = array('short_description');
+			$inserted = array( 'short_description' );
 			array_splice( $attributes['contentOrder']['default'], 2, 0, $inserted );
 		}
 
@@ -357,7 +351,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 	 */
 	public function render_from_block( $raw_attributes = array(), $content = '' ) {
 		if ( ! empty( $raw_attributes ) ) {
-			$block = new Enhanced_Ajax_Add_To_Cart_Wc_Single( $raw_attributes );
+			$block = new Single( $raw_attributes );
 			return $block->render();
 		}
 	}
@@ -540,11 +534,9 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 				'type'	=> 'string',
 				'default' => '',
 			);
-			// $inserted = array( 'custom' => false );
 			if ( ! isset( $attributes['contentVisibility']['default']['custom'] ) ) {
 				$attributes['contentVisibility']['default']['custom'] = false;
 			}
-			// array_push( $attributes['contentVisibility']['default'], $inserted );
 			$inserted = array('custom');
 			array_splice( $attributes['contentOrder']['default'], 1, 0, $inserted );
 		}
@@ -554,11 +546,9 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 				'type'	=> 'string',
 				'default' => '',
 			);
-			// $inserted = array( 'custom' => false );
 			if ( ! isset( $attributes['contentVisibility']['default']['short_description'] ) ) {
 				$attributes['contentVisibility']['default']['short_description'] = false;
 			}
-			// array_push( $attributes['contentVisibility']['default'], $inserted );
 			$inserted = array('short_description');
 			array_splice( $attributes['contentOrder']['default'], 1, 0, $inserted );
 		}
@@ -584,7 +574,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Admin {
 	 */
 	public function render_group_from_block( $raw_attributes = array(), $content = '' ) {
 		if ( ! empty( $raw_attributes ) ) {
-			$block = new Enhanced_Ajax_Add_To_Cart_Wc_Group( $raw_attributes );
+			$block = new Group( $raw_attributes );
 			return $block->render();
 		}
 	}

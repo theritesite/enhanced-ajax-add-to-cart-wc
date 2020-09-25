@@ -10,7 +10,9 @@
  * @author     TheRiteSites <contact@theritesites.com>
  */
 
-class Enhanced_Ajax_Add_To_Cart_Wc_Settings {
+namespace TRS\EAA2C;
+
+class Settings {
 
 	protected $settings_page;
 

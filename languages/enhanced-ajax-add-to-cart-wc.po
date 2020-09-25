@@ -7,10 +7,6 @@ msgstr ""
 msgid "Remove %s"
 msgstr ""
 
-#: blocks/eaa2c-group/index.js:44
-msgid "Easy to use form with many dynamic non-redirect add to cart buttons!"
-msgstr ""
-
 #: blocks/eaa2c/block.js:684
 msgid "Content"
 msgstr ""
@@ -29,4 +25,8 @@ msgstr ""
 
 #: blocks/eaa2c/block.js:988
 msgid "Edit"
+msgstr ""
+
+#: blocks/eaa2c/index.js:46
+msgid "Non-redirect add to cart button wherever you want!"
 msgstr ""

@@ -17,6 +17,14 @@
  * @subpackage Enhanced_Ajax_Add_To_Cart_Wc/includes
  * @author     TheRiteSites <contact@theritesites.com>
  */
+
+// use TRS\EAA2C\Single;
+// use TRS\EAA2C\Group;
+use TRS\EAA2C\Settings;
+use TRS\EAA2C\Admin;
+use TRS\EAA2C\Front;
+use TRS\EAA2C\Loader;
+
 class Enhanced_Ajax_Add_To_Cart_Wc {
 
 	/**
@@ -127,7 +135,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 		
 		$license_key = get_option( EAA2C_LICENSE_KEY );
 		
-		$this->plugin_updater = new EAA2C_Plugin_Updater( EAA2C_UPDATER_URL, __FILE__, array(
+		$this->plugin_updater = new \EAA2C_Plugin_Updater( EAA2C_UPDATER_URL, __FILE__, array(
 							'version'	=> ENHANCED_AJAX_ADD_TO_CART,
 							'license'	=> $license_key,
 							'item_id'	=> EAA2C_ITEM_ID,
@@ -166,7 +174,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/class-eaa2c-single.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/class-eaa2c-group.php';
 
-		$this->loader = new Enhanced_Ajax_Add_To_Cart_Wc_Loader();
+		$this->loader = new Loader();
 
 	}
 
@@ -175,7 +183,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 		
 		register_rest_route( $namespace, '/settings', array(
 			array(
-				'methods'   => WP_REST_Server::READABLE,
+				'methods'   => \WP_REST_Server::READABLE,
                 'callback'  => array( $this, 'get_eaa2c_settings' ),
                 // 'permissions_callback    => array( $this, '' ),
                 // 'args'      => array(
@@ -188,7 +196,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 
 		register_rest_route( $namespace, '/product-image/' . '(?P<id>[\d-]+)', array(
 			array(
-				'methods'   => WP_REST_Server::READABLE,
+				'methods'   => \WP_REST_Server::READABLE,
                 'callback'  => array( $this, 'get_eaa2c_product_image' ),
                 // 'permissions_callback    => array( $this, '' ),
                 // 'args'      => array(
@@ -201,7 +209,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 
         register_rest_route( $namespace, '/connect', array(
             array(
-                'methods'   => WP_REST_Server::ALLMETHODS,
+                'methods'   => \WP_REST_Server::ALLMETHODS,
                 'callback'  => array( $this, 'error_check_route' ),
                 // 'permissions_callback    => array( $this, '' ),
                 // 'args'      => array(
@@ -213,7 +221,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 		) );
 		register_rest_route( $namespace, '/products', array(
             array(
-                'methods'   => WP_REST_Server::ALLMETHODS,
+                'methods'   => \WP_REST_Server::ALLMETHODS,
                 'callback'  => array( $this, 'get_all_products_and_variations' ),
                 // 'permissions_callback    => array( $this, '' ),
                 // 'args'      => array(
@@ -338,7 +346,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 	 */
 	private function set_locale() {
 
-		$plugin_i18n = new Enhanced_Ajax_Add_To_Cart_Wc_i18n();
+		$plugin_i18n = new \Enhanced_Ajax_Add_To_Cart_Wc_i18n();
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 
@@ -351,7 +359,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 	 * @access	private
 	 */
 	private function register_settings() {
-		$settings = new Enhanced_Ajax_Add_To_Cart_Wc_Settings();
+		$settings = new Settings();
 
 		$this->loader->add_action( 'admin_menu', $settings, 'register_menu_item' );
 		$this->loader->add_action( 'admin_init', $settings, 'register_settings' );
@@ -367,7 +375,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 	 */
 	private function define_admin_hooks() {
 
-		$this->plugin_admin = new Enhanced_Ajax_Add_To_Cart_Wc_Admin();
+		$this->plugin_admin = new Admin();
 
 		$this->loader->add_action( 'init', $this->plugin_admin, 'register_eaa2c_single', 9999 );
 		$this->loader->add_action( 'init', $this->plugin_admin, 'register_eaa2c_group', 9999 );
@@ -388,7 +396,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 	 */
 	private function define_public_hooks() {
 
-		$plugin_public = new Enhanced_Ajax_Add_To_Cart_Wc_Public();
+		$plugin_public = new Front();
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'register_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'register_scripts' );

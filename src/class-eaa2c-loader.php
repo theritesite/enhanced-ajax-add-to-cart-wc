@@ -13,7 +13,10 @@
  * @subpackage Enhanced_Ajax_Add_To_Cart_Wc/includes
  * @author     TheRiteSites <contact@theritesites.com>
  */
-class Enhanced_Ajax_Add_To_Cart_Wc_Loader {
+
+namespace TRS\EAA2C;
+
+class Loader {
 
 	/**
 	 * The array of actions registered with WordPress.

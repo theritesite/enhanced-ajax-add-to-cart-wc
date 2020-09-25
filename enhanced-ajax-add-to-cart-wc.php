@@ -36,7 +36,7 @@ if ( ! function_exists( 'is_woocommerce_active' ) ) {
  */
 define( 'ENHANCED_AJAX_ADD_TO_CART', '2.0.0-beta' );
 define( 'EAA2C_DEBUG', false );
-
+define( 'EAA2C_PLUGIN_FILE', __FILE__ );
 
 /**
  * The code that runs during plugin activation.
@@ -59,11 +59,15 @@ function deactivate_enhanced_ajax_add_to_cart_wc() {
 register_activation_hook( __FILE__, 'activate_enhanced_ajax_add_to_cart_wc' );
 register_deactivation_hook( __FILE__, 'deactivate_enhanced_ajax_add_to_cart_wc' );
 
+
+if ( ! class_exists( 'Enhanced_Ajax_Add_To_Cart_Wc' ) ) {
+	include_once dirname( EAA2C_PLUGIN_FILE ) . '/src/class-enhanced-ajax-add-to-cart-wc.php';
+}
 /**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-require plugin_dir_path( __FILE__ ) . 'src/class-enhanced-ajax-add-to-cart-wc.php';
+// require plugin_dir_path( __FILE__ ) . 'src/class-enhanced-ajax-add-to-cart-wc.php';
 
 /**
  * Begins execution of the plugin.
@@ -74,6 +78,7 @@ require plugin_dir_path( __FILE__ ) . 'src/class-enhanced-ajax-add-to-cart-wc.ph
  *
  * @since    1.0.0
  */
+use \TRS\EAA2C;
 function run_enhanced_ajax_add_to_cart_wc() {
 
 	$plugin = new Enhanced_Ajax_Add_To_Cart_Wc();

@@ -9,7 +9,10 @@
  * @subpackage Enhanced_Ajax_Add_To_Cart_Wc/public
  * @author     TheRiteSites <contact@theritesites.com>
  */
-class Enhanced_Ajax_Add_To_Cart_Wc_Public {
+
+namespace TRS\EAA2C;
+
+class Front {
 
 	/**
 	 * The version of this plugin.
