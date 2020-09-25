@@ -186,9 +186,10 @@ At this point, no. This is designed to supplement your store to let the buttons 
 * Added extra class parameter "class" to add to the wrapper element for all button blocks/shortcodes.
 * Added min/max fields for quantity to have basic controls.
 * Added "custom", "image", and "short description" fields to be displayable.
-* Added php filter 'eaa2c_button_row_additional_fields' to display additional content on a shortcode or block (filter is passed a blank string and the product id)
-* Added php filter 'eaa2c_button_row_custom_field' to allow for the custom field to be flexible with the product (filter is passed default html and the product id)
+* Added php filter 'eaa2c_button_row_additional_fields' to display additional content on a shortcode or block (filter is passed a blank string and the product id).
+* Added php filter 'eaa2c_button_row_custom_field' to allow for the custom field to be flexible with the product (filter is passed default html and the product id).
 * Added php filter 'eaa2c_button_row_wrap_override' to disable the new Group EAA2C display wrapping element.
+* Added Namespacing to the project.
 * Standardized printing of shortcodes and blocks, along with product types.
 * Fixed bug when attribute title was selected but undefined, now printing parent product name rather than nothing.
 
