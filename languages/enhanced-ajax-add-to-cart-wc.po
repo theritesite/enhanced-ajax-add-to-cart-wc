@@ -3,30 +3,26 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "X-Generator: babel-plugin-makepot\n"
 
-#: blocks/common/tag.js:77
-msgid "Remove %s"
-msgstr ""
-
-#: blocks/eaa2c-group/index.js:44
-msgid "Easy to use form with many dynamic non-redirect add to cart buttons!"
-msgstr ""
-
-#: blocks/eaa2c/block.js:684
+#: blocks/eaa2c/block.js:617
 msgid "Content"
 msgstr ""
 
-#: blocks/eaa2c/block.js:780
+#: blocks/eaa2c/block.js:707
 msgid "Showing AJAX Add to Cart block preview."
 msgstr ""
 
-#: blocks/eaa2c/block.js:789
+#: blocks/eaa2c/block.js:711
 msgid "AJAX Add to Cart button"
 msgstr ""
 
-#: blocks/eaa2c/block.js:812
+#: blocks/eaa2c/block.js:736
 msgid "Done"
 msgstr ""
 
-#: blocks/eaa2c/block.js:988
+#: blocks/eaa2c/block.js:841
 msgid "Edit"
+msgstr ""
+
+#: blocks/eaa2c/index.js:39
+msgid "Non-redirect add to cart button wherever you want!"
 msgstr ""

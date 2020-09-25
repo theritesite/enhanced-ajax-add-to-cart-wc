@@ -148,18 +148,6 @@ class Settings {
 
 	public function render_display_options() {
 		add_settings_field(
-			EAA2C_LICENSE_KEY,
-			'Premium License Key?',
-			array( $this, 'trs_license_setting_field' ),
-			$this->settings_page,
-			'eaa2c_settings',
-			array(
-				'name' => EAA2C_LICENSE_KEY,
-				'type' => 'license',
-				'value' => get_option( EAA2C_LICENSE_KEY ),
-			)
-		);
-		add_settings_field(
 			'eaa2c_display_subheading',
 			// __( 'Display Options', EAA2C_NAME ),
 			'',
@@ -218,8 +206,10 @@ class Settings {
 			array(
 				'name' => 'eaa2c_image_field',
 				'type' => 'checkbox',
-				// 'desc' => $this->get_premium_description_link(),
-				'value' => $image_field,
+				// 'value' => $image_field,
+				'desc' => $this->get_premium_description_link(),
+				'class' => 'disabled',
+				'disabled' => true
 			)
 		);
 		$custom_field = empty( get_option( 'eaa2c_custom_field' ) ) ? 0 : get_option( 'eaa2c_custom_field' );
@@ -232,8 +222,10 @@ class Settings {
 			array(
 				'name' => 'eaa2c_custom_field',
 				'type' => 'checkbox',
-				// 'desc' => $this->get_premium_description_link(),
-				'value' => $custom_field,
+				// 'value' => $custom_field,
+				'desc' => $this->get_premium_description_link(),
+				'class' => 'disabled',
+				'disabled' => true
 			)
 		);
 		$short_description = empty( get_option( 'eaa2c_short_description' ) ) ? 0 : get_option( 'eaa2c_short_description' );
@@ -246,8 +238,10 @@ class Settings {
 			array(
 				'name' => 'eaa2c_short_description',
 				'type' => 'checkbox',
-				// 'desc' => $this->get_premium_description_link(),
-				'value' => $short_description,
+				// 'value' => $short_description,
+				'desc' => $this->get_premium_description_link(),
+				'class' => 'disabled',
+				'disabled' => true
 			)
 		);
 	}
@@ -370,28 +364,6 @@ class Settings {
 		if ( ! empty( $args['desc'] ) ) {
 			echo '<p class="description">' . $args['desc'] . '</p>';
 		}
-	}
-
-	public function trs_license_setting_field( $args ) {
-		if ( ! is_admin() )
-			return;
-		$license_status = get_option( EAA2C_LICENSE_STATUS );
-		$license_key = get_option( EAA2C_LICENSE_KEY );
-		
-		wp_enqueue_script( 'eaa2c-settings' );
-
-		echo '<input type="text" id="trs_eaa2c_key" name="' . $args['name'] . '" value="' . esc_attr($license_key) . '" />';
-
-		if ( $license_status !== 'valid' ) {
-			// echo wp_nonce_field( 'trs_activate_eaa2c', 'eaa2c_nonce' );
-			echo '<input type="submit" class="button-secondary" id="eaa2c_activate" name="eaa2c_activate" value="Activate" />';
-		}
-		else {
-			// echo wp_nonce_field( 'trs_deactivate_eaa2c', 'eaa2c_nonce' );
-			echo '<input type="submit" class="button-secondary" id="eaa2c_deactivate" name="eaa2c_deactivate" value="Deactivate" />';
-			
-		}
-		echo '<span>License status: ' . $license_status . '</span>';
 	}
 
 	public function eaa2c_settings_page_callback() {

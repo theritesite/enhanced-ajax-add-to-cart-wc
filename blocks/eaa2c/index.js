@@ -14,7 +14,7 @@ import { registerBlockType } from '@wordpress/blocks';
 
 import AddToCartBlock from './block';
 
-let trs_eaa2c_availableElements, trs_eaa2c_defaultContentOrder = [
+let trs_eaa2c_defaultContentOrder = [
 	'title',
 	'separator',
 	'price',
@@ -61,10 +61,6 @@ registerBlockType( 'enhanced-ajax-add-to-cart-for-wc/eaa2c', {
 			type: 'boolean',
 			default: false,
 		},
-		// availableElements: {
-		// 	type: 'array',
-		// 	default: trs_eaa2c_availableElements,
-		// },
 		contentVisibility: {
 			type: 'object',
 			default: trs_eaa2c_defaultContentVisibility,
@@ -73,17 +69,9 @@ registerBlockType( 'enhanced-ajax-add-to-cart-for-wc/eaa2c', {
 			type: 'array',
 			default: trs_eaa2c_defaultContentOrder,
 		},
-		custom: {
-			type: 'string',
-			default: '',
-		},
 		buttonText: {
 			type: 'string',
 			default: trs_eaa2c_defaultButtonText,
-		},
-		image: {
-			type: 'string',
-			default: 'thumbnail',
 		},
 		quantity: {
 			type: 'object',
@@ -92,10 +80,6 @@ registerBlockType( 'enhanced-ajax-add-to-cart-for-wc/eaa2c', {
 				min: 1,
 				max: -1,
 			},
-		},
-		short_description: {
-			type: 'string',
-			default: '',
 		},
 		titleAction: {
 			type: 'string',

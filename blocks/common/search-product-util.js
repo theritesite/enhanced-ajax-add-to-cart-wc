@@ -20,9 +20,6 @@ const getProductsRequests = ( {
 		search,
 		orderby: 'title',
 		order: 'asc',
-		// consumer_key: 'ck_5f7fbb292d1a17f1d04705314018160d07a65564',
-		// consumer_secret: 'cs_2b8e302b8a9ab86ebc16503bcb530aa25ef49821',
-		// query_string_auth: true,
 	};
 	const requests = [
 		addQueryArgs( '/wc/v3/products', { ...defaultArgs, ...queryArgs } ),
@@ -32,14 +29,8 @@ const getProductsRequests = ( {
 	if ( getSetting( 'isLargeCatalog' ) && selected.length ) {
 		requests.push(
 			addQueryArgs( '/wc/v3/products', {
-				// catalog_visibility: 'any',
 				status: 'publish',
 				include: selected,
-				// consumer_key:
-				// 	'ck_5f7fbb292d1a17f1d04705314018160d07a65564',
-				// consumer_secret:
-				// 	'cs_2b8e302b8a9ab86ebc16503bcb530aa25ef49821',
-				// query_string_auth: true,
 			} )
 		)
 	}
@@ -57,7 +48,6 @@ export const getProducts = ( {
 		.then( ( data ) => {
 			const products = uniqBy( flatten( data ), 'id' );
 			var title = '';
-			// console.log( "we are after the flatten" );
 			const list = products.map( ( product ) => ( {
 				name: title = createTitle( { product: product, variation: [], titleType: 'base' } ),
 				id: product.id,
@@ -66,20 +56,13 @@ export const getProducts = ( {
 				att: title,
 				price: product.price,
 				type: product.type,
-				// short_description: unescape( product.short_description ),
 				short_description: createValidHtml( { inputHtml: product.short_description } ),
-				// attributes: product.attributes,
 				children: product.variations,
 				images: ( product.images ? product.images.map( image => (image.id) ) : [] ),
-				// raw: product,
-				// ...product,
-				// parent: 0,
 			} ) );
-			// console.log( "returning list")
 			return list;
 		} )
 		.catch( ( e ) => {
-			// console.log( "we threw it" );
 			throw e;
 		} );
 };

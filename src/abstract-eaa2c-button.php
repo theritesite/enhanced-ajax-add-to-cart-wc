@@ -321,6 +321,9 @@ abstract class Abstract_Button {
 
 	protected function parse_attributes( $attributes ) {
 		// These should match what's set in JS `registerBlockType`.
+		$buttonText = get_option( 'eaa2c_default_text' );
+		$buttonText = empty( $buttonText ) ? __( 'Add to cart', 'enhanced-ajax-add-to-cart-wc' ) : $buttonText;
+
 		$defaults = array(
 			'contentVisibility' => array(
 				'title'  => true,
@@ -341,7 +344,7 @@ abstract class Abstract_Button {
 				'min' => 1,
 				'max' => -1,
 			),
-			'buttonText' => 'Add to cart',
+			'buttonText' => $buttonText,
 			'products' => array(),
 			'variations' => array(),
 			'titleType' => 'full',

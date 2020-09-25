@@ -14,7 +14,6 @@
 namespace TRS\EAA2C;
 
 use TRS\EAA2C\Single;
-use TRS\EAA2C\Group;
 
 class Admin {
 
@@ -35,8 +34,6 @@ class Admin {
 	 * @var      string    $version    The current version of this plugin.
 	 */
 	private $version;
-
-	private $filteredImageSizes = array();
 
 	/**
 	 * Initialize the class and set its properties.
@@ -150,7 +147,6 @@ class Admin {
 		wp_register_script(
 			'eaa2c-block-editor',
 			plugins_url( $index_js, $dir .'blocks/' ),
-			// plugins_url( $index_js, $dir . 'eaa2c/' ),
 			array(
 				'wp-blocks',
 				'wp-i18n',
@@ -162,27 +158,16 @@ class Admin {
 			filemtime( "$dir/$index_js" )
 		);
 
-		// $available_elements = [ 'title', 'separator', 'price', 'quantity', 'button' ];
-		// if ( get_option( 'eaa2c_image_field' ) === 'on' ) {
-		// 	$available_elements[] = 'image';
-		// }
-		// if ( get_option( 'eaa2c_custom_field' ) === 'on' ) {
-		// 	$available_elements[] = 'custom';
-		// }
-		// if ( get_option( 'eaa2c_short_description' ) === 'on' ) {
-		// 	$available_elements[] = 'short_description';
-		// }
+		$buttonText = get_option( 'eaa2c_default_text' );
+		$buttonText = empty( $buttonText ) ? __( 'Add to cart', 'enhanced-ajax-add-to-cart-wc' ) : $buttonText;
 
 		wp_localize_script( 'eaa2c-block-editor', 'EAA2C', array(
 			'debug'				=> EAA2C_DEBUG,
 			'route'				=> get_site_url(),
 			'baseURL'			=> get_rest_url() ,
 			'nonce' 			=> wp_create_nonce( 'wp_rest' ),
-			'image'				=> get_option( 'eaa2c_image_field' ),
-			'custom'			=> get_option( 'eaa2c_custom_field' ),
-			'shortDescription'	=> get_option( 'eaa2c_short_description' ),
 			'customClass'		=> get_option( 'eaa2c_custom_class' ),
-			'imageSizes'		=> $this->get_filtered_image_sizes(),
+			'buttonText'		=> $buttonText
 		) );
 
 		$dir = plugin_dir_path( dirname( __FILE__ ) ) . 'blocks/eaa2c/';
@@ -211,19 +196,9 @@ class Admin {
 				'type' => 'boolean',
 				'default' => false,
 			),
-			// 'availableElements' => array(
-			// 	'type' => 'array',
-			// 	'default' => array(
-			// 		'title',
-			// 		'separator',
-			// 		'price',
-			// 		'quantity',
-			// 		'button',
-			// 	),
-			// ),
 			'buttonText' => array(
 				'type' => 'string',
-				'default' => 'Add to cart',
+				'default' => $buttonText,
 			),
 			'contentOrder' => array(
 				'type' => 'array',
@@ -294,42 +269,6 @@ class Admin {
 			)
 		);
 
-		if ( 'on' === get_option( 'eaa2c_image_field' ) ) {
-			$attributes['image'] = array(
-				'type'	=> 'string',
-				'default' => 'thumbnail',
-			);
-			if ( ! isset( $attributes['contentVisibility']['default']['image'] ) ) {
-				$attributes['contentVisibility']['default']['image'] = false;
-			}
-			$inserted = array( 'image' );
-			array_splice( $attributes['contentOrder'], 0, 0, $inserted );
-		}
-
-		if ( 'on' === get_option( 'eaa2c_custom_field' ) ) {
-			$attributes['custom'] = array(
-				'type'	=> 'string',
-				'default' => '',
-			);
-			if ( ! isset( $attributes['contentVisibility']['default']['custom'] ) ) {
-				$attributes['contentVisibility']['default']['custom'] = false;
-			}
-			$inserted = array( 'custom' );
-			array_splice( $attributes['contentOrder'], 1, 0, $inserted );
-		}
-
-		if ( 'on' === get_option( 'eaa2c_short_description' ) ) {
-			$attributes['short_description'] = array(
-				'type'	=> 'string',
-				'default' => '',
-			);
-			if ( ! isset( $attributes['contentVisibility']['default']['short_description'] ) ) {
-				$attributes['contentVisibility']['default']['short_description'] = false;
-			}
-			$inserted = array( 'short_description' );
-			array_splice( $attributes['contentOrder']['default'], 2, 0, $inserted );
-		}
-
 		register_block_type( 'enhanced-ajax-add-to-cart-for-wc/eaa2c', array(
 			'editor_script' => 'eaa2c-block-editor',
 			'editor_style'  => 'eaa2c-block-editor-style',
@@ -353,275 +292,6 @@ class Admin {
 		if ( ! empty( $raw_attributes ) ) {
 			$block = new Single( $raw_attributes );
 			return $block->render();
-		}
-	}
-
-	public function register_eaa2c_group() {
-
-		// Skip block registration if Gutenberg is not enabled/merged.
-		if ( ! function_exists( 'register_block_type' ) ) {
-			return;
-		}
-
-		$dir = plugin_dir_path( dirname( __FILE__ ) ) . 'dist/blocks/';
-
-		$index_js = 'eaa2c-group.js';
-		wp_register_script(
-			'eaa2c-group-block-editor',
-			plugins_url( $index_js, $dir .'blocks/' ),
-			array(
-				'wp-blocks',
-				'wp-i18n',
-				'wp-element',
-				'wp-components',
-				'wp-block-editor',
-				'wp-editor',
-			),
-			filemtime( "$dir/$index_js" )
-		);
-
-		// $available_elements = [ 'title', 'separator', 'price', 'quantity', 'button' ];
-		// if ( get_option( 'eaa2c_image_field' ) === 'on' ) {
-		// 	$available_elements[] = 'image';
-		// }
-		// if ( get_option( 'eaa2c_custom_field' ) === 'on' ) {
-		// 	$available_elements[] = 'custom';
-		// }
-		// if ( get_option( 'eaa2c_short_description' ) === 'on' ) {
-		// 	$available_elements[] = 'short_description';
-		// }
-
-		wp_localize_script( 'eaa2c-group-block-editor', 'EAA2CGROUP', array(
-			'route'				=> get_site_url(),
-			'baseURL'			=> get_rest_url(),
-			'nonce' 			=> wp_create_nonce( 'wp_rest' ),
-			'image'				=> get_option( 'eaa2c_image_field' ),
-			'custom'			=> get_option( 'eaa2c_custom_field' ),
-			'shortDescription'	=> get_option( 'eaa2c_short_description' ),
-			'customClass'		=> get_option( 'eaa2c_custom_class' ),
-			'imageSizes'		=> $this->get_filtered_image_sizes(),
-		) );
-
-		$dir = plugin_dir_path( dirname( __FILE__ ) ) . 'blocks/eaa2c-group/';
-		$editor_css = 'editor.css';
-		wp_register_style(
-			'eaa2c-group-block-editor-style',
-			plugins_url( $editor_css, $dir . 'eaa2c/' ),
-			array(),
-			filemtime( "$dir/$editor_css" )
-		);
-
-		$style_css = 'style.css';
-		wp_register_style(
-			'eaa2c-group-block',
-			plugins_url( $style_css, $dir . 'eaa2c-group/' ),
-			array( 'wp-editor' ),
-			filemtime( "$dir/$style_css" )
-		);
-
-		$contentOrderDefaults = array(
-			'title',
-			'separator',
-			'price',
-			'quantity',
-			'button',
-		);
-
-		$contentVisibilityDefaults = array(
-			'title' => true,
-			'price' => true,
-			'quantity' => true,
-			'button' => true,
-			'separator' => true,
-		);
-
-
-		$attributes = array(
-			'editMode' => array(
-				'type' => 'boolean',
-				'default' => true,
-			),
-			'isPreview' => array(
-				'type' => 'boolean',
-				'default' => false,
-			),
-			// 'availableElements' => array(
-			// 	'type' => 'array',
-			// 	'default' => array(
-			// 		'title',
-			// 		'separator',
-			// 		'price',
-			// 		'quantity',
-			// 		'button',
-			// 	),
-			// ),
-			'buttonText' => array(
-				'type' => 'string',
-				'default' => 'Add to cart',
-			),
-			'contentOrder' => array(
-				'type' => 'array',
-				'default' => $contentOrderDefaults,
-				'items' => array (
-					'type'	=> 'string',
-				),
-			),
-			'contentVisibility' => array(
-				'type' => 'object',
-				'default' => $contentVisibilityDefaults,
-				'items' => array (
-					'type'	=> 'boolean',
-				),
-			),
-			'order' => array(
-				'type' => 'string',
-				'default' => 'DESC',
-			),
-			'orderby' => array(
-				'type' => 'string',
-				'default' => 'name',
-			),
-			'products' => array(
-				'type' => 'object',
-				'default' => array(),
-				'items' => array (
-					'type'	=> 'array',
-				),
-			),
-			'quantity' => array(
-				'type' => 'object',
-				'default' => array(
-					'default' => 1,
-					'min' => 1,
-					'max' => -1,
-				),
-				'items' => array (
-					'type'	=> 'int',
-				),
-			),
-			'titleAction' => array(
-				'type' => 'string',
-				'default' => '',
-			),
-			'titleType' => array(
-				'type' => 'string',
-				'default' => 'full',
-			),
-			'variations' => array(
-				'type' => 'object',
-				'default' => array(),
-				'items' => array (
-					'type'	=> 'array',
-				),
-			)
-		);
-
-
-		if ( 'on' === get_option( 'eaa2c_image_field' ) ) {
-			$attributes['image'] = array(
-				'type'	=> 'string',
-				'default' => 'thumbnail',
-			);
-			if ( ! isset( $attributes['contentVisibility']['default']['image'] ) ) {
-				$attributes['contentVisibility']['default']['image'] = false;
-			}
-			$inserted = array('image');
-			array_splice( $attributes['contentOrder']['default'], 1, 0, $inserted );
-		}
-
-		if ( 'on' === get_option( 'eaa2c_custom_field' ) ) {
-			$attributes['custom'] = array(
-				'type'	=> 'string',
-				'default' => '',
-			);
-			if ( ! isset( $attributes['contentVisibility']['default']['custom'] ) ) {
-				$attributes['contentVisibility']['default']['custom'] = false;
-			}
-			$inserted = array('custom');
-			array_splice( $attributes['contentOrder']['default'], 1, 0, $inserted );
-		}
-
-		if ( 'on' === get_option( 'eaa2c_short_description' ) ) {
-			$attributes['short_description'] = array(
-				'type'	=> 'string',
-				'default' => '',
-			);
-			if ( ! isset( $attributes['contentVisibility']['default']['short_description'] ) ) {
-				$attributes['contentVisibility']['default']['short_description'] = false;
-			}
-			$inserted = array('short_description');
-			array_splice( $attributes['contentOrder']['default'], 1, 0, $inserted );
-		}
-
-		register_block_type( 'enhanced-ajax-add-to-cart-for-wc/eaa2c-group', array(
-			'editor_script'   => 'eaa2c-group-block-editor',
-			'editor_style'    => 'eaa2c-group-block-editor-style',
-			'style'           => 'eaa2c-group-block',
-			'attributes' 	  => $attributes,
-			'render_callback' => array( $this, 'render_group_from_block' ),
-		) );
-
-	}
-
-	/**
-	 * Converts shortcode attributes to block and renders
-	 * 
-	 * @since 2.0.0
-	 * 
-	 * @param $att_array	array	attributes passed by shortcode
-	 * 
-	 * @return via writing and echoing html, returns all the html for buttons.
-	 */
-	public function render_group_from_block( $raw_attributes = array(), $content = '' ) {
-		if ( ! empty( $raw_attributes ) ) {
-			$block = new Group( $raw_attributes );
-			return $block->render();
-		}
-	}
-
-	protected function get_filtered_image_sizes() {
-
-		if ( empty( $this->filteredImageSizes ) ) {
-			$this->filteredImageSizes = apply_filters( 'image_size_names_choose',
-				array(
-					'thumbnail' => __( 'Thumbnail' ),
-					'medium'    => __( 'Medium' ),
-					'large'     => __( 'Large' ),
-					'full'      => __( 'Full Size' ),
-					// 'inline'	=> __( 'Inline' ),
-				)
-			);
-		}
-
-		return $this->filteredImageSizes;
-	}
-
-	/**
-	 * Catch and display admin error messages specifically for plugin licensing
-	 * 
-	 * @since
-	 */
-	public function handle_admin_notices() {
-		if ( isset( $_GET['eaa2c_activation'] ) && ! empty( $_GET['message'] ) ) {
-			switch( $_GET['eaa2c_activation'] ) {
-	
-				case 'false':
-					$message = urldecode( $_GET['message'] );
-					?>
-					<div class="error">
-						<p><?php echo $message; ?></p>
-					</div>
-					<?php
-					break;
-	
-				case 'true':
-					
-				default:
-					// Developers can put a custom success message here for when activation is successful if they way.
-					break;
-	
-			}
-			remove_query_arg( 'eaa2c_activation' );
 		}
 	}
 }

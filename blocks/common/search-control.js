@@ -1,10 +1,6 @@
-// import { Component } from '@wordpress/element';
 const { Component } = wp.element;
 import { debounce } from 'lodash';
-// import { createHigherOrderComponent } from '@wordpress/compose';
 const { createHigherOrderComponent } = wp.compose;
-// import getSetting from wc.wcSetting;
-// const { getSetting } = window.wc.wcSetting;
 import { getSetting } from '@woocommerce/settings';
 import PropTypes from 'prop-types';
 import { getProducts } from './search-product-util';
@@ -50,10 +46,7 @@ const withSearchedTerm = createHigherOrderComponent( ( OriginalComponent ) => {
 		}
 
 		async setError( e ) {
-			// const error = await formatError( e );
 			const error = await e;
-			// console.log( "we are in set error" );
-			// const error = true;
 
 			this.setState( { list: [], loading: false, error } );
 		}
