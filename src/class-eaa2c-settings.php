@@ -193,10 +193,9 @@ class Settings {
 			'eaa2c_settings',
 			array(
 				'title' => __( 'Element Options', EAA2C_NAME ),
-				'desc' => __( 'Warning: disabling these elements might cause you to lose some data, like the order and visibility of these elements.')
 			)
 		);
-		$image_field = empty( get_option( 'eaa2c_image_field' ) ) ? 0 : get_option( 'eaa2c_image_field' );
+		// $image_field = empty( get_option( 'eaa2c_image_field' ) ) ? 0 : get_option( 'eaa2c_image_field' );
 		add_settings_field(
 			'eaa2c_image_field',
 			__( 'Allow images to be used on shortcodes and blocks?', EAA2C_NAME ),
@@ -212,7 +211,7 @@ class Settings {
 				'disabled' => true
 			)
 		);
-		$custom_field = empty( get_option( 'eaa2c_custom_field' ) ) ? 0 : get_option( 'eaa2c_custom_field' );
+		// $custom_field = empty( get_option( 'eaa2c_custom_field' ) ) ? 0 : get_option( 'eaa2c_custom_field' );
 		add_settings_field(
 			'eaa2c_custom_field',
 			__( 'Allow custom text input to be used on blocks?', EAA2C_NAME ),
@@ -228,7 +227,7 @@ class Settings {
 				'disabled' => true
 			)
 		);
-		$short_description = empty( get_option( 'eaa2c_short_description' ) ) ? 0 : get_option( 'eaa2c_short_description' );
+		// $short_description = empty( get_option( 'eaa2c_short_description' ) ) ? 0 : get_option( 'eaa2c_short_description' );
 		add_settings_field(
 			'eaa2c_short_description',
 			__( 'Allow WC Product Short Description to be used on blocks?', EAA2C_NAME ),
@@ -319,9 +318,9 @@ class Settings {
 			array(
 				'name' => 'eaa2c_dom_check',
 				'type' => 'checkbox',
+				'desc' => __( 'This is for customized javascript frontend implementations. If you are having issues with an updated quantity not adding to cart, try this setting.', EAA2C_NAME ),
 				'value' => $dom_check,
 				// 'class' => 'disabled',
-				// 'desc' => $this->get_premium_description_link(),
 				// 'disabled' => true
 			)
 		);
