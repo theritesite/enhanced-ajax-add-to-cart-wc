@@ -12,20 +12,22 @@
  * @subpackage Enhanced_Ajax_Add_To_Cart_Wc/includes
  * @author     TheRiteSites <contact@theritesites.com>
  */
-class Enhanced_Ajax_Add_To_Cart_Wc_i18n {
+if ( ! class_exists( 'Enhanced_Ajax_Add_To_Cart_Wc_i18n' ) ) {
+	class Enhanced_Ajax_Add_To_Cart_Wc_i18n {
 
-	/**
-	 * Load the plugin text domain for translation.
-	 *
-	 * @since    1.0.0
-	 */
-	public function load_plugin_textdomain() {
+		/**
+		 * Load the plugin text domain for translation.
+		 *
+		 * @since    1.0.0
+		 */
+		public function load_plugin_textdomain() {
 
-		load_plugin_textdomain(
-			'enhanced-ajax-add-to-cart-wc',
-			false,
-			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
-		);
+			load_plugin_textdomain(
+				'enhanced-ajax-add-to-cart-wc',
+				false,
+				dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
+			);
 
+		}
 	}
 }

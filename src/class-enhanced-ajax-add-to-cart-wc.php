@@ -79,8 +79,6 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 		$this->register_settings();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
-		$this->start_updater();
-
 	}
 
 	public function define_constants() {
@@ -127,24 +125,6 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 		}
 	}
 
-	public function start_updater() {
-		if ( ! class_exists( 'EAA2C_Plugin_Updater' ) ) {
-			// load our custom updater
-			include( dirname( __FILE__ ) . '/class-eaa2c-plugin-updater.php' );
-		}
-		
-		$license_key = get_option( EAA2C_LICENSE_KEY );
-		
-		$this->plugin_updater = new \EAA2C_Plugin_Updater( EAA2C_UPDATER_URL, __FILE__, array(
-							'version'	=> ENHANCED_AJAX_ADD_TO_CART,
-							'license'	=> $license_key,
-							'item_id'	=> EAA2C_ITEM_ID,
-							'author'	=> 'TheRiteSites',
-							'url'		=> home_url()
-				)
-		);
-	}
-
 	/**
 	 * Load the required dependencies for this plugin.
 	 *
@@ -172,7 +152,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/class-eaa2c-admin.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/class-eaa2c-public.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/class-eaa2c-single.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/class-eaa2c-group.php';
+		// require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/class-eaa2c-group.php';
 
 		$this->loader = new Loader();
 
@@ -378,8 +358,6 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 		$this->plugin_admin = new Admin();
 
 		$this->loader->add_action( 'init', $this->plugin_admin, 'register_eaa2c_single', 9999 );
-		$this->loader->add_action( 'init', $this->plugin_admin, 'register_eaa2c_group', 9999 );
-		$this->loader->add_action( 'admin_notices', $this->plugin_admin, 'handle_admin_notices' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $this->plugin_admin, 'register_scripts' );
 
 		// add_action( 'admin_notices', array( $this, 'register_app_rest' ) );

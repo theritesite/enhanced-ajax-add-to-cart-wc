@@ -27,22 +27,6 @@ const config = env => {
 	const endFolder = endPath + '/' + pluginSlug;
 
 	const externals = {
-		/*'@wordpress/api-fetch': { this: [ 'wp', 'apiFetch' ] },
-		'@wordpress/blocks': { this: [ 'wp', 'blocks' ] },
-		'@wordpress/data': { this: [ 'wp', 'data' ] },
-		'@wordpress/editor': { this: [ 'wp', 'editor' ] },
-		'@wordpress/element': { this: [ 'wp', 'element' ] },
-		'@wordpress/hooks': { this: [ 'wp', 'hooks' ] },
-		'@wordpress/url': { this: [ 'wp', 'url' ] },
-		'@wordpress/html-entities': { this: [ 'wp', 'htmlEntities' ] },
-		'@wordpress/i18n': { this: [ 'wp', 'i18n' ] },
-		'@wordpress/keycodes': { this: [ 'wp', 'keycodes' ] },
-		'@woocommerce/settings': { this: [ 'wc', 'wcSettings' ] },
-		tinymce: 'tinymce',
-		moment: 'moment',
-		react: 'React',
-		lodash: 'lodash',
-		'react-dom': 'ReactDOM',*/
 	};
 
 	const requestToExternal = request => {
@@ -68,19 +52,6 @@ const config = env => {
 	};
 
 	const requestToHandle = request => {
-	/*	const wcHandleMap = {
-			'@woocommerce/components': 'wc-components',
-			'@woocommerce/csv-export': 'wc-csv',
-			'@woocommerce/currency': 'wc-currency',
-			'@woocommerce/date': 'wc-date',
-			'@woocommerce/navigation': 'wc-navigation',
-			'@woocommerce/number': 'wc-number',
-			'@woocommerce/settings': 'wc-settings',
-		};
-
-		if ( wcHandleMap[ request ] ) {
-			return wcHandleMap[ request ];
-		}*/
 	};
 
 	const pluginList = [

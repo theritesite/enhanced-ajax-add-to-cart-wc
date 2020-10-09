@@ -11,16 +11,19 @@
  * @subpackage Enhanced_Ajax_Add_To_Cart_Wc/includes
  * @author     TheRiteSites <contact@theritesites.com>
  */
-class Enhanced_Ajax_Add_To_Cart_Wc_Activator {
 
-	/**
-	 * Short Description. (use period)
-	 *
-	 * Long Description.
-	 *
-	 * @since    1.0.0
-	 */
-	public static function activate() {
+if ( ! class_exists( 'Enhanced_Ajax_Add_To_Cart_Wc_Activator' ) ) {
+	class Enhanced_Ajax_Add_To_Cart_Wc_Activator {
 
+		/**
+		 * Short Description. (use period)
+		 *
+		 * Long Description.
+		 *
+		 * @since    1.0.0
+		 */
+		public static function activate() {
+
+		}
 	}
 }
