@@ -80,6 +80,31 @@ if ( ! class_exists( 'TRS\EAA2C\Abstract_Button' ) ) {
 			return $this->renderHtml( $attributes );
 		}
 
+		protected function possibly_build_hidden_language_field() {
+
+			ob_start();
+
+			if ( function_exists( 'wpml_the_language_input_field' ) ) { 
+				wpml_the_language_input_field(); 
+			} else { 
+				global $sitepress;
+				if ( isset( $sitepress ) ) { 
+					echo "<input class='eaa2clanguage sitepress' type='hidden' name='lang' value='" . $sitepress->get_current_language() . "' />"; 
+				} 
+				else if ( $res = apply_filters( 'wpml_current_language', false ) ) {
+					echo "<input class='eaa2clanguage filtered' type='hidden' name='lang' value='" . $res . "' />"; 
+				}
+				else {
+					echo "<input class='eaa2clanguage none' type='hidden' name='lang' value='en' />"; 
+				}
+				return null; 
+			}
+			$html = ob_get_contents();
+			ob_end_clean();
+
+			return $html;
+		}
+
 		/**
 		 * This function reats in an array of attributes. This array is already sanitized but not validated.
 		 * 
@@ -99,6 +124,8 @@ if ( ! class_exists( 'TRS\EAA2C\Abstract_Button' ) ) {
 			if ( get_option( 'eaa2c_short_description' ) === 'on' ) {
 				$available_elements[] = 'short_description';
 			}
+
+			$hidden_language_field = $this->possibly_build_hidden_language_field();
 
 			ob_start();
 				
@@ -255,7 +282,7 @@ if ( ! class_exists( 'TRS\EAA2C\Abstract_Button' ) ) {
 													step="<?php esc_attr_e( $step ) ?>"
 													min="<?php esc_attr_e( $min_value ); ?>"
 													max="<?php esc_attr_e( (int)$max_value === -1 ? '' : $max_value ); ?>"
-													name="quantity"
+													<?php if ( false === apply_filters( 'eaa2c_enable_qty_name_for_product_form_compatibility', false ) ) : esc_attr_e( 'name="quantity"' ); endif; ?>
 													title="<?php esc_attr_x( 'Qty', 'Product quantity input tooltip', 'woocommerce' ) ?>"
 													size="4"
 													pattern="<?php esc_attr_e( $pattern ) ?>"
@@ -304,6 +331,7 @@ if ( ! class_exists( 'TRS\EAA2C\Abstract_Button' ) ) {
 								<?php endif; ?>
 							<?php endforeach; ?>
 							<?php echo apply_filters( 'eaa2c_button_row_additional_fields', '', $product_id ); ?>
+							<?php echo $hidden_language_field; ?>
 						</div>
 						<?php
 					}

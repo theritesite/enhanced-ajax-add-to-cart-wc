@@ -18,9 +18,11 @@ if ( ! class_exists( 'TRS\EAA2C\Ajax' ) ) {
 
         public static function init() {
 
+            add_filter( 'wcml_multi_currency_ajax_actions', array( __CLASS__, 'add_eaa2c_ajax_actions_to_wpml' ) );
+
             add_action( 'init', array( __CLASS__, 'eaa2c_define_ajax' ), 0 );
-            add_action( 'wcml_localize_woocommerce_on_ajax', array( __CLASS__, 'localize_eaa2c_on_ajax' ) );
-            
+            add_action( 'wcml_localize_eaa2c_on_ajax', array( __CLASS__, 'localize_eaa2c_on_ajax' ) );
+
             self::add_eaa2c_ajax_events();
             
         }
@@ -28,9 +30,7 @@ if ( ! class_exists( 'TRS\EAA2C\Ajax' ) ) {
         public static function eaa2c_define_ajax() {
             // error_log( "this is defining the ajax area in eaa2c" );
             if ( ! empty( $_POST['eaa2c_action'] ) ) {
-                if ( wpml_is_ajax() ) { 
-                    do_action( 'wcml_localize_woocommerce_on_ajax' ); 
-                }
+                do_action( 'wcml_localize_eaa2c_on_ajax' ); 
                 if ( ! defined( 'DOING_AJAX' ) ) {
                     define( 'DOING_AJAX', true );
                 }
@@ -48,7 +48,6 @@ if ( ! class_exists( 'TRS\EAA2C\Ajax' ) ) {
         }
 
         public static function add_eaa2c_ajax_events() {
-            add_filter( 'wcml_multi_currency_ajax_actions', array( __CLASS__, 'add_eaa2c_ajax_actions_to_wpml' ) );
 
             add_action( 'wp_ajax_eaa2c_add_to_cart', array( __CLASS__, 'eaa2c_add_to_cart_callback' ) );
             add_action( 'wp_ajax_nopriv_eaa2c_add_to_cart', array( __CLASS__, 'eaa2c_add_to_cart_callback' ) );
@@ -74,8 +73,8 @@ if ( ! class_exists( 'TRS\EAA2C\Ajax' ) ) {
                 return; 
             }
 
-            if ( isset( $_GET[ 'wpml_lang' ] ) ) {
-                do_action( 'wpml_switch_language',  $_GET[ 'wpml_lang' ] ); // switch the content language
+            if ( isset( $_POST[ 'wpml_lang' ] ) ) {
+                do_action( 'wpml_switch_language',  $_POST[ 'wpml_lang' ] ); // switch the content language
             }
         }
 
@@ -95,6 +94,16 @@ if ( ! class_exists( 'TRS\EAA2C\Ajax' ) ) {
             ob_start();
             $data = array();
 
+            /*if ( isset( $_POST[ 'wpml_lang' ] ) ) {
+                do_action( 'wpml_switch_language',  $_POST[ 'wpml_lang' ] ); // switch the content language
+            }
+            if ( did_action( 'wpml_switch_language' ) ) {
+                $data['debugger'] = 'yes';
+            }
+            else {
+                $data['debugger'] = 'no';
+            }
+*/
             if ( defined( 'EAA2C_DEBUG' ) && true === EAA2C_DEBUG ) {
                 error_log( 'EAA2C into add_to_cart callback from javascript' );
             }
@@ -103,7 +112,7 @@ if ( ! class_exists( 'TRS\EAA2C\Ajax' ) ) {
                 try {
                     $product_id   = intval( sanitize_text_field( $_POST['product'] ) );
                     $variation_id = intval( sanitize_text_field( $_POST['variable'] ) );
-                    $quantity     = intval( sanitize_text_field( $_POST['quantity'] ) );
+                    $quantity     = floatval( sanitize_text_field( $_POST['quantity'] ) );
 
                     if ( defined( 'EAA2C_DEBUG' ) && true === EAA2C_DEBUG ) {
                         error_log( '    product id: ' . $product_id );
@@ -117,9 +126,9 @@ if ( ! class_exists( 'TRS\EAA2C\Ajax' ) ) {
                         $product_status    = get_post_status( $product_id );
                         $passed_validation = apply_filters( 'woocommerce_add_to_cart_validation', true, $variation_id, $quantity );
 
-                        if ( $passed_validation && WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variations ) && 'publish' === $product_status ) {
+                        if ( $passed_validation && WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variations, $product_data ) && 'publish' === $product_status ) {
                             do_action( 'woocommerce_ajax_added_to_cart', $product_id );
-                            \WC_AJAX::get_refreshed_fragments();
+                            $html_frags = \WC_AJAX::get_refreshed_fragments();
 
                         } else {
 
@@ -132,9 +141,9 @@ if ( ! class_exists( 'TRS\EAA2C\Ajax' ) ) {
                         $product_status    = get_post_status( $product_id );
                         $passed_validation = apply_filters( 'woocommerce_add_to_cart_validation', true, $product_id, $quantity );
 
-                        if ( $passed_validation && WC()->cart->add_to_cart( $product_id, $quantity, null, null ) && 'publish' === $product_status ) {
+                        if ( $passed_validation && WC()->cart->add_to_cart( $product_id, $quantity, null, null, $product_data ) && 'publish' === $product_status ) {
                             do_action( 'woocommerce_ajax_added_to_cart', $product_id );
-                            \WC_AJAX::get_refreshed_fragments();
+                            $html_frags = \WC_AJAX::get_refreshed_fragments();
                             
                         } else {
                             $data = array(
@@ -159,6 +168,7 @@ if ( ! class_exists( 'TRS\EAA2C\Ajax' ) ) {
             $html = ob_get_contents();
             ob_end_clean();
             $data['html'] = $html;
+            $data['html2'] = $html_frags;
             wp_send_json( $data );
 
             wp_die();

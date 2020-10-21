@@ -70,6 +70,7 @@ jQuery( function( $ ) {
 		var qty = {};
 		var min = 0;
 		var max = 0;
+		var lang = {};
 
 		if ( true === EAA2C.domCheck ) {
 			data['pid'] = parseInt( $thisbutton.data('pid') );
@@ -82,6 +83,10 @@ jQuery( function( $ ) {
 
 		qty = $( this ).siblings( '.quantity-container' ).find( 'input.input-text.qty.text' );
 		data[ 'action' ] = 'eaa2c_add_to_cart';
+		lang = $( this ).siblings( 'input[name="lang"]' );
+		console.log( lang );
+		console.log( "stuffed here" );
+		data[ 'wpml_lang' ] = lang.val();
 
 		console.log( qty );
 
@@ -113,6 +118,7 @@ jQuery( function( $ ) {
 					action:   'eaa2c_add_to_cart',
 					eaa2c_action: true,
 					'wc-ajax': true,
+					'wpml_lang': data[ 'wpml_lang' ],
 				},
 				success: function( response ) {
 					if ( EAA2C.debug ) {
