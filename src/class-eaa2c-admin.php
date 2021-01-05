@@ -53,26 +53,7 @@ if ( ! class_exists( 'TRS\EAA2C\Admin' ) ) {
 		}
 
 		public function register_scripts() {
-			$plugin = defined( 'EAA2C_NAME' ) ? EAA2C_NAME : '';
-			$index_js = 'eaa2c-settings.js';
-			$js_file =  plugin_dir_url( __DIR__ ) . 'assets/js/eaa2c-settings.js';
-
-			$path = realpath( dirname( __DIR__ ) ) . '/dist/request/';
-			if ( file_exists( $path . $index_js ) && ! ( EAA2C_DEBUG || WP_DEBUG ) ) {
-				$dir = plugin_dir_path( dirname( __FILE__ ) ) . 'dist/request/';
-				$js_file =  plugins_url( $index_js, $dir .'request/' );
-			}
-			wp_register_script( 'eaa2c-settings',
-				$js_file,
-				array(),
-				filemtime( realpath("$js_file") )
-			);
-			wp_localize_script( 'eaa2c-settings', 'EAA2CSETTINGS', array(
-				'ajax_url'	=> admin_url( 'admin-ajax.php' ),
-				// 'db_key' => get_option( EAA2C_LICENSE_KEY ),
-				'debug' => EAA2C_DEBUG,
-				'nonce' => wp_create_nonce( 'eaa2c_nonce' ),
-			));
+			
 		}
 
 		/**
