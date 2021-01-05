@@ -3,21 +3,35 @@ Contributors: theritesites
 Donate link: https://www.theritesites.com
 Tags: ajax button, add to cart, AJAX add to cart, shortcode, block, woocommerce, gutenberg, theritesites, The Rite Sites
 Requires at least: 4.8.1
-Tested up to:      5.4
+Tested up to:      5.6
 Requires PHP:      5.6+
 Stable tag:        trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Creates a new block and shortcode that allows customers to add WooCommerce products to their cart without leaving or reloading the current page.
+Display a lightweight, smart, and flexible Add to Cart button for any WC product type inline with any content, on any page you desire.
 
 == Description ==
-
+Use the original block and shortcode to display a lightweight (1), smart (2), and flexible (3) Add to Cart button inline with any content, on any page you desire.
 This extension for [WooCommerce](https://www.woocommerce.com) allows you to render a non-redirect button with an associated quantity field. Create effective and functional buttons to use for your or your customers convenience anywhere on your site you want!
 
 **Breaking Changes in 2.0**
 We have changed the design to condense some code and make things more simple. We have deprecated some javascript and server side PHP functions and have added deprecated notices.
 These are from how the Add to Cart button was different between variations and other types of products. They now use the same code for different product types. This will effect the selectors for styling or any other custom code relying on classes used by this plugin.
+
+= (1) Lightweight =
+We consider our product and its displaying components to be lightweight. The Add to Cart interaction is one of the key moments prior to the decision of a customer finishing their checkout. Understanding that, we are trying to deliver the smallest payload possible when it comes to html and assets.
+Keeping our html lightweight already, if objects are not displayed (e.g. title or price) then the html is never generated, rather than relying on css.
+
+= (2) Smart =
+Keeping with the theme of lightweight and optimized, assets, which are separated by their uses, will only be loaded when they are used!
+Not only that, but the button will become disabled (by default) if the associated product is now out of stock (toggled in the settings).
+
+= (3) Flexible =
+Through the block interface, you can change entirely the order of all parts of the product info & button. Toggling fields on and off, you can make the area fit the way you dream it!
+Many plugins we have used in the past feel overbearing when it comes to styling, sometimes making it hard to apply styles to help the plugin fit your theme.
+We left the themeing to you, using some base classes on elements like the buttons and quantity fields that we found let most themes do base styling to the elements.
+
 
 = Block Documentation =
 **New "AJAX Add to Cart Block"!** and **New "Group AJAX Add to Cart Block"!**
@@ -40,7 +54,7 @@ Block fields available:
 - Short Description (premium setting)
 
 = Shortcode Documentation =
-**New Shorter Shortcode: [ajax_add_to_cart /] is now an option for [enh_ajax_add_to_cart_button /]**
+**New Shorter Shortcode: [a2c_button /] and [ajax_add_to_cart /] are now options for the original [enh_ajax_add_to_cart_button /]**
 The required field for every button is the product, with six optional fields:
 - variation (used for variable products)
 - title (to reflect the label before the button)
@@ -50,30 +64,31 @@ The required field for every button is the product, with six optional fields:
 - button_text
 
 `[enh_ajax_add_to_cart_button product={pid} variation={vid} show_price={beginning|b|after|a|rear|r} button_text={STRING} title={none|attributes|att|attribute} quantity={INTEGER} show_quantity={yes} ]
-[ajax_add_to_cart product={pid} variation={vid} show_price={beginning|b|after|a|rear|r} button_text={STRING} title={none|attributes|att|attribute} quantity={INTEGER} show_quantity={yes} ]`
+[ajax_add_to_cart product={pid} variation={vid} show_price={beginning|b|after|a|rear|r} button_text={STRING} title={none|attributes|att|attribute} quantity={INTEGER} show_quantity={yes} ]
+[a2c_button product={pid} variation={vid} show_price={beginning|b|after|a|rear|r} button_text={STRING} title={none|attributes|att|attribute} quantity={INTEGER} show_quantity={yes} ]`
 
 
 SIMPLE PRODUCT: Use only the required parameters to make a quantity box and add to cart button for a simple product with the title to the left:
 
-`[enh_ajax_add_to_cart_button product=42 ]`
+`[a2c_button product=42 ]`
 Refer to screenshot 1 below to see the output
 
 
 VARIABLE PRODUCT: Use the product and variation parameters to make a quantity box and add to cart button for a specific variation of a variable product, with the fully qualified name:
 
-`[enh_ajax_add_to_cart_button product=3312 variation=3313 ]`
+`[a2c_button product=3312 variation=3313 ]`
 Refer to screenshot 2 below to see the output
 
 
 Use the product and variation parameters to make a quantity box and add to cart button for a specific variation of a variable product, with only the variation attributes listed separated with a space as the name:
 
-`[enh_ajax_add_to_cart_button product=3312 variation=3313 title=attributes ]`
+`[a2c_button product=3312 variation=3313 title=attributes ]`
 Refer to screenshot 3 below to see the output
 
 
 Use the product and variation parameters to make a quantity box and add to cart button for a specific variation of a variable product, with no name listed:
 
-`[enh_ajax_add_to_cart_button product=3312 variation=3313 title=none ]`
+`[a2c_button product=3312 variation=3313 title=none ]`
 Refer to screenshot 4 below to see the output
 
 Use the button_text parameter to change the text on the Add to Cart button! (Strips out HTML tags)
@@ -139,6 +154,7 @@ This is the same for blocks and shortcodes.
 
 Of course! Currently, there are no standard options for styling.
 We realize that many websites want their own styling or have already hired a designer. We let our elements be as broad and blank as possible while picking up theme standards.
+We have plans to expand into more blocks that will have styling applied, but these blocks will remain with very few styles bundled.
 
 If your theme styles are not being applied to the quantity input, you can use the following css selector to edit all of the quantity inputs:
 `

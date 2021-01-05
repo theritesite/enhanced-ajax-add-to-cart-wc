@@ -8,9 +8,9 @@ jQuery( function( $ ) {
 	'use strict';
 
 	/**
-	 * TRSPluginUpdaterEAA2C class.
+	 * TRSProActivatorEAA2C class.
 	 */
-	var TRSPluginUpdaterEAA2C = function() {
+	var TRSProActivatorEAA2C = function() {
 		var self = this;
 
 		self.activateLicense = self.activateLicense.bind( self );
@@ -29,7 +29,7 @@ jQuery( function( $ ) {
 
 	};
 
-	TRSPluginUpdaterEAA2C.prototype.activateLicense = function( e ) {
+	TRSProActivatorEAA2C.prototype.activateLicense = function( e ) {
 		e.preventDefault();
 		console.log( "We are in activate license, need to send a request" );
 
@@ -66,12 +66,15 @@ jQuery( function( $ ) {
 		});
 	};
 
-	TRSPluginUpdaterEAA2C.prototype.deactivateLicense = function( e ) {
+	TRSProActivatorEAA2C.prototype.deactivateLicense = function( e ) {
 		e.preventDefault();
-		console.log( "License needs deactivation, send it!" );
 		let licenseKey = $( '#trs_eaa2c_key' ).val();
-		console.log( "here is the license key from the form the input: " + licenseKey );
-		console.log( "here is the license key from the database: " +  EAA2CSETTINGS.db_key );
+
+		if ( EAA2CSETTINGS.debug ) {
+			console.log( "License needs deactivation, send it!" );
+			console.log( "here is the license key from the form the input: " + licenseKey );
+			console.log( "here is the license key from the database: " +  EAA2CSETTINGS.db_key );
+		}
 
 		$.ajax({
 			url:  EAA2CSETTINGS.ajax_url,
@@ -103,28 +106,34 @@ jQuery( function( $ ) {
 		});
 	};
 
-	TRSPluginUpdaterEAA2C.prototype.afterActivation = function( e ) {
+	TRSProActivatorEAA2C.prototype.afterActivation = function( e ) {
 		e.preventDefault();
-		console.log( "After activation is now running." );
+		if ( EAA2CSETTINGS.debug ) {
+			console.log( "After activation is now running." );
+		}
+
 		document.getElementById( 'eaa2c_activate' ).insertAdjacentHTML('afterend','<input type="submit" class="button-secondary" id="eaa2c_deactivate" name="eaa2c_deactivate" value="Deactivate" />');
 		$( '#eaa2c_activate' ).hide();
 	};
 
-	TRSPluginUpdaterEAA2C.prototype.afterDeactivation = function( e ) {
+	TRSProActivatorEAA2C.prototype.afterDeactivation = function( e ) {
 		e.preventDefault();
-		console.log( "After deactivation is now running." );
+		if ( EAA2CSETTINGS.debug ) {
+			console.log( "After deactivation is now running." );
+		}
+		
 		document.getElementById( 'eaa2c_deactivate' ).insertAdjacentHTML('afterend','<input type="submit" class="button-secondary" id="eaa2c_activate" name="eaa2c_activate" value="Activate" />');
 		$( '#eaa2c_deactivate' ).hide();
 	};
 
-	TRSPluginUpdaterEAA2C.prototype.receiveError = function( e ) {
+	TRSProActivatorEAA2C.prototype.receiveError = function( e ) {
 		e.preventDefault();
 		console.log( "Receiving error..." );
 	};
 
 
 	/**
-	 * Init TRSPluginUpdaterEAA2C.
+	 * Init TRSProActivatorEAA2C.
 	 */
-	new TRSPluginUpdaterEAA2C();
+	new TRSProActivatorEAA2C();
 });

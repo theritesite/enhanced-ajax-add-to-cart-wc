@@ -122,15 +122,6 @@ if ( ! class_exists( 'TRS\EAA2C\Settings' ) ) {
 					'show_in_rest' => true,
 				)
 			);
-			register_setting(
-				'eaa2c_settings',
-				EAA2C_LICENSE_KEY,
-				array(
-					'type' => 'text',
-					'description' => '',
-					'show_in_rest' => true,
-				)
-			);
 			add_settings_section(
 				'eaa2c_settings',
 				// __( 'General Settings', EAA2C_NAME ),
@@ -343,7 +334,7 @@ if ( ! class_exists( 'TRS\EAA2C\Settings' ) ) {
 		}
 
 		public function toggle_button( $args ) {
-			$checked = $args['value'] === 0 || empty( $args['value'] ) ? '' : ' checked';
+			$checked = empty( $args['value'] ) || $args['value'] === 0 ? '' : ' checked';
 			$disabled = isset( $args['disabled'] ) && $args['disabled'] === true ? ' disabled ' : '';
 			echo '<input type="' . esc_attr($args['type'] ) . '" name="' . esc_attr($args['name'] ) . '"' . esc_attr( $checked . $disabled ) . '/>';
 			if ( ! empty( $args['desc'] ) ) {

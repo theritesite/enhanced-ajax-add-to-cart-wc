@@ -12,7 +12,7 @@
  */
 
 namespace TRS\EAA2C;
-use TRS\EAA2C\Abstract_EAA2C_Button;
+use TRS\EAA2C\Abstract_Button;
 
 if ( ! class_exists( '\TRS\EAA2C\Single' ) ) {
 	class Single extends Abstract_Button {

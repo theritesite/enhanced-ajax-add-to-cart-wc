@@ -15,9 +15,9 @@ var endPath = '';
 const config = env => {
 	console.log(env.NODE_ENV);
 
-	if ( env.LOC === "corsair" ) {
-		devFolder = '/var/www/wpdev.com/public_html/wp-content/plugins/' + pluginSlug; // Corsair
-		endPath = '/home/parkerm34/Documents/theritesites/completed_plugins'; // Corsair
+	if ( env.LOC === "m1" ) {
+		devFolder = '/Users/parkermathewson/mac-sites/wp56tester/wp-content/plugins/' + pluginSlug; // Mac
+		endPath = '/Users/parkermathewson/Library/Mobile\ Documents/com~apple~CloudDocs/theritesites/completed_pluginsv2'; // Mac
 	}
 	if ( env.LOC === "mac" ) {
 		devFolder = '/Users/parker/sites/localwptest/wp-content/plugins/' + pluginSlug; // Mac
@@ -82,14 +82,15 @@ const config = env => {
 
 	if(env.NODE_ENV === 'production' ) {
 		pluginList.push(
-			new CopyWebpackPlugin( [
+			new CopyWebpackPlugin( {
+				patterns: [
 					{ from: path.resolve( __dirname, 'assets' ) + '/**', to: buildFolder },
 					{ from: path.resolve( __dirname, 'blocks' ) + '/**', to: buildFolder },
 					{ from: path.resolve( __dirname, 'dist' ) + '/**', to: buildFolder },
 					{ from: path.resolve( __dirname, 'languages' ) + '/**', to: buildFolder },
 					{ from: path.resolve( __dirname, 'src' ) + '/**', to: buildFolder },
 					{ from: path.resolve( __dirname, 'woo-includes' ) + '/**', to: buildFolder },
-					{ from: path.resolve( __dirname, 'vendor' ) + '/**', to: buildFolder },
+					// { from: path.resolve( __dirname, 'vendor' ) + '/**', to: buildFolder },
 					{ from: path.resolve( __dirname, '*.txt' ), to: buildFolder },
 					{ from: path.resolve( __dirname, '*.php' ), to: buildFolder },
 					/** Above is what will be zipped. Below is code for repositories **/
@@ -99,15 +100,10 @@ const config = env => {
 					{ from: path.resolve( __dirname, 'languages' ) + '/**', to: endFolder },
 					{ from: path.resolve( __dirname, 'src' ) + '/**', to: endFolder },
 					{ from: path.resolve( __dirname, 'woo-includes' ) + '/**', to: endFolder },
-					{ from: path.resolve( __dirname, 'vendor' ) + '/**', to: endFolder },
+					// { from: path.resolve( __dirname, 'vendor' ) + '/**', to: endFolder },
 					{ from: path.resolve( __dirname, '*.txt' ), to: endFolder },
 					{ from: path.resolve( __dirname, '*.php' ), to: endFolder }
-				], {
-
-					// By default, we only copy modified files during
-					// a watch or webpack-dev-server build. Setting this
-					// to `true` copies all files.
-					copyUnmodified: true
+				]
 			} ),
 			new WebpackZipPlugin( {
 				initialFile: pluginSlug,
@@ -134,19 +130,18 @@ const config = env => {
 			// 	],
 			// 	reloadDelay: 0
 			// }),
-			new CopyWebpackPlugin( [
-				{ from: path.resolve( __dirname, 'assets' ) + '/**', to: devFolder },
-				{ from: path.resolve( __dirname, 'blocks' ) + '/**', to: devFolder },
-				{ from: path.resolve( __dirname, 'dist' ) + '/**', to: devFolder },
-				{ from: path.resolve( __dirname, 'languages' ) + '/**', to: devFolder },
-				{ from: path.resolve( __dirname, 'src' ) + '/**', to: devFolder },
-				{ from: path.resolve( __dirname, 'woo-includes' ) + '/**', to: devFolder },
-				{ from: path.resolve( __dirname, 'vendor' ) + '/**', to: devFolder },
-				{ from: path.resolve( __dirname, '*.txt' ), to: devFolder },
-				{ from: path.resolve( __dirname, '*.php' ), to: devFolder },
-			], {
-
-				copyUnmodified: true
+			new CopyWebpackPlugin( {
+				patterns: [
+					{ from: path.resolve( __dirname, 'assets' ) + '/**', to: devFolder },
+					{ from: path.resolve( __dirname, 'blocks' ) + '/**', to: devFolder },
+					{ from: path.resolve( __dirname, 'dist' ) + '/**', to: devFolder },
+					{ from: path.resolve( __dirname, 'languages' ) + '/**', to: devFolder },
+					{ from: path.resolve( __dirname, 'src' ) + '/**', to: devFolder },
+					{ from: path.resolve( __dirname, 'woo-includes' ) + '/**', to: devFolder },
+					// { from: path.resolve( __dirname, 'vendor' ) + '/**', to: devFolder },
+					{ from: path.resolve( __dirname, '*.txt' ), to: devFolder },
+					{ from: path.resolve( __dirname, '*.php' ), to: devFolder },
+				]
 			} )
 		);
 	};

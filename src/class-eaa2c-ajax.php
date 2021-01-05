@@ -19,7 +19,6 @@ if ( ! class_exists( 'TRS\EAA2C\Ajax' ) ) {
         public static function init() {
 
             add_action( 'init', array( __CLASS__, 'eaa2c_define_ajax' ), 0 );
-            add_action( 'wcml_localize_woocommerce_on_ajax', array( __CLASS__, 'localize_eaa2c_on_ajax' ) );
             
             self::add_eaa2c_ajax_events();
             
@@ -28,9 +27,6 @@ if ( ! class_exists( 'TRS\EAA2C\Ajax' ) ) {
         public static function eaa2c_define_ajax() {
             // error_log( "this is defining the ajax area in eaa2c" );
             if ( ! empty( $_POST['eaa2c_action'] ) ) {
-                if ( wpml_is_ajax() ) { 
-                    do_action( 'wcml_localize_woocommerce_on_ajax' ); 
-                }
                 if ( ! defined( 'DOING_AJAX' ) ) {
                     define( 'DOING_AJAX', true );
                 }
@@ -48,7 +44,6 @@ if ( ! class_exists( 'TRS\EAA2C\Ajax' ) ) {
         }
 
         public static function add_eaa2c_ajax_events() {
-            add_filter( 'wcml_multi_currency_ajax_actions', array( __CLASS__, 'add_eaa2c_ajax_actions_to_wpml' ) );
 
             add_action( 'wp_ajax_eaa2c_add_to_cart', array( __CLASS__, 'eaa2c_add_to_cart_callback' ) );
             add_action( 'wp_ajax_nopriv_eaa2c_add_to_cart', array( __CLASS__, 'eaa2c_add_to_cart_callback' ) );
@@ -67,22 +62,6 @@ if ( ! class_exists( 'TRS\EAA2C\Ajax' ) ) {
             /**
              * End deprecated actions.
              */
-        }
-
-        public static function localize_eaa2c_on_ajax() {
-            if ( isset( $_POST['action'] ) && isset( $_POST['wpml_lang'] ) && in_array( $_POST['action'], array( 'eaa2c_add_to_cart', 'variable_add_to_cart', 'simple_add_to_cart' ) ) ) { 
-                return; 
-            }
-
-            if ( isset( $_GET[ 'wpml_lang' ] ) ) {
-                do_action( 'wpml_switch_language',  $_GET[ 'wpml_lang' ] ); // switch the content language
-            }
-        }
-
-        public static function add_eaa2c_ajax_actions_to_wpml( $ajax_actions ) {
-            $ajax_actions[] = 'wp_ajax_eaa2c_add_to_cart';
-            $ajax_actions[] = 'wp_ajax_nopriv_eaa2c_add_to_cart';
-            return $ajax_actions;
         }
 
         /**

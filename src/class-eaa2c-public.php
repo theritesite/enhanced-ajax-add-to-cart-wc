@@ -84,22 +84,12 @@ if ( ! class_exists( 'TRS\EAA2C\Front' ) ) {
 				wp_register_script( EAA2C_NAME . '-js-bundle' , $js_file, array( 'jquery', 'wc-add-to-cart' ), $this->version, false );
 				
 				wp_localize_script( EAA2C_NAME . '-js-bundle', 'EAA2C', array(
-					'ajax_url'	=> $this->possibly_add_language( admin_url( 'admin-ajax.php', 'relative' ) ),
+					'ajax_url'	=> admin_url( 'admin-ajax.php', 'relative' ),
 					'blocking'	=> $blocking,
 					'debug'		=> EAA2C_DEBUG,
 					'domCheck'	=> $dom_check,
 				));
 			}
-		}
-
-		public function possibly_add_language( $url ) {
-			$ajax_url = $url;
-			$my_current_lang = apply_filters( 'wpml_current_language', NULL ); 
-			if ( $my_current_lang ) {
-				$ajax_url = add_query_arg( 'wpml_lang', $my_current_lang, $ajax_url );
-				// $ajax_url will be something like 'http://my-site.com/wp-content/plugins/my-plugin/handle-ajax.php?wpml_lang=es'
-			}
-			return $ajax_url;
 		}
 
 		/**

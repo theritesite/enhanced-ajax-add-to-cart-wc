@@ -48,6 +48,7 @@ if ( ! class_exists( 'TRS\EAA2C\Admin' ) ) {
 
 			add_shortcode( 'enh_ajax_add_to_cart_button', array( $this, 'enhanced_ajax_add_to_cart_shortcode' ) );
 			add_shortcode( 'ajax_add_to_cart', array( $this, 'enhanced_ajax_add_to_cart_shortcode' ) );
+			add_shortcode( 'a2c_button', array( $this, 'enhanced_ajax_add_to_cart_shortcode' ) );
 
 		}
 
@@ -68,7 +69,7 @@ if ( ! class_exists( 'TRS\EAA2C\Admin' ) ) {
 			);
 			wp_localize_script( 'eaa2c-settings', 'EAA2CSETTINGS', array(
 				'ajax_url'	=> admin_url( 'admin-ajax.php' ),
-				'db_key' => get_option( EAA2C_LICENSE_KEY ),
+				// 'db_key' => get_option( EAA2C_LICENSE_KEY ),
 				'debug' => EAA2C_DEBUG,
 				'nonce' => wp_create_nonce( 'eaa2c_nonce' ),
 			));

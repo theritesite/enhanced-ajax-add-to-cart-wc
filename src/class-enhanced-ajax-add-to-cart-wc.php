@@ -99,30 +99,6 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 			define( 'EAA2C_DEBUG', $debug );
 		}
 
-		if ( ! defined( 'EAA2C_UPDATER_URL' ) ) {
-			// define( 'EAA2C_UPDATER_URL', 'https://www.theritesites.com' );
-			define( 'EAA2C_UPDATER_URL', 'https://test-theritesites.pantheonsite.io' );
-		}
-
-		if ( ! defined( 'EAA2C_ITEM_ID' ) ) {
-			define( 'EAA2C_ITEM_ID', 1952 );
-		}
-
-		if ( ! defined( 'EAA2C_LICENSE_PAGE' ) ) {
-			define( 'EAA2C_LICENSE_PAGE', 'the_rite_plugins_settings' );
-		}
-
-		if ( ! defined( 'EAA2C_ITEM_NAME' ) ) {
-			define( 'EAA2C_ITEM_NAME', 'Enhanced AJAX Add to Cart for WooCommerce' );
-		}
-
-		if ( ! defined( 'EAA2C_LICENSE_KEY' ) ) {
-			define( 'EAA2C_LICENSE_KEY', 'trs_eaa2c_license_key' );
-		}
-
-		if ( ! defined( 'EAA2C_LICENSE_STATUS' ) ) {
-			define( 'EAA2C_LICENSE_STATUS', 'trs_eaa2c_license_status' );
-		}
 	}
 
 	/**
@@ -165,7 +141,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 			array(
 				'methods'   => \WP_REST_Server::READABLE,
                 'callback'  => array( $this, 'get_eaa2c_settings' ),
-                // 'permissions_callback    => array( $this, '' ),
+                'permission_callback'    => array( $this, 'user_can_manage' ),
                 // 'args'      => array(
                 //     'context' => array(
                 //         'default'   => 'view',
@@ -178,7 +154,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 			array(
 				'methods'   => \WP_REST_Server::READABLE,
                 'callback'  => array( $this, 'get_eaa2c_product_image' ),
-                // 'permissions_callback    => array( $this, '' ),
+                'permission_callback'    => array( $this, 'user_can_manage' ),
                 // 'args'      => array(
                 //     'context' => array(
                 //         'default'   => 'view',
@@ -187,7 +163,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
             )
 		) );
 
-        register_rest_route( $namespace, '/connect', array(
+        /*register_rest_route( $namespace, '/connect', array(
             array(
                 'methods'   => \WP_REST_Server::ALLMETHODS,
                 'callback'  => array( $this, 'error_check_route' ),
@@ -198,12 +174,12 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
                 //     ),
                 // ),
             )
-		) );
+		) );*/
 		register_rest_route( $namespace, '/products', array(
             array(
                 'methods'   => \WP_REST_Server::ALLMETHODS,
                 'callback'  => array( $this, 'get_all_products_and_variations' ),
-                // 'permissions_callback    => array( $this, '' ),
+                'permission_callback'    => function(){ return current_user_can( 'edit_posts' ) || current_user_can( 'edit_pages' ); },
                 // 'args'      => array(
                 //     'context' => array(
                 //         'default'   => 'view',
@@ -211,6 +187,12 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
                 // ),
             )
 		) );
+	}
+
+	private function user_can_manage() {
+		if ( current_user_can( 'edit_posts' ) || current_user_can( 'edit_pages' ) ) {
+			return true;
+		}
 	}
 
 	public function get_eaa2c_product_image( WP_REST_Request $request ) {
@@ -277,42 +259,6 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 			error_log( 'parameters to get all products and variations: ' . wc_print_r( $params, true ) );
 		}
 		return true;
-	}
-
-	public function error_check_route( WP_REST_Request $request ) {
-		$params = $request->get_params();
-		
-		if ( WP_DEBUG || EAA2C_DEBUG ) {
-			error_log( 'consumer key: ' . $params['consumer_key'] );
-			error_log( 'consumer secret: ' . $params['consumer_secret'] );
-			error_log( 'key id: ' . $params['key_id'] );
-		}
-		return true;
-	}
-
-	public function register_app_rest() {
-		?>
-		<div class="error notice">
-
-        	<p>OH HELLO!
-			<?php
-				// error_log( "stuff" );
-				$store_url = get_site_url();
-				$endpoint = '/wc-auth/v1/authorize';
-				$params = [
-					'app_name' => 'Enhanced AJAX Add to Cart PHP',
-					'scope' => 'read',
-					'user_id' => get_current_user_id(),
-					'return_url' => $store_url . '/wp-admin/options-general.php?page=the_rite_plugins_settings',
-					'callback_url' => $store_url . '/wp-json/eaa2c/v1/connect'
-				];
-				$query_string = http_build_query( $params );
-
-				echo '<a href="' . $store_url . $endpoint . '?' . $query_string . '" class="button btn btn-primary">Register!</a>';
-			?>
-			</p>
-		</div>
-		<?php
 	}
 
 	/**
