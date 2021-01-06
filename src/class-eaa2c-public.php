@@ -71,12 +71,12 @@ if ( ! class_exists( 'TRS\EAA2C\Front' ) ) {
 			}
 
 			if ( ! empty( $js_file ) && defined( 'EAA2C_NAME' ) ) {
-				$blocking = get_option( 'eaa2c_button_blocking', false );
+				$blocking = get_option( 'a2cp_button_blocking', false );
 				if ( strcmp( $blocking, 'on' ) === 0 || strcmp( $blocking, 'true' ) === 0 ) {
 					$blocking = true;
 				}
 
-				$dom_check = get_option( 'eaa2c_dom_check', false );
+				$dom_check = get_option( 'a2cp_dom_check', false );
 				if ( strcmp( $dom_check, 'on' ) === 0 || strcmp( $dom_check, 'true' ) === 0 ) {
 					$dom_check = true;
 				}

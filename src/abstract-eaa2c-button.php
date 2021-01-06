@@ -90,13 +90,13 @@ if ( ! class_exists( 'TRS\EAA2C\Abstract_Button' ) ) {
 			$contentVisibility  = $attributes['contentVisibility'];
 
 			$available_elements = [ 'title', 'separator', 'price', 'quantity', 'button' ];
-			if ( get_option( 'eaa2c_image_field' ) === 'on' ) {
+			if ( get_option( 'a2cp_image_field' ) === 'on' ) {
 				$available_elements[] = 'image';
 			}
-			if ( get_option( 'eaa2c_custom_field' ) === 'on' ) {
+			if ( get_option( 'a2cp_custom_field' ) === 'on' ) {
 				$available_elements[] = 'custom';
 			}
-			if ( get_option( 'eaa2c_short_description' ) === 'on' ) {
+			if ( get_option( 'a2cp_short_description' ) === 'on' ) {
 				$available_elements[] = 'short_description';
 			}
 
@@ -106,10 +106,10 @@ if ( ! class_exists( 'TRS\EAA2C\Abstract_Button' ) ) {
 
 				// If there is more than 1 product, by definition its a group block. We should wrap this block.
 				// by default, and apply a filter allowing for an override of the wrap flag. Return false to disable the wrap.
-				$wrap_group = apply_filters( 'eaa2c_button_row_wrap_override', 1 < count( $attributes['products'] ), count( $attributes['products'] ) );
+				$wrap_group = apply_filters( 'a2cp_button_row_wrap_override', 1 < count( $attributes['products'] ), count( $attributes['products'] ) );
 				if ( $wrap_group === true ) {
 					?>
-					<div class="eaa2c-group">
+					<div class="a2cp-group">
 					<?php
 				}
 				foreach( $attributes['products'] as $product_raw ) {
@@ -123,7 +123,7 @@ if ( ! class_exists( 'TRS\EAA2C\Abstract_Button' ) ) {
 					$quantity 	  	= $attributes['quantity'];
 					$extraClasses	= isset( $attributes['className'] ) ? $attributes['className'] : '';
 					$extraClasses  .= isset( $attributes['align'] ) && ! empty( $attributes['align'] ) ? ' align' . $attributes['align'] : '';
-					$extraClasses  .= empty( get_option( 'eaa2c_custom_class') ) ? '' : ' ' . get_option( 'eaa2c_custom_class' );
+					$extraClasses  .= empty( get_option( 'a2cp_custom_class') ) ? '' : ' ' . get_option( 'a2cp_custom_class' );
 					$titleType 	    = isset( $attributes['titleType'] ) ? $attributes['titleType'] : 'full';
 					$titleAction	= isset( $attributes['titleAction'] ) ? $attributes['titleAction'] : '';
 
@@ -149,7 +149,7 @@ if ( ! class_exists( 'TRS\EAA2C\Abstract_Button' ) ) {
 						$input_id       = 'product_' . ( false !== $variation_id ? $variation_id : $product_id ). '_qty';
 						$disable_button = '';
 
-						$out_of_stock_check = empty( get_option( 'eaa2c_out_of_stock') ) ? false : get_option( 'eaa2c_out_of_stock' );
+						$out_of_stock_check = empty( get_option( 'a2cp_out_of_stock') ) ? false : get_option( 'a2cp_out_of_stock' );
 						if ( false === $out_of_stock_check || strcmp( 'false', $out_of_stock_check ) === 0 ) {
 							if ( $variation !== false && $variation instanceof \WC_Product_Variation ) {
 								if ( false === $variation->is_in_stock() ) {
@@ -230,7 +230,7 @@ if ( ! class_exists( 'TRS\EAA2C\Abstract_Button' ) ) {
 						}
 
 						?>
-						<div class="enhanced-woocommerce-add-to-cart <?php echo esc_attr( $extraClasses ); ?>">
+						<div class="add-to-cart-pro <?php echo esc_attr( $extraClasses ); ?>">
 							<?php foreach( $contentOrder as $item ) : ?>
 								<?php if ( in_array( $item, $available_elements ) ) : ?>
 									<?php if ( strcmp( $item, 'title' ) === 0 && $contentVisibility[ $item ] === true  ) : ?>
@@ -271,7 +271,7 @@ if ( ! class_exists( 'TRS\EAA2C\Abstract_Button' ) ) {
 									<?php if( strcmp( $item, 'button' ) === 0 && true === $contentVisibility[ $item ] ) : ?>
 										<button
 											type="submit"
-											class="eaa2c_add_to_cart_button button alt"
+											class="a2cp_button eaa2c_add_to_cart_button button alt"
 											data-pid="<?php esc_attr_e( $product_id ); ?>"
 											data-vid="<?php esc_attr_e( $variation_id ); ?>"
 											<?php esc_attr_e( $disable_button ) ?>
@@ -281,7 +281,7 @@ if ( ! class_exists( 'TRS\EAA2C\Abstract_Button' ) ) {
 									<?php endif; ?>
 									<?php if ( strcmp( $item, 'custom' ) === 0 && $contentVisibility[ $item ] === true  ) : ?>
 										<span class="ea-line ea-custom">
-											<?php echo apply_filters( 'eaa2c_button_row_custom_field', '<span>' . esc_html_e( $customText ) . '</span>', $product_id ); ?>
+											<?php echo apply_filters( 'a2cp_button_row_custom_field', '<span>' . esc_html_e( $customText ) . '</span>', $product_id ); ?>
 										</span>
 									<?php endif; ?>
 									<?php if ( strcmp( $item, 'image' ) === 0 && $contentVisibility[ $item ] === true  ) : ?>
@@ -303,7 +303,7 @@ if ( ! class_exists( 'TRS\EAA2C\Abstract_Button' ) ) {
 									<?php endif; ?>
 								<?php endif; ?>
 							<?php endforeach; ?>
-							<?php echo apply_filters( 'eaa2c_button_row_additional_fields', '', $product_id ); ?>
+							<?php echo apply_filters( 'a2cp_button_row_additional_fields', '', $product_id ); ?>
 						</div>
 						<?php
 					}
@@ -323,7 +323,7 @@ if ( ! class_exists( 'TRS\EAA2C\Abstract_Button' ) ) {
 
 		protected function parse_attributes( $attributes ) {
 			// These should match what's set in JS `registerBlockType`.
-			$buttonText = get_option( 'eaa2c_default_text' );
+			$buttonText = get_option( 'a2cp_default_text' );
 			$buttonText = empty( $buttonText ) ? __( 'Add to cart', 'enhanced-ajax-add-to-cart-wc' ) : $buttonText;
 
 			$defaults = array(

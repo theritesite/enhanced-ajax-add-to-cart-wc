@@ -141,7 +141,7 @@ if ( ! class_exists( 'TRS\EAA2C\Admin' ) ) {
 				filemtime( "$dir/$index_js" )
 			);
 
-			$buttonText = get_option( 'eaa2c_default_text' );
+			$buttonText = get_option( 'a2cp_default_text' );
 			$buttonText = empty( $buttonText ) ? __( 'Add to cart', 'enhanced-ajax-add-to-cart-wc' ) : $buttonText;
 
 			wp_localize_script( 'eaa2c-block-editor', 'EAA2C', array(
@@ -150,7 +150,7 @@ if ( ! class_exists( 'TRS\EAA2C\Admin' ) ) {
 				'route'				=> get_site_url(),
 				'baseURL'			=> get_rest_url() ,
 				'nonce' 			=> wp_create_nonce( 'wp_rest' ),
-				'customClass'		=> get_option( 'eaa2c_custom_class' ),
+				'customClass'		=> get_option( 'a2cp_custom_class' ),
 				'buttonText'		=> $buttonText
 			) );
 

@@ -76,7 +76,7 @@ if ( ! class_exists( 'Enhanced_Ajax_Add_To_Cart_Wc' ) ) {
  * @since    1.0.0
  */
 use \TRS\EAA2C;
-if ( ! function_exists( 'run_enhanced_ajax_add_to_cart_wc' ) && true !== is_eaa2c_premium_active() ) {
+if ( ! function_exists( 'run_enhanced_ajax_add_to_cart_wc' ) && true !== is_a2cp_active() ) {
 	function run_enhanced_ajax_add_to_cart_wc() {
 
 		$plugin = new Enhanced_Ajax_Add_To_Cart_Wc();

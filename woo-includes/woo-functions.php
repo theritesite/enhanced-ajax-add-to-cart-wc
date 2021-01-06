@@ -14,9 +14,9 @@ if ( ! function_exists( 'is_woocommerce_active' ) ) {
 	}
 }
 
-if ( ! function_exists( 'is_eaa2c_premium_active' ) ) {
-	function is_eaa2c_premium_active() {
-		return Enhanced_Ajax_Add_To_Cart_Wc_Dependencies::eaa2c_premium_active_check();
+if ( ! function_exists( 'is_a2cp_active' ) ) {
+	function is_a2cp_active() {
+		return Enhanced_Ajax_Add_To_Cart_Wc_Dependencies::add_to_cart_pro_active_check();
 	}
 }
 

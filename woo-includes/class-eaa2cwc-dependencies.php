@@ -23,10 +23,10 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Dependencies {
 		return in_array( 'woocommerce/woocommerce.php', self::$active_plugins ) || array_key_exists( 'woocommerce/woocommerce.php', self::$active_plugins );
 	}
 
-	public static function eaa2c_premium_active_check() {
+	public static function add_to_cart_pro_active_check() {
 
 		if ( ! self::$active_plugins ) self::init();
 
-		return in_array( 'enhanced-ajax-add-to-cart-wc-premium/enhanced-ajax-add-to-cart-wc-premium.php', self::$active_plugins ) || array_key_exists( 'enhanced-ajax-add-to-cart-wc-premium/enhanced-ajax-add-to-cart-wc-premium.php', self::$active_plugins );
+		return in_array( 'add-to-cart-pro/add-to-cart-pro.php', self::$active_plugins ) || array_key_exists( 'add-to-cart-pro/add-to-cart-pro.php', self::$active_plugins );
 	}
 }
