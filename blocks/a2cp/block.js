@@ -21,7 +21,7 @@ import { Component, Fragment } from '@wordpress/element';
 import PropTypes from 'prop-types';
 import ProductControl from '../common/product-control';
 import { formatPrice } from '../common/formatting/price';
-import EAA2CControl from '../common/eaa2c-control';
+import A2CControl from '../common/a2c-control';
 import { setNonce, setBaseURL } from '../common/api/request';
 
 class AddToCartBlock extends Component {
@@ -35,10 +35,10 @@ class AddToCartBlock extends Component {
 	}
 	
 	componentDidMount() {
-		if ( global.EAA2C ) {
+		if ( global.A2C ) {
 			// console.log( "we made it into the global setarea" );
-			setNonce( global.EAA2C.nonce );
-			setBaseURL( global.EAA2C.baseURL );
+			setNonce( global.A2C.nonce );
+			setBaseURL( global.A2C.baseURL );
 			const { attributes, setAttributes } = this.props;
 			const { contentVisibility, contentOrder } = attributes;
 
@@ -92,7 +92,7 @@ class AddToCartBlock extends Component {
 		return (
 			<div key={ index } className={ itemClassList } onClick={ (e) => { this.setState( { selectedComponent: item } ) } }>
 				<span className="dashicons dashicons-menu-alt3"></span>
-				<EAA2CControl
+				<A2CControl
 					key={ index }
 					onChange={ ( value ) => {
 						const temp = JSON.parse(
@@ -268,7 +268,7 @@ class AddToCartBlock extends Component {
 
 		return (
 			<div key={ index } className={ itemClassList } onClick={ (e) => { this.setState( { selectedComponent: item } ) } }>
-				<EAA2CControl
+				<A2CControl
 					key={ index }
 					onChange={ ( value ) => {
 						const temp = JSON.parse(
@@ -504,7 +504,7 @@ class AddToCartBlock extends Component {
 			<InspectorControls>
 				<PanelBody
 					title={ __( 'Content', 'enhanced-ajax-add-to-cart-wc' ) }
-					className="eaa2c-content-container"
+					className="a2cp-content-container"
 					initialOpen
 				>
 					{ contentOrder.map( ( item, index ) => {
@@ -612,9 +612,9 @@ class AddToCartBlock extends Component {
 					'AJAX Add to Cart button',
 					'enhanced-ajax-add-to-cart-wc'
 				) }
-				className="eaa2c-block-placeholder"
+				className="a2cp-block-placeholder"
 			>
-				<div className="eaa2c-block">
+				<div className="a2cp-block">
 					{ this.displayControls() }
 					
 					<ProductControl
@@ -645,8 +645,8 @@ class AddToCartBlock extends Component {
 
 		let customClass = '';
 
-		if ( global.EAA2C && global.EAA2C.customClass !== undefined && global.EAA2C.customClass.length > 0 ) {
-			let customClassSetting = global.EAA2C.customClass;
+		if ( global.A2C && global.A2C.customClass !== undefined && global.A2C.customClass.length > 0 ) {
+			let customClassSetting = global.A2C.customClass;
 			customClass = customClassSetting.replace(/(<([^>]+)>)/ig,"");
 		}
 
@@ -720,7 +720,7 @@ class AddToCartBlock extends Component {
 									<button
 										key={ index + "_" + item }
 										type="submit"
-										className="eaa2c_add_to_cart_button button alt"
+										className="a2cp_button button alt"
 										data-pid={ product.parent_id > 0 ? product.parent_id : product.id }
 										data-vid={ product.id }
 									>

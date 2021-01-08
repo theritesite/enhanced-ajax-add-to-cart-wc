@@ -193,6 +193,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 		if ( current_user_can( 'edit_posts' ) || current_user_can( 'edit_pages' ) ) {
 			return true;
 		}
+		return false;
 	}
 
 	public function get_eaa2c_product_image( WP_REST_Request $request ) {
@@ -303,7 +304,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 
 		$this->plugin_admin = new Admin();
 
-		$this->loader->add_action( 'init', $this->plugin_admin, 'register_eaa2c_single', 9999 );
+		$this->loader->add_action( 'init', $this->plugin_admin, 'register_a2cp_single', 9999 );
 		$this->loader->add_action( 'admin_enqueue_scripts', $this->plugin_admin, 'register_scripts' );
 
 		// add_action( 'admin_notices', array( $this, 'register_app_rest' ) );

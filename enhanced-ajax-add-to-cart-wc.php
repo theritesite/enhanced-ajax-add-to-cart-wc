@@ -34,8 +34,8 @@ if ( ! function_exists( 'is_woocommerce_active' ) || ! function_exists( 'is_eaa2
 /**
  * Current plugin version.
  */
-/*defined( 'ENHANCED_AJAX_ADD_TO_CART' ) ||*/ define( 'ENHANCED_AJAX_ADD_TO_CART', '2.0.0' );
-/*defined( 'EAA2C_PLUGIN_FILE' ) ||*/ define( 'EAA2C_PLUGIN_FILE', __FILE__ );
+defined( 'ENHANCED_AJAX_ADD_TO_CART' ) || define( 'ENHANCED_AJAX_ADD_TO_CART', '2.0.0' );
+defined( 'EAA2C_PLUGIN_FILE' ) || define( 'EAA2C_PLUGIN_FILE', __FILE__ );
 
 /**
  * The code that runs during plugin activation.

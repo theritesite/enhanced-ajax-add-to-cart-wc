@@ -117,18 +117,18 @@ if ( ! class_exists( 'TRS\EAA2C\Admin' ) ) {
 		/**
 		 * Blocks
 		 */
-		public function register_eaa2c_single() {
+		public function register_a2cp_single() {
 
 			// Skip block registration if Gutenberg is not enabled/merged.
-			if ( ! function_exists( 'register_block_type' ) || in_array( 'enhanced-ajax-add-to-cart-for-wc/eaa2c', get_dynamic_block_names() ) ) {
+			if ( ! function_exists( 'register_block_type' ) || in_array( 'add-to-cart-pro/a2cp', get_dynamic_block_names() ) ) {
 				return;
 			}
 
 			$dir = plugin_dir_path( dirname( __FILE__ ) ) . 'dist/blocks/';
 
-			$index_js = 'eaa2c.js';
+			$index_js = 'a2cp.js';
 			wp_register_script(
-				'eaa2c-block-editor',
+				'a2cp-block-editor',
 				plugins_url( $index_js, $dir .'blocks/' ),
 				array(
 					'wp-blocks',
@@ -144,7 +144,7 @@ if ( ! class_exists( 'TRS\EAA2C\Admin' ) ) {
 			$buttonText = get_option( 'a2cp_default_text' );
 			$buttonText = empty( $buttonText ) ? __( 'Add to cart', 'enhanced-ajax-add-to-cart-wc' ) : $buttonText;
 
-			wp_localize_script( 'eaa2c-block-editor', 'EAA2C', array(
+			wp_localize_script( 'a2cp-block-editor', 'A2C', array(
 				'ajax_url'			=> admin_url( 'admin-ajax.php' ),
 				'debug'				=> EAA2C_DEBUG,
 				'route'				=> get_site_url(),
@@ -154,19 +154,19 @@ if ( ! class_exists( 'TRS\EAA2C\Admin' ) ) {
 				'buttonText'		=> $buttonText
 			) );
 
-			$dir = plugin_dir_path( dirname( __FILE__ ) ) . 'blocks/eaa2c/';
+			$dir = plugin_dir_path( dirname( __FILE__ ) ) . 'blocks/a2cp/';
 			$editor_css = 'editor.css';
 			wp_register_style(
-				'eaa2c-block-editor-style',
-				plugins_url( $editor_css, $dir . 'eaa2c/' ),
+				'a2cp-block-editor-style',
+				plugins_url( $editor_css, $dir . 'a2cp/' ),
 				array(),
 				filemtime( "$dir/$editor_css" )
 			);
 
 			$style_css = 'style.css';
 			wp_register_style(
-				'eaa2c-block',
-				plugins_url( $style_css, $dir . 'eaa2c/' ),
+				'a2cp-block',
+				plugins_url( $style_css, $dir . 'a2cp/' ),
 				array( 'wp-editor' ),
 				filemtime( "$dir/$style_css" )
 			);
@@ -253,10 +253,10 @@ if ( ! class_exists( 'TRS\EAA2C\Admin' ) ) {
 				)
 			);
 
-			register_block_type( 'enhanced-ajax-add-to-cart-for-wc/eaa2c', array(
-				'editor_script' => 'eaa2c-block-editor',
-				'editor_style'  => 'eaa2c-block-editor-style',
-				'style'         => 'eaa2c-block',
+			register_block_type( 'add-to-cart-pro/a2cp', array(
+				'editor_script' => 'a2cp-block-editor',
+				'editor_style'  => 'a2cp-block-editor-style',
+				'style'         => 'a2cp-block',
 				'attributes' 	=> $attributes,
 				'render_callback' => array( $this, 'render_from_block' ),
 			) );

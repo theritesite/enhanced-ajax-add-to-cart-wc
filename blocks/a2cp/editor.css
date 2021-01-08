@@ -4,11 +4,11 @@
  * Replace them with your own styles or remove the file completely.
  */
  /* Expands the main block editor */
- .eaa2c-block {
+ .a2cp-block {
 	width: 100%;
 }
 
-.eaa2c-block-placeholder .components-placeholder__fieldset {
+.a2cp-block-placeholder .components-placeholder__fieldset {
 	max-width: 100%;
 }
 
@@ -28,7 +28,7 @@
 	justify-content: space-evenly;
 }
 
-/* Container for eaa2c displayable options */
+/* Container for a2cp displayable options */
 .trs-wrapper { 
 	padding: 4px;
 	position: relative;

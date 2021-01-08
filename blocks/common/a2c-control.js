@@ -20,7 +20,7 @@ import _ from 'lodash';
  *
  * @return {Function} A functional component.
  */
-const EAA2CControl = ( { error, onChange, item, value, title } ) => {
+const A2CControl = ( { error, onChange, item, value, title } ) => {
 	if ( error ) {
 		return <p>error { error.status }</p>;
 	}
@@ -44,15 +44,15 @@ const EAA2CControl = ( { error, onChange, item, value, title } ) => {
 	);
 };
 
-EAA2CControl.propTypes = {
+A2CControl.propTypes = {
 	onChange: PropTypes.func.isRequired,
 	item: PropTypes.string,
 	value: PropTypes.bool,
 };
 
-EAA2CControl.defaultProps = {
+A2CControl.defaultProps = {
 	isLoading: true,
 	value: true,
 };
 
-export default EAA2CControl;
+export default A2CControl;

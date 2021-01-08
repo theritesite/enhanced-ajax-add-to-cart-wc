@@ -174,7 +174,7 @@ if ( ! class_exists( 'TRS\EAA2C\Abstract_Button' ) ) {
 							}
 						}
 
-						if ( isset( $attributes['custom'] ) ) {
+						/*if ( isset( $attributes['custom'] ) ) {
 							$customText = ! empty( $attributes['custom'] ) ? $attributes['custom'] : '';
 						}
 
@@ -203,7 +203,7 @@ if ( ! class_exists( 'TRS\EAA2C\Abstract_Button' ) ) {
 									}
 								}
 							}
-						}
+						}*/
 
 						$priceDisplay = wc_price( $product->get_price() );
 						$titleDisplay = $product->get_name();
@@ -271,7 +271,7 @@ if ( ! class_exists( 'TRS\EAA2C\Abstract_Button' ) ) {
 									<?php if( strcmp( $item, 'button' ) === 0 && true === $contentVisibility[ $item ] ) : ?>
 										<button
 											type="submit"
-											class="a2cp_button eaa2c_add_to_cart_button button alt"
+											class="a2cp_button button alt"
 											data-pid="<?php esc_attr_e( $product_id ); ?>"
 											data-vid="<?php esc_attr_e( $variation_id ); ?>"
 											<?php esc_attr_e( $disable_button ) ?>
@@ -279,7 +279,7 @@ if ( ! class_exists( 'TRS\EAA2C\Abstract_Button' ) ) {
 											<?php esc_html_e( $buttonText ); ?>
 										</button>
 									<?php endif; ?>
-									<?php if ( strcmp( $item, 'custom' ) === 0 && $contentVisibility[ $item ] === true  ) : ?>
+									<?php /*if ( strcmp( $item, 'custom' ) === 0 && $contentVisibility[ $item ] === true  ) : ?>
 										<span class="ea-line ea-custom">
 											<?php echo apply_filters( 'a2cp_button_row_custom_field', '<span>' . esc_html_e( $customText ) . '</span>', $product_id ); ?>
 										</span>
@@ -297,10 +297,10 @@ if ( ! class_exists( 'TRS\EAA2C\Abstract_Button' ) ) {
 									<?php endif; ?>
 									<?php if ( strcmp( $item, 'short_description' ) === 0 && $contentVisibility[ $item ] === true  ) : ?>
 										<span class="ea-line ea-text ea-short_description">
-											<!-- <span><?php /*esc_html_e( $product_raw[ 'short_description' ] );*/ ?></span> This would be for if we want these to be non-dynamic aka what the description was when the block was saved -->
+											<!-- <span><?php /*esc_html_e( $product_raw[ 'short_description' ] );*//* ?></span> This would be for if we want these to be non-dynamic aka what the description was when the block was saved -->
 											<span><?php echo $product->get_short_description(); ?></span>
 										</span>
-									<?php endif; ?>
+									<?php endif; */?>
 								<?php endif; ?>
 							<?php endforeach; ?>
 							<?php echo apply_filters( 'a2cp_button_row_additional_fields', '', $product_id ); ?>

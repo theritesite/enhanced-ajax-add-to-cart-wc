@@ -26,12 +26,31 @@ if ( ! class_exists( 'TRS\EAA2C\Settings' ) ) {
 				'a2cp-page',
 				array( $this, 'a2cp_settings_page_callback' )
 			);
+			add_settings_section(
+				'a2cp_settings',
+				// __( 'General Settings', EAA2C_NAME ),
+				'',
+				array( $this, 'display_all_settings_callback' ),
+				$this->settings_page
+				// 'a2cp_settings'
+			);
 		}
 
 		public function register_settings() {
 			register_setting(
 				'a2cp_settings',
 				'a2cp_button_blocking',
+				array(
+					'type' => 'boolean',
+					'description' => '',
+					// 'sanitize_callback' => array( $this, '' ),
+					'show_in_rest' => true
+					// 'default' => false
+				)
+			);
+			register_setting(
+				'a2cp_settings',
+				'a2cp_debug',
 				array(
 					'type' => 'boolean',
 					'description' => '',
@@ -53,7 +72,7 @@ if ( ! class_exists( 'TRS\EAA2C\Settings' ) ) {
 			);
 			register_setting(
 				'a2cp_settings',
-				'a2cp_debug',
+				'a2cp_delete_on_deactivation',
 				array(
 					'type' => 'boolean',
 					'description' => '',
@@ -139,6 +158,7 @@ if ( ! class_exists( 'TRS\EAA2C\Settings' ) ) {
 		}
 
 		public function render_display_options() {
+
 			add_settings_field(
 				'a2cp_display_subheading',
 				// __( 'Display Options', EAA2C_NAME ),
@@ -316,21 +336,21 @@ if ( ! class_exists( 'TRS\EAA2C\Settings' ) ) {
 					// 'disabled' => true
 				)
 			);
-			/*add_settings_field(
-				'a2cp_default_text',
-				__( 'Change default "Add to Cart" text?', EAA2C_NAME ),
-				array( $this, 'text_input' ),
+			$full_uninstall = empty( get_option( 'a2cp_delete_on_deactivation' ) ) ? 0 : get_option( 'a2cp_delete_on_deactivation' );
+			add_settings_field(
+				'a2cp_delete_on_deactivation',
+				__( 'Delete data on uninstall?', EAA2C_NAME ),
+				array( $this, 'toggle_button' ),
 				$this->settings_page,
 				'a2cp_settings',
 				array(
-					'name' => 'a2cp_default_text',
-					'type' => 'text',
-					'value' => get_option( 'a2cp_default_text' ),
-					// 'desc' => $this->get_premium_description_link(),
+					'name' => 'a2cp_delete_on_deactivation',
+					'type' => 'checkbox',
+					'value' => $full_uninstall,
 					// 'class' => 'disabled',
 					// 'disabled' => true
 				)
-			);*/
+			);
 		}
 
 		public function toggle_button( $args ) {

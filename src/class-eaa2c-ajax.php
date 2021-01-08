@@ -48,9 +48,6 @@ if ( ! class_exists( 'TRS\EAA2C\Ajax' ) ) {
             add_action( 'wp_ajax_eaa2c_add_to_cart', array( __CLASS__, 'eaa2c_add_to_cart_callback' ) );
             add_action( 'wp_ajax_nopriv_eaa2c_add_to_cart', array( __CLASS__, 'eaa2c_add_to_cart_callback' ) );
 
-            add_action( 'wp_ajax_eaa2c_activate_license', array( __CLASS__, 'eaa2c_maybe_activate_callback' ) );
-            add_action( 'wp_ajax_eaa2c_deactivate_license', array( __CLASS__, 'eaa2c_maybe_deactivate_callback' ) );
-        
             /**
              * Deprecated actions
              */

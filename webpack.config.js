@@ -3,7 +3,8 @@ const defaultConfig = require( "@wordpress/scripts/config/webpack.config" );
 const DependencyExtractionWebpackPlugin = require( '@wordpress/dependency-extraction-webpack-plugin' );
 const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
 const CopyWebpackPlugin = require( 'copy-webpack-plugin' );
-const WebpackZipPlugin = require('webpack-zip-plugin');
+const WebpackZipPlugin = require( 'webpack-zip-plugin' );
+const browserSyncPlugin = require( 'browser-sync-webpack-plugin' );
 
 const pluginSlug = 'enhanced-ajax-add-to-cart-wc';
 
@@ -16,12 +17,14 @@ const config = env => {
 	console.log(env.NODE_ENV);
 
 	if ( env.LOC === "m1" ) {
-		devFolder = '/Users/parkermathewson/mac-sites/wp56tester/wp-content/plugins/' + pluginSlug; // Mac
-		endPath = '/Users/parkermathewson/Library/Mobile\ Documents/com~apple~CloudDocs/theritesites/completed_pluginsv2'; // Mac
+		devFolder = '/Users/parkermathewson/mac-sites/wp56tester/wp-content/plugins/' + pluginSlug; // M1
+		endPath = '/Users/parkermathewson/Library/Mobile\ Documents/com~apple~CloudDocs/theritesites/completed_pluginsv2'; // M1
+		buildPath = '/Users/parkermathewson/theritesites/completed_pluginsv2'; // M1
 	}
 	if ( env.LOC === "mac" ) {
 		devFolder = '/Users/parker/sites/localwptest/wp-content/plugins/' + pluginSlug; // Mac
 		endPath = '/Users/parker/Documents/theritesites/completed_plugins'; // Mac
+		buildPath = '/Users/parker/Documents/theritesites/completed_plugins'; // M1
 	}
 
 	const endFolder = endPath + '/' + pluginSlug;
@@ -68,13 +71,13 @@ const config = env => {
 		} ),
 	];
 
-	const EAA2CPackages = [
-		'eaa2c',
-		// 'eaa2c-group',
+	const A2CPackages = [
+		'a2cp',
+		// 'a2cp-group',
 	];
 
 	const entryPoints = {};
-	EAA2CPackages.forEach( ( name ) => {
+	A2CPackages.forEach( ( name ) => {
 		entryPoints[ name ] = `./blocks/${ name }`;
 	} );
 
@@ -114,22 +117,22 @@ const config = env => {
 	}
 	else {
 		pluginList.push(
-			// new browserSyncPlugin({
-			// 	files: [
-			// 		'./' + pluginSlug + '.php',
-			// 		'./includes/*.php',
-			// 		'./includes/**/*.php',
-			// 		'./',
-			// 		'!./node_modules',
-			// 		'!./yarn-error.log',
-			// 		'!./*.json',
-			// 		'!./Gruntfile.js',
-			// 		'!./README.md',
-			// 		'!./*.xml',
-			// 		'!./*.yml'
-			// 	],
-			// 	reloadDelay: 0
-			// }),
+			new browserSyncPlugin({
+				files: [
+					'./' + pluginSlug + '.php',
+					'./includes/*.php',
+					'./includes/**/*.php',
+					// './',
+					'!./node_modules',
+					'!./yarn-error.log',
+					'!./*.json',
+					'!./Gruntfile.js',
+					'!./README.md',
+					'!./*.xml',
+					'!./*.yml'
+				],
+				reloadDelay: 0
+			}),
 			new CopyWebpackPlugin( {
 				patterns: [
 					{ from: path.resolve( __dirname, 'assets' ) + '/**', to: devFolder },
@@ -154,9 +157,9 @@ const config = env => {
 		},
 		output: {
 			filename: ( data ) => {
-				return EAA2CPackages.includes( data.chunk.name )
+				return A2CPackages.includes( data.chunk.name )
 					? './dist/blocks/[name].js'
-					: './dist/[name]/eaa2c-submit.js';
+					: './dist/[name]/a2c-submit.js';
 			},
 			path: __dirname,
 			library: [ 'trs', '[modulename]' ],
@@ -222,6 +225,5 @@ const config = env => {
 		},
 	}
 }
-
 
 module.exports = config;

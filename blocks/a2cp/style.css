@@ -18,10 +18,10 @@
     padding: 8px 0;
 }
 
-.enhanced-woocommerce-add-to-cart {
+.add-to-cart-pro {
     padding: 0.25em 0;
 }
 
-.enhanced-woocommerce-add-to-cart button.eaa2c_add_to_cart_button {
+.add-to-cart-pro button.a2cp_button, button.eaa2c_add_to_cart_button {
     vertical-align: baseline;
 }

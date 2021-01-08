@@ -158,7 +158,9 @@ We have plans to expand into more blocks that will have styling applied, but the
 
 If your theme styles are not being applied to the quantity input, you can use the following css selector to edit all of the quantity inputs:
 `
-
+.add-to-cart-pro .qty {
+    
+}
 `
 
 = Does this work for variable products? =
