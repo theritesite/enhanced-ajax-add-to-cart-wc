@@ -141,6 +141,17 @@ if ( ! class_exists( 'TRS\EAA2C\Settings' ) ) {
 					'show_in_rest' => true,
 				)
 			);
+			register_setting(
+				'a2cp_settings',
+				'a2cp_delete_on_deactivation',
+				array(
+					'type' => 'boolean',
+					'description' => '',
+					// 'sanitize_callback' => array( $this, '' ),
+					'show_in_rest' => true
+					// 'default' => false
+				)
+			);
 			add_settings_section(
 				'a2cp_settings',
 				// __( 'General Settings', EAA2C_NAME ),

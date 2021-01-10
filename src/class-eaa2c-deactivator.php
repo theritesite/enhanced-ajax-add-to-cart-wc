@@ -21,7 +21,7 @@ class Enhanced_Ajax_Add_To_Cart_Wc_Deactivator {
 	 * @since    1.0.0
 	 */
 	public static function deactivate() {
-		if ( false !== get_option( 'a2cp_delete_on_deactivation' ) ) {
+		if ( 'on' === get_option( 'a2cp_delete_on_deactivation' ) ) {
 			delete_option( 'a2cp_out_of_stock' );
 			delete_option( 'a2cp_default_text' );
 			delete_option( 'a2cp_custom_class' );

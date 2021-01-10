@@ -110,7 +110,7 @@ const config = env => {
 			} ),
 			new WebpackZipPlugin( {
 				initialFile: pluginSlug,
-				endPath: endPath,
+				endPath: buildPath,
 				zipName: pluginSlug + '.zip'
 			} )
 		);

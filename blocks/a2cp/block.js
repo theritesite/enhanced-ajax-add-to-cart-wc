@@ -709,7 +709,7 @@ class AddToCartBlock extends Component {
 										</div>
 									</span>
 								);
-							} else if ( item === 'separator' ) {
+							} else if ( item === 'separator' && contentVisibility[ item ] === true ) {
 								return (
 									<span key={ index } className="ea-line">
 										<span className="ea-separator"></span>
