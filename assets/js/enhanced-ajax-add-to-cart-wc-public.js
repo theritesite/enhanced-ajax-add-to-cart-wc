@@ -23,7 +23,7 @@ jQuery( function( $ ) {
 			$( document.body )
 				.on( 'click', '.variable_add_to_cart_button', this.blockButtons )
 				.on( 'click', '.simple_add_to_cart_button', this.blockButtons )
-				.on( 'click', '.eaa2c_add_to_cart_button', this.blockButtons )
+				.on( 'click', '.a2cp_button', this.blockButtons )
 				.on( 'added_to_cart', this.unblockButtons )
 				.on( 'notices_received', this.unblockButtons );
 		}
@@ -31,7 +31,7 @@ jQuery( function( $ ) {
 		$( document.body )
 			.on( 'click', '.variable_add_to_cart_button', this.onAddAnyToCart )
 			.on( 'click', '.simple_add_to_cart_button', this.onAddAnyToCart )
-			.on( 'click', '.eaa2c_add_to_cart_button', this.onAddAnyToCart )
+			.on( 'click', '.a2cp_button', this.onAddAnyToCart )
 			.on( 'added_to_cart', this.updateButton )
 			.on( 'added_to_cart', this.updateCartPage )
 			.on( 'added_to_cart', this.updateFragments )
@@ -43,13 +43,13 @@ jQuery( function( $ ) {
 	AddToCartHandler.prototype.blockButtons = function( e ) {
 		$( '.simple_add_to_cart_button' ).attr( 'disabled', true );
 		$( '.variable_add_to_cart_button' ).attr( 'disabled', true );
-		$( '.eaa2c_add_to_cart_button' ).attr( 'disabled', true );
+		$( '.a2cp_button' ).attr( 'disabled', true );
 	};
 
 	AddToCartHandler.prototype.unblockButtons = function( e ) {
 		$( '.simple_add_to_cart_button' ).attr( 'disabled', false );
 		$( '.variable_add_to_cart_button' ).attr( 'disabled', false );
-		$( '.eaa2c_add_to_cart_button' ).attr( 'disabled', false );
+		$( '.a2cp_button' ).attr( 'disabled', false );
 	};
 
 	/**

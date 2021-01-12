@@ -1,7 +1,7 @@
 === Enhanced AJAX Add to Cart for WooCommerce ===
 Contributors: theritesites
 Donate link: https://www.theritesites.com
-Tags: ajax button, add to cart, AJAX add to cart, shortcode, block, woocommerce, gutenberg, theritesites, The Rite Sites
+Tags: ajax button, add to cart, AJAX add to cart, shortcode, block, woocommerce
 Requires at least: 4.8.1
 Tested up to:      5.6
 Requires PHP:      5.6+
@@ -9,7 +9,7 @@ Stable tag:        trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Display a lightweight, smart, and flexible Add to Cart button for any WC product type inline with any content, on any page you desire.
+Add variable & other products to cart using a lightweight, smart, and flexible Add to Cart button inline with any content, on any page you desire.
 
 == Description ==
 Use the original block and shortcode to display a lightweight (1), smart (2), and flexible (3) Add to Cart button inline with any content, on any page you desire.
