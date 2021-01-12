@@ -150,6 +150,13 @@ This is the same for blocks and shortcodes.
 }
 `
 
+= No loading spinner comes up! =
+
+Currently, we rely on themes to display a loading icon on the loading class. WooCommerce also provides one.
+For more custom builds, we have on our near future enhancement list, a way to load spinner styles, or put your own in.
+For now, you can follow a guide to add a css class definition for "loading" in your themes style.css or customizers additional css.
+
+
 = Can I change the styling of the quantity input? =
 
 Of course! Currently, there are no standard options for styling.
