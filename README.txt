@@ -4,7 +4,7 @@ Donate link: https://www.theritesites.com
 Tags: ajax button, add to cart, AJAX add to cart, shortcode, block, woocommerce
 Requires at least: 4.8.1
 Tested up to:      5.6
-Requires PHP:      5.6+
+Requires PHP:      5.6
 Stable tag:        trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -12,22 +12,25 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Add variable & other products to cart using a lightweight, smart, and flexible Add to Cart button inline with any content, on any page you desire.
 
 == Description ==
-Use the original block and shortcode to display a lightweight (1), smart (2), and flexible (3) Add to Cart button inline with any content, on any page you desire.
+Use the block or shortcode to display a lightweight, smart, and flexible Add to Cart button inline with any content, on any page you desire.
+
 This extension for [WooCommerce](https://www.woocommerce.com) allows you to render a non-redirect button with an associated quantity field. Create effective and functional buttons to use for your or your customers convenience anywhere on your site you want!
+
+Find the newly released Pro version [here](https://www.addtocartpro.com)!
 
 **Breaking Changes in 2.0**
 We have changed the design to condense some code and make things more simple. We have deprecated some javascript and server side PHP functions and have added deprecated notices.
 These are from how the Add to Cart button was different between variations and other types of products. They now use the same code for different product types. This will effect the selectors for styling or any other custom code relying on classes used by this plugin.
 
-= (1) Lightweight =
+= Lightweight =
 We consider our product and its displaying components to be lightweight. The Add to Cart interaction is one of the key moments prior to the decision of a customer finishing their checkout. Understanding that, we are trying to deliver the smallest payload possible when it comes to html and assets.
 Keeping our html lightweight already, if objects are not displayed (e.g. title or price) then the html is never generated, rather than relying on css.
 
-= (2) Smart =
+= Smart =
 Keeping with the theme of lightweight and optimized, assets, which are separated by their uses, will only be loaded when they are used!
 Not only that, but the button will become disabled (by default) if the associated product is now out of stock (toggled in the settings).
 
-= (3) Flexible =
+= Flexible =
 Through the block interface, you can change entirely the order of all parts of the product info & button. Toggling fields on and off, you can make the area fit the way you dream it!
 Many plugins we have used in the past feel overbearing when it comes to styling, sometimes making it hard to apply styles to help the plugin fit your theme.
 We left the themeing to you, using some base classes on elements like the buttons and quantity fields that we found let most themes do base styling to the elements.
