@@ -21,7 +21,8 @@ This extension for [WooCommerce](https://www.woocommerce.com) allows you to rend
 **Breaking Changes in 2.0**
 The new parent div has a more uniform yet identifying class structure:
 `
-<div class="add-to-cart-pro {product_type}`>...</div>
+<div class="add-to-cart-pro {product_type}>...</div>
+
 `
 Replace {product_type} with each associated type {simple|variation|grouped|external|subscription|custom}
 
