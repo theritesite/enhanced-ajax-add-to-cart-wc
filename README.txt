@@ -207,6 +207,16 @@ At this point, no. This is designed to supplement your store to let the buttons 
 
 == Changelog ==
 
+= 2.1.0 =
+* Added: Product type is now an added class to each Add to Cart Row.
+* Tweaked: Re-introduced product type to button as a class, which was a selective regression, but was reported to still has use.
+* Tweaked: Now checking if product is purchasable as well as in stock by default to match WooCommerce (and display consistent behavior).
+            Check the "stock check" setting to disable.
+* Fixed: Automatic translation of 'Add to cart' was lost from shortcode upgrade. Using woocommerce as string translator. Notice this is
+            still different behavior as blocks have difficulty with no default set, and there is no default product to query button text
+            at this point. Block editor vs front end behavior might show inconsistencies because of this. A work around is to either use
+            the "Default button text" in the settings, or overwrite the button text on each block.
+
 = 2.0.0 =
 * Added AJAX Add to Cart block.
 * Added additional display order controls, only available in the block.

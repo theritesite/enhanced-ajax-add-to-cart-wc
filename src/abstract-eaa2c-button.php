@@ -42,7 +42,7 @@ if ( ! class_exists( 'TRS\EAA2C\Abstract_Button' ) ) {
 				'min' => 1,
 				'max' => -1,
 			),
-			'buttonText' => 'Add to cart',
+			'buttonText' => '',
 			'products' => array(),
 			'variations' => array(),
 			'titleType' => 'full',
@@ -124,6 +124,7 @@ if ( ! class_exists( 'TRS\EAA2C\Abstract_Button' ) ) {
 					$extraClasses	= isset( $attributes['className'] ) ? $attributes['className'] : '';
 					$extraClasses  .= isset( $attributes['align'] ) && ! empty( $attributes['align'] ) ? ' align' . $attributes['align'] : '';
 					$extraClasses  .= empty( get_option( 'a2cp_custom_class') ) ? '' : ' ' . get_option( 'a2cp_custom_class' );
+					$extraClasses  .= empty( $product ) ? '' : ' ' . $product->get_type();
 					$titleType 	    = isset( $attributes['titleType'] ) ? $attributes['titleType'] : 'full';
 					$titleAction	= isset( $attributes['titleAction'] ) ? $attributes['titleAction'] : '';
 
@@ -132,33 +133,34 @@ if ( ! class_exists( 'TRS\EAA2C\Abstract_Button' ) ) {
 					$imageType		= '';
 
 					if ( $product instanceof \WC_Product ) {
-						$sizes = apply_filters( 'image_size_names_choose',
-							array(
-								'thumbnail' => __( 'Thumbnail' ),
-								'medium'    => __( 'Medium' ),
-								'large'     => __( 'Large' ),
-								'full'      => __( 'Full Size' ),
-							)
-						);
 
-						$max_value      = apply_filters( 'woocommerce_quantity_input_max', $product->get_max_purchase_quantity(), $product );
-						$min_value      = apply_filters( 'woocommerce_quantity_input_min', $product->get_min_purchase_quantity(), $product );
-						$step           = apply_filters( 'woocommerce_quantity_input_step', 1, $product );
+						if ( $variation !== false && ! is_null( $variation ) ) {
+							$max_value  = apply_filters( 'woocommerce_quantity_input_max', $variation->get_max_purchase_quantity(), $variation );
+							$min_value  = apply_filters( 'woocommerce_quantity_input_min', $variation->get_min_purchase_quantity(), $variation );
+							$step       = apply_filters( 'woocommerce_quantity_input_step', 1, $variation );
+							$input_id   = 'product_' . $variation_id . '_qty';
+						} else {
+							$max_value  = apply_filters( 'woocommerce_quantity_input_max', $product->get_max_purchase_quantity(), $product );
+							$min_value  = apply_filters( 'woocommerce_quantity_input_min', $product->get_min_purchase_quantity(), $product );
+							$step       = apply_filters( 'woocommerce_quantity_input_step', 1, $product );
+							$input_id   = 'product_' . $product_id . '_qty';
+						}
+	
 						$pattern        = apply_filters( 'woocommerce_quantity_input_pattern', has_filter( 'woocommerce_stock_amount', 'intval' ) ? '[0-9]*' : '' );
 						$inputmode      = apply_filters( 'woocommerce_quantity_input_inputmode', has_filter( 'woocommerce_stock_amount', 'intval' ) ? 'numeric' : '' );
-						$input_id       = 'product_' . ( false !== $variation_id ? $variation_id : $product_id ). '_qty';
+						
 						$disable_button = '';
 
 						$out_of_stock_check = empty( get_option( 'a2cp_out_of_stock') ) ? false : get_option( 'a2cp_out_of_stock' );
 						if ( false === $out_of_stock_check || strcmp( 'false', $out_of_stock_check ) === 0 ) {
-							if ( $variation !== false && $variation instanceof \WC_Product_Variation ) {
-								if ( false === $variation->is_in_stock() ) {
+							if ( $variation !== false && ! is_null( $variation ) && $variation instanceof \WC_Product_Variation ) {
+								if ( false === $variation->is_in_stock() || false === $variation->is_purchasable() ) {
 									$buttonText = __( 'Out of stock', 'enhanced-ajax-add-to-cart-wc' );
 									$disable_button = 'disabled';
 								}
 							}
-							elseif ( $product !== false && $variation === false && $product instanceof \WC_Product ) {
-								if ( false === $product->is_in_stock() ) {
+							elseif ( $product !== false && ( $variation === false || is_null( $variation ) ) && $product instanceof \WC_Product ) {
+								if ( false === $product->is_in_stock() || false === $product->is_purchasable() ) {
 									$buttonText = __( 'Out of stock', 'enhanced-ajax-add-to-cart-wc' );
 									$disable_button = 'disabled';
 								}
@@ -174,41 +176,10 @@ if ( ! class_exists( 'TRS\EAA2C\Abstract_Button' ) ) {
 							}
 						}
 
-						/*if ( isset( $attributes['custom'] ) ) {
-							$customText = ! empty( $attributes['custom'] ) ? $attributes['custom'] : '';
-						}
-
-						if ( isset( $attributes['image'] ) ) {
-							if ( ! empty( $attributes['image'] ) && $contentVisibility['image'] === true && in_array( 'image', $available_elements ) ) {
-								$imageType = $attributes['image'];
-								if ( $product ) {
-									$image_id = $product->get_image_id();
-									if ( strcmp( 'inline', $imageType ) === 0 ) {
-										$imageType = 'thumbnail';
-									}
-
-									if ( $image_id > 0 && in_array( $imageType , array_keys( $sizes ) ) ) {
-										$temp = wp_get_attachment_image_src( $image_id, $imageType );
-										if ( is_array( $temp ) ) {
-											if ( isset( $temp[0] ) ) {
-												$image['src'] = $temp[0];
-											}
-											if ( isset( $temp[1] ) ) {
-												$image['width'] = $temp[1];
-											}
-											if ( isset( $temp[2] ) ) {
-												$image['height'] = $temp[2];
-											}
-										}
-									}
-								}
-							}
-						}*/
-
 						$priceDisplay = wc_price( $product->get_price() );
 						$titleDisplay = $product->get_name();
-						if ( $variation !== null && $variation !== false ) {
-							$priceDisplay = get_woocommerce_currency_symbol() . $variation->get_price();
+						if ( ! is_null( $variation ) && $variation !== false ) {
+							$priceDisplay = wc_price( $variation->get_price() );
 
 							if ( strcmp( $titleType, 'full' ) === 0 ) {
 								$titleDisplay = $variation->get_name();
@@ -219,6 +190,16 @@ if ( ! class_exists( 'TRS\EAA2C\Abstract_Button' ) ) {
 									foreach ( $variation->get_variation_attributes() as $key => $attribute )
 										$titleDisplay .= ucfirst( $attribute ) . ' ';
 								}
+							}
+						} else {
+							if ( strcmp( $titleType, 'full' ) === 0 ) {
+								$titleDisplay = $product->get_name();
+							}
+							elseif ( strcmp( $titleType, 'att' ) === 0 ) {
+								$titleDisplay = '';
+								// Dont need a check here since $product is already confirmed valid WC_Product
+								foreach ( $product->get_variation_attributes() as $key => $attribute )
+									$titleDisplay .= ucfirst( $attribute ) . ' ';
 							}
 						}
 
@@ -271,7 +252,7 @@ if ( ! class_exists( 'TRS\EAA2C\Abstract_Button' ) ) {
 									<?php if( strcmp( $item, 'button' ) === 0 && true === $contentVisibility[ $item ] ) : ?>
 										<button
 											type="submit"
-											class="a2cp_button button alt"
+											class="a2cp_button button alt <?php echo esc_attr( $product->get_type() );?>"
 											data-pid="<?php esc_attr_e( $product_id ); ?>"
 											data-vid="<?php esc_attr_e( $variation_id ); ?>"
 											<?php esc_attr_e( $disable_button ) ?>
@@ -279,31 +260,9 @@ if ( ! class_exists( 'TRS\EAA2C\Abstract_Button' ) ) {
 											<?php esc_html_e( $buttonText ); ?>
 										</button>
 									<?php endif; ?>
-									<?php /*if ( strcmp( $item, 'custom' ) === 0 && $contentVisibility[ $item ] === true  ) : ?>
-										<span class="ea-line ea-custom">
-											<?php echo apply_filters( 'a2cp_button_row_custom_field', '<span>' . esc_html_e( $customText ) . '</span>', $product_id ); ?>
-										</span>
-									<?php endif; ?>
-									<?php if ( strcmp( $item, 'image' ) === 0 && $contentVisibility[ $item ] === true  ) : ?>
-										<span class="ea-line ea-image">
-											<?php if ( isset( $image['src'] ) ) : ?>
-												<?php if ( strcmp( 'inline', $attributes['image'] ) === 0 ) : ?>
-													<img class="<?php strcmp( 'inline', $attributes['image'] ) === 0 ? esc_attr_e( 'ea-inline-image' ) : ''; ?>" src="<?php echo $image['src']; ?>"/>
-												<?php else : ?>
-													<img src="<?php echo $image['src']; ?>" width="<?php esc_attr_e( $image['width'] ); ?>" height="<?php esc_attr_e( $image['height'] ); ?>"/>
-												<?php endif; ?>
-											<?php endif; ?>
-										</span>
-									<?php endif; ?>
-									<?php if ( strcmp( $item, 'short_description' ) === 0 && $contentVisibility[ $item ] === true  ) : ?>
-										<span class="ea-line ea-text ea-short_description">
-											<!-- <span><?php /*esc_html_e( $product_raw[ 'short_description' ] );*//* ?></span> This would be for if we want these to be non-dynamic aka what the description was when the block was saved -->
-											<span><?php echo $product->get_short_description(); ?></span>
-										</span>
-									<?php endif; */?>
 								<?php endif; ?>
 							<?php endforeach; ?>
-							<?php echo apply_filters( 'a2cp_button_row_additional_fields', '', $product_id ); ?>
+							<?php echo apply_filters( 'a2cp_button_row_additional_fields', '', $product_id, $variation_id ); ?>
 						</div>
 						<?php
 					}
@@ -324,7 +283,7 @@ if ( ! class_exists( 'TRS\EAA2C\Abstract_Button' ) ) {
 		protected function parse_attributes( $attributes ) {
 			// These should match what's set in JS `registerBlockType`.
 			$buttonText = get_option( 'a2cp_default_text' );
-			$buttonText = empty( $buttonText ) ? __( 'Add to cart', 'enhanced-ajax-add-to-cart-wc' ) : $buttonText;
+			$buttonText = empty( $buttonText ) ? __( 'Add to cart', 'woocommerce' ) : $buttonText;
 
 			$defaults = array(
 				'contentVisibility' => array(

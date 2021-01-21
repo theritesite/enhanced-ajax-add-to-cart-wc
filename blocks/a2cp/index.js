@@ -30,7 +30,7 @@ let trs_a2c_defaultContentVisibility = {
 	button: true,
 }
 
-let trs_a2c_defaultButtonText = 'Add to cart';
+let trs_a2c_defaultButtonText = __( 'Add to cart', 'woocommerce' );
 
 if ( global.A2C ) {
 	let trs_a2c_buttonText = global.A2C.buttonText;
