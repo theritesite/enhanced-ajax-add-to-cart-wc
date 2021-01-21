@@ -16,11 +16,36 @@ Use the block or shortcode to display a lightweight, smart, and flexible Add to 
 
 This extension for [WooCommerce](https://www.woocommerce.com) allows you to render a non-redirect button with an associated quantity field. Create effective and functional buttons to use for your or your customers convenience anywhere on your site you want!
 
-Find the newly released Pro version [here](https://www.addtocartpro.com)!
+**Find the newly released Pro version [here](https://www.addtocartpro.com)!**
 
 **Breaking Changes in 2.0**
+The new parent div has a more uniform yet identifying class structure:
+`
+<div class="add-to-cart-pro {product_type}`>...</div>
+`
+Replace {product_type} with each associated type {simple|variation|grouped|external|subscription|custom}
+
+Further, the button class structure has been updated to be more uniform as well:
+`
+<button ... class="a2cp_button button alt {product_type} ...>ButtonText</button>
+`
+
 We have changed the design to condense some code and make things more simple. We have deprecated some javascript and server side PHP functions and have added deprecated notices.
 These are from how the Add to Cart button was different between variations and other types of products. They now use the same code for different product types. This will effect the selectors for styling or any other custom code relying on classes used by this plugin.
+For reference, here are the old html elements that have had class changes. All the rest have remained consistent.
+The old parent divs have the following 2 html options
+`
+<div class="woocommerce-simple-add-to-cart simple_button">...</div>
+`
+`
+<div class="woocommerce-variation-add-to-cart variations_button">...</div>
+`
+
+The old button style as follows:
+`
+<button ... class="simple_add_to_cart_button button alt" ...>ButtonText</button>
+`
+
 
 = Lightweight =
 We consider our product and its displaying components to be lightweight. The Add to Cart interaction is one of the key moments prior to the decision of a customer finishing their checkout. Understanding that, we are trying to deliver the smallest payload possible when it comes to html and assets.
