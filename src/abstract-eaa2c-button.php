@@ -192,27 +192,29 @@ if ( ! class_exists( 'TRS\EAA2C\Abstract_Button' ) ) {
 								}
 								$att_title[] = $termTitle;
 							}
-							$att_title = implode( $att_title, ' ' );
+							$att_title = implode( ', ', $att_title );
 
 							if ( strcmp( $titleType, 'full' ) === 0 ) {
-								// $titleDisplay = $variation->get_name();
-								$titleDisplay .= $variation->get_title();
+								// In this scenario, we need to add the attribute title to the "full" title.
+								// This is due to the fact that product and variation are provided, and the
+								// above $product->get_name() only gets the "base" name
 								if ( ! empty( $att_title ) ) {
 									$titleDisplay .= ' - ' . $att_title;
 								}
-								// $titleDisplay .= wc_get_formatted_variation( $variation, true );
 							}
 							elseif ( strcmp( $titleType, 'att' ) === 0 ) {
 								$titleDisplay = array();
 								if ( $variation instanceof \WC_Product ) {
-									
+									$titleDisplay = $att_title;
 								}
 							}
 						} else {
 							$att_title = array();
 							foreach ( $product->get_attributes() as $key => $attribute ) {
+								// For product specific attributes, there is no "taxonomy" - treat it as default
 								$termTitle = $attribute;
 								if ( taxonomy_exists( $key ) ) {
+									// For global attributes, we need to do some magic to get the title
 									$term = get_term_by( 'slug', $attribute, $key );
 									if ( ! is_wp_error( $term ) && ! empty( $term->name ) ) {
 										$termTitle = $term->name;
@@ -221,17 +223,18 @@ if ( ! class_exists( 'TRS\EAA2C\Abstract_Button' ) ) {
 								$att_title[] = $termTitle;
 							}
 							$att_title = implode( ', ', $att_title );
-							if ( strcmp( $titleType, 'full' ) === 0 ) {
-								$titleDisplay .= $product->get_formatted_name();
+							if ( strcmp( $titleType, 'base' ) === 0 ) {
+								// In this scenario, we need to remove the attribute title from the "full" title.
+								// This is due to the fact that ponly the product is provided, and the
+								// above $product->get_name() gets the "full" name
+								$titleDisplay = $product->get_title();
 							}
 							elseif ( strcmp( $titleType, 'att' ) === 0 ) {
-								$titleDisplay = '';
-								// Dont need a check here since $product is already confirmed valid WC_Product
-								
+								$titleDisplay = $att_title;
 							}
 						}
 
-						//$titleDisplay = esc_html( $titleDisplay );
+						$titleDisplay = esc_html( $titleDisplay );
 						if ( '' !== $titleAction ) {
 							if ( strcmp( $titleAction, 'link' ) === 0 ) {
 								$titleDisplay = '<a href="' . $product->get_permalink() . '">' . $titleDisplay . '</a>'; 
@@ -311,7 +314,7 @@ if ( ! class_exists( 'TRS\EAA2C\Abstract_Button' ) ) {
 		protected function parse_attributes( $attributes ) {
 			// These should match what's set in JS `registerBlockType`.
 			$buttonText = get_option( 'a2cp_default_text' );
-			$buttonText = empty( $buttonText ) || false === $buttonText? __( 'Add to cart', 'woocommerce' ) : $buttonText;
+			$buttonText = empty( $buttonText ) || false == $buttonText ? __( 'Add to cart', 'woocommerce' ) : $buttonText;
 
 			$defaults = array(
 				'contentVisibility' => array(
