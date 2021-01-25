@@ -187,8 +187,16 @@ if ( ! class_exists( 'TRS\EAA2C\Abstract_Button' ) ) {
 							elseif ( strcmp( $titleType, 'att' ) === 0 ) {
 								$titleDisplay = '';
 								if ( $variation instanceof \WC_Product ) {
-									foreach ( $variation->get_variation_attributes() as $key => $attribute )
-										$titleDisplay .= ucfirst( $attribute ) . ' ';
+									foreach ( $variation->get_attributes() as $key => $attribute ) {
+										$termTitle = $attribute;
+										if ( taxonomy_exists( $key ) ) {
+											$term = get_term_by( 'slug', $attribute, $key );
+											if ( ! is_wp_error( $term ) && ! empty( $term->name ) ) {
+												$termTitle = $term->name;
+											}
+										}
+										$titleDisplay .= ucfirst( $termTitle ) . ' ';
+									}
 								}
 							}
 						} else {
@@ -198,8 +206,16 @@ if ( ! class_exists( 'TRS\EAA2C\Abstract_Button' ) ) {
 							elseif ( strcmp( $titleType, 'att' ) === 0 ) {
 								$titleDisplay = '';
 								// Dont need a check here since $product is already confirmed valid WC_Product
-								foreach ( $product->get_variation_attributes() as $key => $attribute )
-									$titleDisplay .= ucfirst( $attribute ) . ' ';
+								foreach ( $product->get_attributes() as $key => $attribute ) {
+									$termTitle = $attribute;
+									if ( taxonomy_exists( $key ) ) {
+										$term = get_term_by( 'slug', $attribute, $key );
+										if ( ! is_wp_error( $term ) && ! empty( $term->name ) ) {
+											$termTitle = $term->name;
+										}
+									}
+									$titleDisplay .= ucfirst( $termTitle ) . ' ';
+								}
 							}
 						}
 

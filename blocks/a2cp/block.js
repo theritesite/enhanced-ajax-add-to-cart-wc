@@ -668,16 +668,6 @@ class AddToCartBlock extends Component {
 										{ title }
 									</span>
 								);
-							} else if ( item === 'title' && contentVisibility[ item ] === true && title === 'full' ) {
-								const att = item === 'title' ? 'name' : 'price';
-								return (
-									<span
-										key={ index }
-										className="ea-line ea-text"
-									>
-										<span>{ product[ titleType ] }</span>
-									</span>
-								);
 							} else if (  item === 'price'  && contentVisibility[ item ] === true ) {
 								return (
 									<span
