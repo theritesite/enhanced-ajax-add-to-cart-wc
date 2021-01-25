@@ -80,6 +80,7 @@
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "sass-loader": "^8.0.2",
+    "socket.io": "^2.4.1",
     "use-debounce": "^3.3.0"
   }
 }
