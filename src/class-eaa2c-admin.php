@@ -142,7 +142,7 @@ if ( ! class_exists( 'TRS\EAA2C\Admin' ) ) {
 			);
 
 			$buttonText = get_option( 'a2cp_default_text' );
-			$buttonText = empty( $buttonText ) ? __( 'Add to cart', 'woocommerce' ) : $buttonText;
+			$buttonText = empty( $buttonText ) || false == $buttonText ? __( 'Add to cart', 'woocommerce' ) : $buttonText;
 
 			wp_localize_script( 'a2cp-block-editor', 'A2C', array(
 				'ajax_url'			=> admin_url( 'admin-ajax.php' ),
