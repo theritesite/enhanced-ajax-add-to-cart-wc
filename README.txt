@@ -18,35 +18,7 @@ This extension for [WooCommerce](https://www.woocommerce.com) allows you to rend
 
 **Find the newly released Pro version [here](https://www.addtocartpro.com)!**
 
-**Breaking Changes in 2.0**
-The new parent div has a more uniform yet identifying class structure:
-`
-<div class="add-to-cart-pro {product_type}>...</div>
-
-`
-Replace {product_type} with each associated type {simple|variation|grouped|external|subscription|custom}
-
-Further, the button class structure has been updated to be more uniform as well:
-`
-<button ... class="a2cp_button button alt {product_type} ...>ButtonText</button>
-`
-
-We have changed the design to condense some code and make things more simple. We have deprecated some javascript and server side PHP functions and have added deprecated notices.
-These are from how the Add to Cart button was different between variations and other types of products. They now use the same code for different product types. This will effect the selectors for styling or any other custom code relying on classes used by this plugin.
-For reference, here are the old html elements that have had class changes. All the rest have remained consistent.
-The old parent divs have the following 2 html options
-`
-<div class="woocommerce-simple-add-to-cart simple_button">...</div>
-`
-`
-<div class="woocommerce-variation-add-to-cart variations_button">...</div>
-`
-
-The old button style as follows:
-`
-<button ... class="simple_add_to_cart_button button alt" ...>ButtonText</button>
-`
-
+**Breaking Changes in 2.0 found [here](https://www.theritesites.com/docs/breaking-changes-upgrading-from-1-x-to-2-x/)**
 
 = Lightweight =
 We consider our product and its displaying components to be lightweight. The Add to Cart interaction is one of the key moments prior to the decision of a customer finishing their checkout. Understanding that, we are trying to deliver the smallest payload possible when it comes to html and assets.
@@ -145,7 +117,7 @@ Rear (After Button)
 == Installation ==
 = Minimum Requirements =
 
-* PHP version 5.2.4 or greater (PHP 7.2 or greater is recommended)
+* PHP version 5.6 or greater (PHP 7.2 or greater is recommended)
 
 = Automated Installation =
 1. Download, install and activate through the WP Admin panels plugin directory
@@ -232,6 +204,13 @@ At this point, no. This is designed to supplement your store to let the buttons 
 4. No title for quantity and button inputs
 
 == Changelog ==
+
+= 2.1.1 =
+* Fixed: Shortcode button text was defaulting to a blank string after the 2.1.0 update. This makes it default to the WooCommerce 'Add to cart' translation.
+* Fixed: The attribute title option was displaying attribute slugs rather than values. This is now fixed with a comma separated string, reflective of WooCommerce style of displaying attribute titles.
+* Fixed: Using the block path of code, attribute titles were not being appended correctly on the front end, only in the block editor.
+
+
 
 = 2.1.0 =
 * Added: Product type is now an added class to each Add to Cart Row.
