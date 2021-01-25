@@ -1,0 +1,62 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=utf-8\n"
+"X-Generator: babel-plugin-makepot\n"
+
+#: blocks/a2cp/block.js:506
+msgid "Content"
+msgstr ""
+
+#: blocks/a2cp/block.js:602
+msgid "Showing AJAX Add to Cart block preview."
+msgstr ""
+
+#: blocks/a2cp/block.js:611
+msgid "AJAX Add to Cart button"
+msgstr ""
+
+#: blocks/a2cp/block.js:634
+msgid "Done"
+msgstr ""
+
+#: blocks/a2cp/block.js:751
+msgid "Edit"
+msgstr ""
+
+#: blocks/a2cp/index.js:33
+msgid "Add to cart"
+msgstr ""
+
+#: blocks/a2cp/index.js:46
+msgid "Non-redirect add to cart button wherever you want!"
+msgstr ""
+
+#: blocks/common/product-control/view.js:17
+msgid "Clear all products"
+msgstr ""
+
+#: blocks/common/product-control/view.js:18
+msgid "Products"
+msgstr ""
+
+#: blocks/common/product-control/view.js:19
+msgid "Your store doesn't have any products."
+msgstr ""
+
+#: blocks/common/product-control/view.js:23
+msgid "Search for products to display"
+msgstr ""
+
+#: blocks/common/product-control/view.js:29
+msgid "%d product selected"
+msgid_plural "%d products selected"
+msgstr[0] ""
+msgstr[1] ""
+
+#: blocks/common/product-control/view.js:37
+msgid "Product search results updated."
+msgstr ""
+
+#: blocks/common/tag.js:77
+msgid "Remove %s"
+msgstr ""
