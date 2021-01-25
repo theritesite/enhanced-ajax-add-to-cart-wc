@@ -114,7 +114,14 @@ if ( ! class_exists( '\TRS\EAA2C\Single' ) ) {
 			if ( isset( $attributes['button_text'] ) ) {
 				if ( ! empty( $attributes['button_text'] ) ) {
 					$defaults['buttonText'] = sanitize_text_field( $attributes['button_text'] );
+					if ( empty ( $defaults['buttonText'] ) ) {
+						$defaults['buttonText'] = __( 'Add to cart', 'woocommerce' );
+					}
+				} else {
+					$defaults['buttonText'] = __( 'Add to cart', 'woocommerce' );
 				}
+			} else {
+				$defaults['buttonText'] = __( 'Add to cart', 'woocommerce' );
 			}
 			if ( isset( $attributes['class'] ) ) {
 				if ( ! empty( $class = sanitize_text_field( $attributes['class'] ) ) ) {
