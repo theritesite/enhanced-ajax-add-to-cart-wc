@@ -80,6 +80,31 @@ if ( ! class_exists( 'TRS\EAA2C\Abstract_Button' ) ) {
 			return $this->renderHtml( $attributes );
 		}
 
+		public function get_att_title( $product_variation ) {
+			$att_title = array();
+			foreach ( $product_variation->get_attributes() as $key => $attribute ) {
+				$termTitle = $attribute;
+				if ( taxonomy_exists( $key ) ) {
+					$term = get_term_by( 'slug', $attribute, $key );
+					if ( ! is_wp_error( $term ) && ! empty( $term->name ) ) {
+						$termTitle = $term->name;
+					}
+				}
+				if ( $termTitle instanceof \WC_Product_Attribute ) {
+					$att_title[] = $termTitle->get_name();
+				} elseif ( is_string( $termTitle ) ) {
+					$att_title[] = $termTitle;
+				} else {
+					if ( EAA2C_DEBUG ) {
+						error_log( "There was an issue trying to generate the attribute title. Neither a string nor a WC_Product_Attribute were found:" );
+						error_log( wc_print_r( $termTitle, true ) );
+					}
+				}
+			}
+			$att_title = implode( ', ', $att_title );
+			return $att_title;
+		}
+
 		/**
 		 * This function reats in an array of attributes. This array is already sanitized but not validated.
 		 * 
@@ -127,6 +152,7 @@ if ( ! class_exists( 'TRS\EAA2C\Abstract_Button' ) ) {
 					$extraClasses  .= empty( $product ) ? '' : ' ' . $product->get_type();
 					$titleType 	    = isset( $attributes['titleType'] ) ? $attributes['titleType'] : 'full';
 					$titleAction	= isset( $attributes['titleAction'] ) ? $attributes['titleAction'] : '';
+					$titleDisplay	= '';
 
 					$customText		= '';
 					$image			= array();
@@ -177,60 +203,35 @@ if ( ! class_exists( 'TRS\EAA2C\Abstract_Button' ) ) {
 						}
 
 						$priceDisplay = wc_price( $product->get_price() );
-						$titleDisplay = $product->get_name();
-						if ( ! is_null( $variation ) && $variation !== false ) {
-							$priceDisplay = wc_price( $variation->get_price() );
+						if ( $contentVisibility[ 'button' ] === true ) {
+							$titleDisplay = $product->get_name();
+							if ( ! is_null( $variation ) && $variation !== false ) {
+								$priceDisplay = wc_price( $variation->get_price() );
 
-							$att_title = array();
-							foreach ( $variation->get_attributes() as $key => $attribute ) {
-								$termTitle = $attribute;
-								if ( taxonomy_exists( $key ) ) {
-									$term = get_term_by( 'slug', $attribute, $key );
-									if ( ! is_wp_error( $term ) && ! empty( $term->name ) ) {
-										$termTitle = $term->name;
+								if ( strcmp( $titleType, 'full' ) === 0 ) {
+									// In this scenario, we need to add the attribute title to the "full" title.
+									// This is due to the fact that product and variation are provided, and the
+									// above $product->get_name() only gets the "base" name
+									if ( ! empty( $att_title ) ) {
+										$titleDisplay .= ' - ' . $this->get_att_title( $variation );
 									}
 								}
-								$att_title[] = $termTitle;
-							}
-							$att_title = implode( ', ', $att_title );
-
-							if ( strcmp( $titleType, 'full' ) === 0 ) {
-								// In this scenario, we need to add the attribute title to the "full" title.
-								// This is due to the fact that product and variation are provided, and the
-								// above $product->get_name() only gets the "base" name
-								if ( ! empty( $att_title ) ) {
-									$titleDisplay .= ' - ' . $att_title;
-								}
-							}
-							elseif ( strcmp( $titleType, 'att' ) === 0 ) {
-								$titleDisplay = array();
-								if ( $variation instanceof \WC_Product ) {
-									$titleDisplay = $att_title;
-								}
-							}
-						} else {
-							$att_title = array();
-							foreach ( $product->get_attributes() as $key => $attribute ) {
-								// For product specific attributes, there is no "taxonomy" - treat it as default
-								$termTitle = $attribute;
-								if ( taxonomy_exists( $key ) ) {
-									// For global attributes, we need to do some magic to get the title
-									$term = get_term_by( 'slug', $attribute, $key );
-									if ( ! is_wp_error( $term ) && ! empty( $term->name ) ) {
-										$termTitle = $term->name;
+								elseif ( strcmp( $titleType, 'att' ) === 0 ) {
+									if ( $variation instanceof \WC_Product ) {
+										$titleDisplay = $this->get_att_title( $variation );
 									}
 								}
-								$att_title[] = $termTitle;
-							}
-							$att_title = implode( ', ', $att_title );
-							if ( strcmp( $titleType, 'base' ) === 0 ) {
-								// In this scenario, we need to remove the attribute title from the "full" title.
-								// This is due to the fact that ponly the product is provided, and the
-								// above $product->get_name() gets the "full" name
-								$titleDisplay = $product->get_title();
-							}
-							elseif ( strcmp( $titleType, 'att' ) === 0 ) {
-								$titleDisplay = $att_title;
+							} else {
+								
+								if ( strcmp( $titleType, 'base' ) === 0 ) {
+									// In this scenario, we need to remove the attribute title from the "full" title.
+									// This is due to the fact that ponly the product is provided, and the
+									// above $product->get_name() gets the "full" name
+									$titleDisplay = $product->get_title();
+								}
+								elseif ( strcmp( $titleType, 'att' ) === 0 ) {
+									$titleDisplay = $this->get_att_title();
+								}
 							}
 						}
 

@@ -205,17 +205,19 @@ At this point, no. This is designed to supplement your store to let the buttons 
 
 == Changelog ==
 
+= 2.1.2 =
+* Fixed: Added extra checks during Attribute Title generation.
+* Tweak: Moved Attribute Title generation to its own function to call only when necessary.
+
 = 2.1.1 =
 * Fixed: Shortcode button text was defaulting to a blank string after the 2.1.0 update. This makes it default to the WooCommerce 'Add to cart' translation.
 * Fixed: The attribute title option was displaying attribute slugs rather than values. This is now fixed with a comma separated string, reflective of WooCommerce style of displaying attribute titles.
 * Fixed: Using the block path of code, attribute titles were not being appended correctly on the front end, only in the block editor.
 
-
-
 = 2.1.0 =
 * Added: Product type is now an added class to each Add to Cart Row.
-* Tweaked: Re-introduced product type to button as a class, which was a selective regression, but was reported to still has use.
-* Tweaked: Now checking if product is purchasable as well as in stock by default to match WooCommerce (and display consistent behavior).
+* Tweak: Re-introduced product type to button as a class, which was a selective regression, but was reported to still has use.
+* Tweak: Now checking if product is purchasable as well as in stock by default to match WooCommerce (and display consistent behavior).
             Check the "stock check" setting to disable.
 * Fixed: Automatic translation of 'Add to cart' was lost from shortcode upgrade. Using woocommerce as string translator. Notice this is
             still different behavior as blocks have difficulty with no default set, and there is no default product to query button text
