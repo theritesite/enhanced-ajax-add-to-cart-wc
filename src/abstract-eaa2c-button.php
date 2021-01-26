@@ -230,7 +230,7 @@ if ( ! class_exists( 'TRS\EAA2C\Abstract_Button' ) ) {
 									$titleDisplay = $product->get_title();
 								}
 								elseif ( strcmp( $titleType, 'att' ) === 0 ) {
-									$titleDisplay = $this->get_att_title();
+									$titleDisplay = $this->get_att_title( $product );
 								}
 							}
 						}
