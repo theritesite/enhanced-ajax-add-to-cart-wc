@@ -31,32 +31,6 @@ msgstr ""
 msgid "Non-redirect add to cart button wherever you want!"
 msgstr ""
 
-#: blocks/common/product-control/view.js:17
-msgid "Clear all products"
-msgstr ""
-
-#: blocks/common/product-control/view.js:18
-msgid "Products"
-msgstr ""
-
-#: blocks/common/product-control/view.js:19
-msgid "Your store doesn't have any products."
-msgstr ""
-
-#: blocks/common/product-control/view.js:23
-msgid "Search for products to display"
-msgstr ""
-
-#: blocks/common/product-control/view.js:29
-msgid "%d product selected"
-msgid_plural "%d products selected"
-msgstr[0] ""
-msgstr[1] ""
-
-#: blocks/common/product-control/view.js:37
-msgid "Product search results updated."
-msgstr ""
-
 #: blocks/common/tag.js:77
 msgid "Remove %s"
 msgstr ""
