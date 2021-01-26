@@ -80,25 +80,32 @@ if ( ! class_exists( 'TRS\EAA2C\Abstract_Button' ) ) {
 			return $this->renderHtml( $attributes );
 		}
 
-		public function get_att_title( $product_variation ) {
+		public function get_att_title( $product_variation = null ) {
 			$att_title = array();
-			foreach ( $product_variation->get_attributes() as $key => $attribute ) {
-				$termTitle = $attribute;
-				if ( taxonomy_exists( $key ) ) {
-					$term = get_term_by( 'slug', $attribute, $key );
-					if ( ! is_wp_error( $term ) && ! empty( $term->name ) ) {
-						$termTitle = $term->name;
+			if ( $product_variation instanceof WC_Product ) {
+				foreach ( $product_variation->get_attributes() as $key => $attribute ) {
+					$termTitle = $attribute;
+					if ( taxonomy_exists( $key ) ) {
+						$term = get_term_by( 'slug', $attribute, $key );
+						if ( ! is_wp_error( $term ) && ! empty( $term->name ) ) {
+							$termTitle = $term->name;
+						}
+					}
+					if ( $termTitle instanceof \WC_Product_Attribute ) {
+						$att_title[] = $termTitle->get_name();
+					} elseif ( is_string( $termTitle ) ) {
+						$att_title[] = $termTitle;
+					} else {
+						if ( EAA2C_DEBUG ) {
+							error_log( "There was an issue trying to generate the attribute title. Neither a string nor a WC_Product_Attribute were found:" );
+							error_log( wc_print_r( $termTitle, true ) );
+						}
 					}
 				}
-				if ( $termTitle instanceof \WC_Product_Attribute ) {
-					$att_title[] = $termTitle->get_name();
-				} elseif ( is_string( $termTitle ) ) {
-					$att_title[] = $termTitle;
-				} else {
-					if ( EAA2C_DEBUG ) {
-						error_log( "There was an issue trying to generate the attribute title. Neither a string nor a WC_Product_Attribute were found:" );
-						error_log( wc_print_r( $termTitle, true ) );
-					}
+			}
+			else {
+				if ( EAA2C_DEBUG ) {
+					error_log( "There was an issue trying to generate the attribute title. A product was not passed in." );
 				}
 			}
 			$att_title = implode( ', ', $att_title );
@@ -230,7 +237,7 @@ if ( ! class_exists( 'TRS\EAA2C\Abstract_Button' ) ) {
 									$titleDisplay = $product->get_title();
 								}
 								elseif ( strcmp( $titleType, 'att' ) === 0 ) {
-									$titleDisplay = $this->get_att_title();
+									$titleDisplay = $this->get_att_title( $product );
 								}
 							}
 						}
