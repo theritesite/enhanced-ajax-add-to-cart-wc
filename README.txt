@@ -205,6 +205,9 @@ At this point, no. This is designed to supplement your store to let the buttons 
 
 == Changelog ==
 
+= 2.1.3 =
+* Fixed: Extra checks during Attribute Title generation had namespacing failure.
+
 = 2.1.2 =
 * Fixed: Added extra checks during Attribute Title generation.
 * Tweak: Moved Attribute Title generation to its own function to call only when necessary.
