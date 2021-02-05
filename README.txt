@@ -205,6 +205,9 @@ At this point, no. This is designed to supplement your store to let the buttons 
 
 == Changelog ==
 
+= 2.1.4 =
+* Fixed: When title not displayed, would show lowest available price for variable products, even when variation specified.
+
 = 2.1.3 =
 * Fixed: Extra checks during Attribute Title generation had namespacing failure.
 

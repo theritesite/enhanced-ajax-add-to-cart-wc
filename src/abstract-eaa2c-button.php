@@ -267,11 +267,17 @@ if ( ! class_exists( 'TRS\EAA2C\Abstract_Button' ) ) {
 							}
 						}
 
-						$priceDisplay = wc_price( $product->get_price() );
+						if ( $contentVisibility[ 'price' ] === true ) {	
+							$priceDisplay = wc_price( $product->get_price() );
+							if ( ! is_null( $variation ) && $variation !== false ) {
+								// TODO This price display needs to come out and be according to the content visibility of the price.
+								$priceDisplay = wc_price( $variation->get_price() );
+							}
+						}
+
 						if ( $contentVisibility[ 'title' ] === true ) {
 							$titleDisplay = $product->get_name();
 							if ( ! is_null( $variation ) && $variation !== false ) {
-								$priceDisplay = wc_price( $variation->get_price() );
 
 								if ( strcmp( $titleType, 'full' ) === 0 ) {
 									// In this scenario, we need to add the attribute title to the "full" title.
