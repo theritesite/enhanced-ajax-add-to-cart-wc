@@ -657,7 +657,7 @@ class AddToCartBlock extends Component {
 				const product = products[0];
 				const title = product[titleType];
 				return (
-					<div className={ "enhanced-woocommerce-add-to-cart " + className + " " + customClass }>
+					<div className={ "add-to-cart-pro " + className + " " + customClass }>
 						{ contentOrder.map( ( item, index ) => {
 							if ( item === 'title' && contentVisibility[ item ] === true ) {
 								return (

@@ -267,7 +267,8 @@ if ( ! class_exists( 'TRS\EAA2C\Abstract_Button' ) ) {
 							}
 						}
 
-						if ( $contentVisibility[ 'price' ] === true ) {	
+						if ( $contentVisibility[ 'price' ] === true ) {
+	
 							$priceDisplay = wc_price( $product->get_price() );
 							if ( ! is_null( $variation ) && $variation !== false ) {
 								// TODO This price display needs to come out and be according to the content visibility of the price.
