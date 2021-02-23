@@ -83,8 +83,6 @@ jQuery( function( $ ) {
 		qty = $( this ).siblings( '.quantity-container' ).find( 'input.input-text.qty.text' );
 		data[ 'action' ] = 'eaa2c_add_to_cart';
 
-		console.log( qty );
-
 		min = parseInt( qty.attr( 'min' ) );
 		max = parseInt( qty.attr( 'max' ) );
 
