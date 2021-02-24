@@ -1,2 +1,3 @@
-Tweaked: admin facing block generation was using old parent element class name
+Tweaked: Admin facing block generation was using old parent element class name
 Fixed: Removed debug statement leftover in asset
+Fixed: Asset enqueuing had a warning from filemtime

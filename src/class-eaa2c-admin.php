@@ -163,12 +163,13 @@ if ( ! class_exists( 'TRS\EAA2C\Admin' ) ) {
 				filemtime( "$dir/$editor_css" )
 			);
 
+			$common_dir = plugin_dir_path( dirname( __FILE__ ) ) . 'blocks/common/assets/css/';
 			$style_css = 'style.css';
 			wp_register_style(
 				'a2cp-block',
-				plugins_url( $style_css, $dir . 'a2cp/' ),
-				array( 'wp-editor' ),
-				filemtime( "$dir/$style_css" )
+				plugins_url( $style_css, $common_dir . 'css/' ),
+				array(),
+				filemtime( "$common_dir/$style_css" )
 			);
 
 			$attributes = array(

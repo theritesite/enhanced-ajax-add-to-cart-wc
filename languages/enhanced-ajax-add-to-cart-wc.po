@@ -3,14 +3,6 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "X-Generator: babel-plugin-makepot\n"
 
-#: blocks/a2cp/index.js:33
-msgid "Add to cart"
-msgstr ""
-
-#: blocks/a2cp/index.js:46
-msgid "Non-redirect add to cart button wherever you want!"
-msgstr ""
-
 #: blocks/common/tag.js:77
 msgid "Remove %s"
 msgstr ""
