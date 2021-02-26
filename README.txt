@@ -205,6 +205,11 @@ At this point, no. This is designed to supplement your store to let the buttons 
 
 == Changelog ==
 
+= 2.1.5 =
+* Tweaked: Admin facing block generation was using old parent element class name
+* Fixed: Removed debug statement leftover in asset
+* Fixed: Asset enqueuing had a warning from filemtime
+
 = 2.1.4 =
 * Fixed: When title not displayed, would show lowest available price for variable products, even when variation specified.
 
