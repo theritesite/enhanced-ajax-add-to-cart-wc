@@ -17,6 +17,15 @@ Use the block or shortcode to display a lightweight, smart, and flexible Add to 
 This extension for [WooCommerce](https://www.woocommerce.com) allows you to render a non-redirect button with an associated quantity field. Create effective and functional buttons to use for your or your customers convenience anywhere on your site you want!
 
 **Find the newly released Pro version [here](https://www.addtocartpro.com)!**
+**Premium now has a GROUP shortcode!**
+`[a2c_group_buttons
+    product={1,2,3,4...}
+    order={"title,quantity,separator,price,description"} // any order you want, also accepts first letters as arguments "q,s,t,p,d" for example.
+    class={STRING}
+    button_text={STRING}
+    title={none|attribute}
+    quantity={INTEGER}...
+/]`
 
 **Breaking Changes in 2.0 found [here](https://www.theritesites.com/docs/breaking-changes-upgrading-from-1-x-to-2-x/)**
 
@@ -63,11 +72,35 @@ The required field for every button is the product, with six optional fields:
 - show_quantity (**if quantity is specified**, re-enables the checkbox)
 - show_price
 - button_text
+- class
+- order (overrides show_quantity, show_price)
 
-`[enh_ajax_add_to_cart_button product={pid} variation={vid} show_price={beginning|b|after|a|rear|r} button_text={STRING} title={none|attributes|att|attribute} quantity={INTEGER} show_quantity={yes} ]
-[ajax_add_to_cart product={pid} variation={vid} show_price={beginning|b|after|a|rear|r} button_text={STRING} title={none|attributes|att|attribute} quantity={INTEGER} show_quantity={yes} ]
-[a2c_button product={pid} variation={vid} show_price={beginning|b|after|a|rear|r} button_text={STRING} title={none|attributes|att|attribute} quantity={INTEGER} show_quantity={yes} ]`
+Original single button shortcode:
+`[a2c_button
+   product={pid}
+   variation={vid}
+   class={STRING}
+   order={"title,quantity,separator,price,description"} // any order you want, also accepts first letters as arguments "q,s,t,p,d" for example.
+   show_price={beginning|b|after|a|rear|r}
+   button_text={STRING}
+   title={none|attributes|att|attribute}
+   quantity={INTEGER}
+   show_quantity={yes}
+/]`
 
+Documentation notes:
+- The curly brackets "\{ \}" denote a list of options separated by a pipe " | "
+- With the exception of "pid" and "vid" options, the lower case "options" within the curly braces are to represent different settings available for the front end display order. These will soon be deprecated for a new property "order"
+- "pid" represents a product id, INTEGER value.
+- "vid" represents a variation id, INTEGER value.
+- STRING and INTEGER are to represent types.
+  - INTEGER expects a whole number, and decimals are not fully supported yet.
+  - STRING can have spaces in it if enclosed in quotes ("This is a string.") otherwise it will take 1 word.
+
+Legacy shortcodes will remain working and will always take the options above:
+
+`[enh_ajax_add_to_cart_button product={pid} variation={vid} /]
+[ajax_add_to_cart product={pid} variation={vid} /]`
 
 SIMPLE PRODUCT: Use only the required parameters to make a quantity box and add to cart button for a simple product with the title to the left:
 
@@ -154,8 +187,8 @@ This is the same for blocks and shortcodes.
 = No loading spinner comes up! =
 
 Currently, we rely on themes to display a loading icon on the loading class. WooCommerce also provides one.
-For more custom builds, we have on our near future enhancement list, a way to load spinner styles, or put your own in.
-For now, you can follow a guide to add a css class definition for "loading" in your themes style.css or customizers additional css.
+Our premium version now loads 2 spinners you can choose from using additional css classes and a setting.
+The free version will be getting access to those spinners in version 2.3 or later.
 
 
 = Can I change the styling of the quantity input? =
@@ -204,6 +237,10 @@ At this point, no. This is designed to supplement your store to let the buttons 
 4. No title for quantity and button inputs
 
 == Changelog ==
+
+= 2.2.0 =
+* Added: New "order" prop on shortcode to determine display order and visibility of elements in a "button row"
+* Added: New "class" prop on shortcode to add custom css classes to the "button row"
 
 = 2.1.5 =
 * Tweaked: Admin facing block generation was using old parent element class name

@@ -101,7 +101,7 @@ if ( ! class_exists( '\TRS\EAA2C\Single' ) ) {
 					$defaults['contentVisibility']['quantity'] = true;
 				}
 			}
-			if ( isset( $attributes['show_price'] ) ) {
+			if ( isset( $attributes['show_price'] ) && ( ! isset( $attributes['order'] ) || empty( $attributes['order'] ) ) ) {
 				// error_log( $attributes['show_price'] );
 				$newContentOrder = $this->create_content_order_from_shortcode( $attributes['show_price'] );
 				// error_log( wc_print_r( $newContentOrder, true ) );
@@ -129,63 +129,19 @@ if ( ! class_exists( '\TRS\EAA2C\Single' ) ) {
 				}
 			}
 
+			if ( isset( $attributes['order'] ) ) {
+				if ( ! empty( $order = sanitize_text_field( $attributes['order'] ) ) ) {
+					$returnedContent = $this->create_block_display_from_order( $attributes['order'] );
+					$defaults['contentOrder'] = $returnedContent['contentOrder'];
+					$defaults['contentVisibility'] = $returnedContent['contentVisibility'];
+					// this should overwrite all others visibility. This makes show_prioe and show_quantity be ignored.
+				}
+			}
 			// error_log( wc_print_r( $defaults, true ) );
 
 			// $this->meta = $defaults;
 			// return $this->meta;
 			return $defaults;
-		}
-
-		private function create_content_order_from_shortcode( $args ) {
-
-			$contentOrder = array();
-			$args = strtolower( $args );
-			if ( strpos( $args, 'b' ) !== false ) {
-				$contentOrder = array(
-					'price',
-					'separator',
-					'title',
-					'quantity',
-					'button',
-				);
-			}
-			elseif ( strpos( $args, 'a' ) !== false ) {
-				$contentOrder = array(
-					'title',
-					'separator',
-					'price',
-					'quantity',
-					'button',
-				);
-			}
-			elseif ( strpos( $args, 'r' ) !== false ) {
-				$contentOrder = array(
-					'title',
-					'quantity',
-					'button',
-					'separator',
-					'price',
-				);
-			}
-			return $contentOrder;
-			// strcmp( $att_array['show_price'], 'b' ) !== false === contentOrder[0] = 'price'
-			//														 contentOrder[1] = 'separator'
-			//														 contentOrder[2] = 'title'
-			//														 contentOrder[3] = 'quantity'
-			//														 contentOrder[4] = 'button'
-			//
-			// strcmp( $att_array['show_price'], 'a' ) !== false === contentOrder[0] = 'title'
-			//														 contentOrder[1] = 'separator'
-			//														 contentOrder[2] = 'price'
-			//														 contentOrder[3] = 'quantity'
-			//														 contentOrder[4] = 'button'
-			//
-			// strcmp( $att_array['show_price'], 'r' ) !== false === contentOrder[0] = 'title'
-			//														 contentOrder[1] = 'quantity'
-			//														 contentOrder[2] = 'button'
-			//														 contentOrder[3] = 'separator'
-			//														 contentOrder[4] = 'price'
-
 		}
 	}
 }

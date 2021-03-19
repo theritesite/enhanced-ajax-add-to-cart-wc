@@ -76,7 +76,8 @@ if ( ! class_exists( 'TRS\EAA2C\Admin' ) ) {
 				'show_quantity' => '', // Added in version 1.1.0
 				'show_price'	=> '', // Added in version 1.3.0
 				'button_text'	=> '', // Added in version 1.3.0
-				'class'			=> ''  // Added in version 2.0.0
+				'class'			=> '', // Added in version 2.0.0
+				'order'			=> '', // Added in version 2.2.0
 			), $atts);
 
 

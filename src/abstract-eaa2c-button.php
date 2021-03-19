@@ -420,5 +420,100 @@ if ( ! class_exists( 'TRS\EAA2C\Abstract_Button' ) ) {
 			return wp_parse_args( $attributes, $defaults );
 		}
 
+		// Is this actually being used correctly or did we regress further than expected?
+		// TODO: make more generic
+		protected function create_content_order_from_shortcode( $args ) {
+
+			$contentOrder = array();
+			$args = strtolower( $args );
+			if ( strpos( $args, 'b' ) !== false ) {
+				$contentOrder = array(
+					'price',
+					'separator',
+					'title',
+					'quantity',
+					'button',
+				);
+			}
+			elseif ( strpos( $args, 'a' ) !== false ) {
+				$contentOrder = array(
+					'title',
+					'separator',
+					'price',
+					'quantity',
+					'button',
+				);
+			}
+			elseif ( strpos( $args, 'r' ) !== false ) {
+				$contentOrder = array(
+					'title',
+					'quantity',
+					'button',
+					'separator',
+					'price',
+				);
+			}
+
+			return $contentOrder;
+		}
+
+		protected function set_visibility( $element, $visibility = true ) {
+			$this->meta['contentVisibility'][$element] = $visibility;
+		}
+
+		protected function set_none_visible() {
+			foreach ( $this->meta['contentVisibility'] as $element => $visibility ) {
+				$this->meta['contentVisibility'][$element] = false;
+			}
+		}
+
+		protected function set_content_order( $contentOrder ) {
+			$this->meta['contentOrder'] = $contentOrder;
+		}
+
+		/**
+		 * 
+		 *		'title',
+		 *		'separator',
+		 *		'price',
+		 *		'quantity',
+		 *		'button',
+		 *		'custom',
+		 *		'image',
+		 *		'short_description'
+		 */
+		protected function create_block_display_from_order( $order_string ) {
+			$contentOrder = array();
+			$this->set_none_visible();
+			$args_long = strtolower( $order_string );
+			$args = explode( ',', $args_long );
+			foreach ( $args as $element ) {
+				if ( strpos( $element, 't' ) !== false ) {
+					$contentOrder[] = 'title';
+					$this->set_visibility( 'title', true );
+				}
+				if ( strpos( $element, 's' ) !== false ) {
+					$contentOrder[] = 'separator';
+					$this->set_visibility( 'separator', true );
+				}
+				if ( strpos( $element, 'p' ) !== false ) {
+					$contentOrder[] = 'price';
+					$this->set_visibility( 'price', true );
+				}
+				if ( strpos( $element, 'q' ) !== false ) {
+					$contentOrder[] = 'quantity';
+					$this->set_visibility( 'quantity', true );
+				}
+				if ( strpos( $element, 'b' ) !== false ) {
+					$contentOrder[] = 'button';
+					$this->set_visibility( 'button', true );
+				}
+			}
+			$this->set_content_order( $contentOrder );
+
+			$returnData = array( 'contentOrder' => $this->meta['contentOrder'], 'contentVisibility' => $this->meta['contentVisibility'] );
+			return $returnData;
+		}
+
 	}
 }
