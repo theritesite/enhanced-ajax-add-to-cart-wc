@@ -76,6 +76,7 @@ The required field for every button is the product, with six optional fields:
 - order (overrides show_quantity, show_price)
 
 Original single button shortcode:
+
 `[a2c_button
    product={pid}
    variation={vid}

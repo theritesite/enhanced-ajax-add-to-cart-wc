@@ -266,13 +266,22 @@ jQuery( function( $ ) {
 			$button.removeClass( 'loading' );
 			$button.addClass( 'added' );
 
-			// View cart text.
+
 			if ( ! wc_add_to_cart_params.is_cart && $button.parent().find( '.added_to_cart' ).length === 0 ) {
-				$button.after( ' <a href="' + wc_add_to_cart_params.cart_url + '" class="added_to_cart wc-forward" title="' +
-					wc_add_to_cart_params.i18n_view_cart + '">' + wc_add_to_cart_params.i18n_view_cart + '</a>' );
+				var afterAddText = wc_add_to_cart_params.i18n_view_cart;
+				var afterAddUrl = wc_add_to_cart_params.cart_url;
+				if ( EAA2C.afterAddText ) {
+					afterAddText = EAA2C.afterAddText;
+				}
+				if ( EAA2C.afterAddUrl ) {
+					afterAddUrl = EAA2C.afterAddUrl;
+				}
+				// View cart text.
+				$button.after( ' <a href="' + afterAddUrl + '" class="added_to_cart wc-forward" title="' +
+					afterAddText + '">' + afterAddText + '</a>' );
 			}
 
-			$( document.body ).trigger( 'wc_cart_button_updated', [ $button ] );
+			// $( document.body ).trigger( 'wc_cart_button_updated', [ $button ] );
 		}
 	};
 
@@ -322,8 +331,8 @@ jQuery( function( $ ) {
 	AddToCartHandler.prototype.showNotices = function( element, target ) {
 		$( '.woocommerce-error, .woocommerce-message' ).remove();
 		var domTarget = $( '.content-area' );
-		console.log( target );
-		console.log( "showing notices" );
+		// console.log( target );
+		// console.log( "showing notices" );
 		domTarget.before( target );
 		this.scrollToNotices();
 		// this.unblockButtons();

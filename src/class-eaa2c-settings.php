@@ -72,6 +72,17 @@ if ( ! class_exists( 'TRS\EAA2C\Settings' ) ) {
 			);
 			register_setting(
 				'a2cp_settings',
+				'a2cp_stop_refresh_frags',
+				array(
+					'type' => 'boolean',
+					'description' => '',
+					// 'sanitize_callback' => array( $this, '' ),
+					'show_in_rest' => true
+					// 'default' => false
+				)
+			);
+			register_setting(
+				'a2cp_settings',
 				'a2cp_delete_on_deactivation',
 				array(
 					'type' => 'boolean',
@@ -95,6 +106,28 @@ if ( ! class_exists( 'TRS\EAA2C\Settings' ) ) {
 			register_setting(
 				'a2cp_settings',
 				'a2cp_default_text',
+				array(
+					'type' => 'text',
+					'description' => '',
+					// 'sanitize_callback' => array( $this, '' ),
+					'show_in_rest' => true
+					// 'default' => false
+				)
+			);
+			register_setting(
+				'a2cp_settings',
+				'a2cp_after_add_text',
+				array(
+					'type' => 'text',
+					'description' => '',
+					// 'sanitize_callback' => array( $this, '' ),
+					'show_in_rest' => true
+					// 'default' => false
+				)
+			);
+			register_setting(
+				'a2cp_settings',
+				'a2cp_after_add_url',
 				array(
 					'type' => 'text',
 					'description' => '',
@@ -183,7 +216,7 @@ if ( ! class_exists( 'TRS\EAA2C\Settings' ) ) {
 			);
 			add_settings_field(
 				'a2cp_custom_class',
-				__( 'Enable custom class?', EAA2C_NAME ),
+				__( 'Custom class on all parent elements of this plugin?', EAA2C_NAME ),
 				array( $this, 'text_input' ),
 				$this->settings_page,
 				'a2cp_settings',
@@ -203,6 +236,30 @@ if ( ! class_exists( 'TRS\EAA2C\Settings' ) ) {
 					'name' => 'a2cp_default_text',
 					'type' => 'text',
 					'value' => get_option( 'a2cp_default_text' ),
+				)
+			);
+			add_settings_field(
+				'a2cp_after_add_text',
+				__( 'Change default "View cart" button/link text?', EAA2C_NAME ),
+				array( $this, 'text_input' ),
+				$this->settings_page,
+				'a2cp_settings',
+				array(
+					'name' => 'a2cp_after_add_text',
+					'type' => 'text',
+					'value' => get_option( 'a2cp_after_add_text' ),
+				)
+			);
+			add_settings_field(
+				'a2cp_after_add_url',
+				__( 'Change default url for the "View cart" (or custom text) button/link?', EAA2C_NAME ),
+				array( $this, 'text_input' ),
+				$this->settings_page,
+				'a2cp_settings',
+				array(
+					'name' => 'a2cp_after_add_url',
+					'type' => 'text',
+					'value' => get_option( 'a2cp_after_add_url' ),
 				)
 			);
 		}
@@ -293,6 +350,19 @@ if ( ! class_exists( 'TRS\EAA2C\Settings' ) ) {
 					'value' => $blocking
 				)
 			);
+			$stop_rf = empty( get_option( 'a2cp_stop_refresh_frags' ) ) ? 0 : get_option( 'a2cp_stop_refresh_frags' );
+			add_settings_field(
+				'a2cp_stop_refresh_frags',
+				__( 'Disable internal "Refresh Cart Fragments" during add to cart request?', EAA2C_NAME ),
+				array( $this, 'toggle_button' ),
+				$this->settings_page,
+				'a2cp_settings',
+				array(
+					'name' => 'a2cp_stop_refresh_frags',
+					'type' => 'checkbox',
+					'value' => $stop_rf
+				)
+			);
 			$out_of_stock = empty( get_option( 'a2cp_out_of_stock') ) ? 0 : get_option( 'a2cp_out_of_stock' );
 			add_settings_field(
 				'a2cp_out_of_stock',
@@ -304,18 +374,6 @@ if ( ! class_exists( 'TRS\EAA2C\Settings' ) ) {
 					'name' => 'a2cp_out_of_stock',
 					'type' => 'checkbox',
 					'value' => $out_of_stock
-				)
-			);
-			add_settings_field(
-				'a2cp_custom_class',
-				__( 'Enable custom class?', EAA2C_NAME ),
-				array( $this, 'text_input' ),
-				$this->settings_page,
-				'a2cp_settings',
-				array(
-					'name' => 'a2cp_custom_class',
-					'type' => 'text',
-					'value' => get_option( 'a2cp_custom_class')
 				)
 			);
 			$debug = empty( get_option( 'a2cp_debug' ) ) ? 0 : get_option( 'a2cp_debug' );
