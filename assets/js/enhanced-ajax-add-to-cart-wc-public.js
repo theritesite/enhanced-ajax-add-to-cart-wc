@@ -24,7 +24,7 @@ jQuery( function( $ ) {
 				.on( 'click', '.variable_add_to_cart_button', this.blockButtons )
 				.on( 'click', '.simple_add_to_cart_button', this.blockButtons )
 				.on( 'click', '.a2cp_button', this.blockButtons )
-				.on( 'added_to_cart', this.unblockButtons )
+				.on( 'a2cp_added_to_cart', this.unblockButtons )
 				.on( 'notices_received', this.unblockButtons );
 		}
 
@@ -32,9 +32,9 @@ jQuery( function( $ ) {
 			.on( 'click', '.variable_add_to_cart_button', this.onAddAnyToCart )
 			.on( 'click', '.simple_add_to_cart_button', this.onAddAnyToCart )
 			.on( 'click', '.a2cp_button', this.onAddAnyToCart )
-			.on( 'added_to_cart', this.updateButton )
-			.on( 'added_to_cart', this.updateCartPage )
-			.on( 'added_to_cart', this.updateFragments )
+			.on( 'a2cp_added_to_cart', this.updateButton )
+			.on( 'a2cp_added_to_cart', this.updateCartPage )
+			.on( 'a2cp_added_to_cart', this.updateFragments )
 			.on( 'notices_received', this.showNotices )
 			.on( 'validation_message', this.showValidation );
 
@@ -116,7 +116,13 @@ jQuery( function( $ ) {
 					if ( EAA2C.debug ) {
 						console.log( "product id: " + data[ 'pid' ] + " variable id: " + data[ 'vid' ] + " quantity: " + data[ 'qty' ] );
 					}
-					$( document.body ).trigger( 'added_to_cart', [ response.fragments, response.cart_hash, $thisbutton ] );
+					if ( response.added ) {
+						$( document.body ).trigger( 'a2cp_added_to_cart', [ response.fragments, response.cart_hash, $thisbutton ] );
+						$( document.body ).trigger( 'added_to_cart', [ response.fragments, response.cart_hash, $thisbutton ] ); // possibly catches custom implementations?
+					}
+					if ( response.error ) {
+						$thisbutton.removeClass( "loading" );
+					}
 					if ( response.html ) {
 						$( document.body ).trigger( 'notices_received', [ response.html ] );
 					}
@@ -266,13 +272,22 @@ jQuery( function( $ ) {
 			$button.removeClass( 'loading' );
 			$button.addClass( 'added' );
 
-			// View cart text.
+
 			if ( ! wc_add_to_cart_params.is_cart && $button.parent().find( '.added_to_cart' ).length === 0 ) {
-				$button.after( ' <a href="' + wc_add_to_cart_params.cart_url + '" class="added_to_cart wc-forward" title="' +
-					wc_add_to_cart_params.i18n_view_cart + '">' + wc_add_to_cart_params.i18n_view_cart + '</a>' );
+				var afterAddText = wc_add_to_cart_params.i18n_view_cart;
+				var afterAddUrl = wc_add_to_cart_params.cart_url;
+				if ( EAA2C.afterAddText ) {
+					afterAddText = EAA2C.afterAddText;
+				}
+				if ( EAA2C.afterAddUrl ) {
+					afterAddUrl = EAA2C.afterAddUrl;
+				}
+				// View cart text.
+				$button.after( ' <a href="' + afterAddUrl + '" class="added_to_cart wc-forward" title="' +
+					afterAddText + '">' + afterAddText + '</a>' );
 			}
 
-			$( document.body ).trigger( 'wc_cart_button_updated', [ $button ] );
+			// $( document.body ).trigger( 'wc_cart_button_updated', [ $button ] );
 		}
 	};
 
@@ -297,7 +312,7 @@ jQuery( function( $ ) {
 	 * Update fragments after add to cart events.
 	 */
 	AddToCartHandler.prototype.updateFragments = function( e, fragments ) {
-		if ( fragments ) {
+		if ( fragments && ! EAA2C.stopRefreshFrags ) {
 			$.each( fragments, function( key ) {
 				$( key )
 					.addClass( 'updating' )
@@ -322,8 +337,8 @@ jQuery( function( $ ) {
 	AddToCartHandler.prototype.showNotices = function( element, target ) {
 		$( '.woocommerce-error, .woocommerce-message' ).remove();
 		var domTarget = $( '.content-area' );
-		console.log( target );
-		console.log( "showing notices" );
+		// console.log( target );
+		// console.log( "showing notices" );
 		domTarget.before( target );
 		this.scrollToNotices();
 		// this.unblockButtons();

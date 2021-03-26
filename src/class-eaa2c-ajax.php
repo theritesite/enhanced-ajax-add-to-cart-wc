@@ -95,7 +95,8 @@ if ( ! class_exists( 'TRS\EAA2C\Ajax' ) ) {
 
                         if ( $passed_validation && WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variations ) && 'publish' === $product_status ) {
                             do_action( 'woocommerce_ajax_added_to_cart', $product_id );
-                            \WC_AJAX::get_refreshed_fragments();
+                            $data['added'] = $variation_id;
+                            // \WC_AJAX::get_refreshed_fragments();
 
                         } else {
 
@@ -110,7 +111,9 @@ if ( ! class_exists( 'TRS\EAA2C\Ajax' ) ) {
 
                         if ( $passed_validation && WC()->cart->add_to_cart( $product_id, $quantity, null, null ) && 'publish' === $product_status ) {
                             do_action( 'woocommerce_ajax_added_to_cart', $product_id );
-                            \WC_AJAX::get_refreshed_fragments();
+                            $data['added'] = $product_id;
+                            // \WC_AJAX::get_refreshed_fragments();
+
                             
                         } else {
                             $data = array(
@@ -135,6 +138,26 @@ if ( ! class_exists( 'TRS\EAA2C\Ajax' ) ) {
             $html = ob_get_contents();
             ob_end_clean();
             $data['html'] = $html;
+
+            $frags = array();
+            $stop_rf = get_option( 'a2cp_stop_refresh_frags', false );
+            if ( strcmp( $stop_rf, 'on' ) === 0 || strcmp( $stop_rf, 'true' ) === 0 ) {
+                $stop_rf = true;
+            }
+            if ( ! $stop_rf ) {
+                ob_start();
+                wc_get_template( 'cart/mini-cart.php', array( 'list_class' => '' ) );
+                $mini_cart = ob_get_contents();
+                ob_end_clean();
+                $frags = apply_filters( 'woocommerce_add_to_cart_fragments',
+                    array(
+                        'div.widget_shopping_cart_content' => '<div class="widget_shopping_cart_content">' . $mini_cart . '</div>',
+                    )
+                );
+                $data['fragments'] = $frags;
+                $data['cart_hash'] = WC()->cart->get_cart_hash();
+            }
+
             wp_send_json( $data );
 
             wp_die();
