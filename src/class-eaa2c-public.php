@@ -109,7 +109,7 @@ if ( ! class_exists( 'TRS\EAA2C\Front' ) ) {
 					'domCheck'	=> $dom_check,
 					'afterAddText' => $after_text,
 					'afterAddUrl' => $after_url,
-					'afterAddUrl' => $after_url,
+					'stopRefreshFrags' => $stop_rf,
 				));
 			}
 		}

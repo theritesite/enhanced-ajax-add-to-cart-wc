@@ -239,6 +239,12 @@ At this point, no. This is designed to supplement your store to let the buttons 
 
 == Changelog ==
 
+= 2.3.0 =
+* Added: New custom "View cart" text setting for the secondary button/link spawned after adding to cart.
+* Added: New custom URL for the "View cart" (or custom text) button/link.
+* Added: New setting to disable an internal "Refresh Fragments" for minicart implementations that may be unnecessary overhead for some implementations.
+* Fixed: The "View cart" button/link would appear even if an item was not added to the cart due to an error.
+
 = 2.2.0 =
 * Added: New "order" prop on shortcode to determine display order and visibility of elements in a "button row"
 * Added: New "class" prop on shortcode to add custom css classes to the "button row"

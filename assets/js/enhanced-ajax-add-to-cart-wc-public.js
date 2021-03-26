@@ -24,7 +24,7 @@ jQuery( function( $ ) {
 				.on( 'click', '.variable_add_to_cart_button', this.blockButtons )
 				.on( 'click', '.simple_add_to_cart_button', this.blockButtons )
 				.on( 'click', '.a2cp_button', this.blockButtons )
-				.on( 'added_to_cart', this.unblockButtons )
+				.on( 'a2cp_added_to_cart', this.unblockButtons )
 				.on( 'notices_received', this.unblockButtons );
 		}
 
@@ -32,9 +32,9 @@ jQuery( function( $ ) {
 			.on( 'click', '.variable_add_to_cart_button', this.onAddAnyToCart )
 			.on( 'click', '.simple_add_to_cart_button', this.onAddAnyToCart )
 			.on( 'click', '.a2cp_button', this.onAddAnyToCart )
-			.on( 'added_to_cart', this.updateButton )
-			.on( 'added_to_cart', this.updateCartPage )
-			.on( 'added_to_cart', this.updateFragments )
+			.on( 'a2cp_added_to_cart', this.updateButton )
+			.on( 'a2cp_added_to_cart', this.updateCartPage )
+			.on( 'a2cp_added_to_cart', this.updateFragments )
 			.on( 'notices_received', this.showNotices )
 			.on( 'validation_message', this.showValidation );
 
@@ -116,7 +116,13 @@ jQuery( function( $ ) {
 					if ( EAA2C.debug ) {
 						console.log( "product id: " + data[ 'pid' ] + " variable id: " + data[ 'vid' ] + " quantity: " + data[ 'qty' ] );
 					}
-					$( document.body ).trigger( 'added_to_cart', [ response.fragments, response.cart_hash, $thisbutton ] );
+					if ( response.added ) {
+						$( document.body ).trigger( 'a2cp_added_to_cart', [ response.fragments, response.cart_hash, $thisbutton ] );
+						$( document.body ).trigger( 'added_to_cart', [ response.fragments, response.cart_hash, $thisbutton ] ); // possibly catches custom implementations?
+					}
+					if ( response.error ) {
+						$thisbutton.removeClass( "loading" );
+					}
 					if ( response.html ) {
 						$( document.body ).trigger( 'notices_received', [ response.html ] );
 					}
@@ -306,7 +312,7 @@ jQuery( function( $ ) {
 	 * Update fragments after add to cart events.
 	 */
 	AddToCartHandler.prototype.updateFragments = function( e, fragments ) {
-		if ( fragments ) {
+		if ( fragments && ! EAA2C.stopRefreshFrags ) {
 			$.each( fragments, function( key ) {
 				$( key )
 					.addClass( 'updating' )
