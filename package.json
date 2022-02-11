@@ -72,7 +72,7 @@
     "@wordpress/server-side-render": "^1.8.2",
     "classnames": "^2.2.6",
     "gridicons": "^3.3.1",
-    "node-sass": "^4.14.1",
+    "node-sass": "^7.0.0",
     "react": "^16.14.0",
     "react-dom": "16.9.0",
     "react-redux": "^7.2.2",
