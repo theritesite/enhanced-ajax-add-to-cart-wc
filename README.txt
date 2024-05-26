@@ -240,7 +240,10 @@ At this point, no. This is designed to supplement your store to let the buttons 
 == Changelog ==
 
 = 2.3.1 =
-* Security update
+* Updated compatible versions
+* Security updates
+* Tweak: FALSE is now a valid constant in the custom URL setting to make the spawned link a span element with the class "a2cp-after-add" inputting either the default "View cart" or custom text.
+* Tweak: FALSE is now a valid constant in the custom "View cart" text setting to disable the spawned element entirely.
 
 = 2.3.0 =
 * Added: New custom "View cart" text setting for the secondary button/link spawned after adding to cart.
