@@ -78,7 +78,7 @@ const config = env => {
 
 	const entryPoints = {};
 	A2CPackages.forEach( ( name ) => {
-		entryPoints[ name ] = `./blocks/${ name }`;
+		entryPoints[ name ] = `./src/${ name }`;
 	} );
 
 	entryPoints['request'] = path.resolve(__dirname, 'assets/js', pluginSlug + '-public.js');
@@ -91,7 +91,7 @@ const config = env => {
 					{ from: path.resolve( __dirname, 'blocks' ) + '/**', to: buildFolder },
 					{ from: path.resolve( __dirname, 'dist' ) + '/**', to: buildFolder },
 					{ from: path.resolve( __dirname, 'languages' ) + '/**', to: buildFolder },
-					{ from: path.resolve( __dirname, 'src' ) + '/**', to: buildFolder },
+					{ from: path.resolve( __dirname, 'includes' ) + '/**', to: buildFolder },
 					{ from: path.resolve( __dirname, 'woo-includes' ) + '/**', to: buildFolder },
 					// { from: path.resolve( __dirname, 'vendor' ) + '/**', to: buildFolder },
 					{ from: path.resolve( __dirname, '*.txt' ), to: buildFolder },
@@ -101,7 +101,7 @@ const config = env => {
 					{ from: path.resolve( __dirname, 'blocks' ) + '/**', to: endFolder },
 					{ from: path.resolve( __dirname, 'dist' ) + '/**', to: endFolder },
 					{ from: path.resolve( __dirname, 'languages' ) + '/**', to: endFolder },
-					{ from: path.resolve( __dirname, 'src' ) + '/**', to: endFolder },
+					{ from: path.resolve( __dirname, 'includes' ) + '/**', to: endFolder },
 					{ from: path.resolve( __dirname, 'woo-includes' ) + '/**', to: endFolder },
 					// { from: path.resolve( __dirname, 'vendor' ) + '/**', to: endFolder },
 					{ from: path.resolve( __dirname, '*.txt' ), to: endFolder },
@@ -139,7 +139,7 @@ const config = env => {
 					{ from: path.resolve( __dirname, 'blocks' ) + '/**', to: devFolder },
 					{ from: path.resolve( __dirname, 'dist' ) + '/**', to: devFolder },
 					{ from: path.resolve( __dirname, 'languages' ) + '/**', to: devFolder },
-					{ from: path.resolve( __dirname, 'src' ) + '/**', to: devFolder },
+					{ from: path.resolve( __dirname, 'includes' ) + '/**', to: devFolder },
 					{ from: path.resolve( __dirname, 'woo-includes' ) + '/**', to: devFolder },
 					// { from: path.resolve( __dirname, 'vendor' ) + '/**', to: devFolder },
 					{ from: path.resolve( __dirname, '*.txt' ), to: devFolder },
