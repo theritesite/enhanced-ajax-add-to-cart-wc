@@ -3,7 +3,6 @@ const defaultConfig = require( "@wordpress/scripts/config/webpack.config" );
 const DependencyExtractionWebpackPlugin = require( '@wordpress/dependency-extraction-webpack-plugin' );
 const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
 const CopyWebpackPlugin = require( 'copy-webpack-plugin' );
-const WebpackZipPlugin = require( 'webpack-zip-plugin' );
 const browserSyncPlugin = require( 'browser-sync-webpack-plugin' );
 
 const pluginSlug = 'enhanced-ajax-add-to-cart-wc';
@@ -107,11 +106,6 @@ const config = env => {
 					{ from: path.resolve( __dirname, '*.txt' ), to: endFolder },
 					{ from: path.resolve( __dirname, '*.php' ), to: endFolder }
 				]
-			} ),
-			new WebpackZipPlugin( {
-				initialFile: pluginSlug,
-				endPath: buildPath,
-				zipName: pluginSlug + '.zip'
 			} )
 		);
 	}
