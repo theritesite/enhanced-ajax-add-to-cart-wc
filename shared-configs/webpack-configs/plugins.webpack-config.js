@@ -33,8 +33,8 @@ module.exports = ( mode, loc, pluginSlug, buildFolder, baseDir ) => {
 				// { from: path.resolve( baseDir, 'includes' ) + '/**', to: buildFolder },
 				{ from: path.resolve( baseDir, 'woo-includes' ) + '/**', to: buildFolder },
 				// { from: path.resolve( baseDir, 'vendor' ) + '/**', to: buildFolder },
-				{ from: path.resolve( baseDir, '*.txt' ), to: buildFolder },
-				{ from: path.resolve( baseDir, '*.php' ), to: buildFolder },
+				{ from: path.resolve( baseDir, 'readme.txt' ), to: buildFolder },
+				{ from: path.resolve( baseDir, 'enhanced-ajax-add-to-cart-wc.php' ), to: buildFolder },
 				/** Above is what will be zipped. Below is code for repositories **/
 				// { from: path.resolve( baseDir, 'assets' ) + '/**', to: endFolder },
 				// { from: path.resolve( baseDir, 'blocks' ) + '/**', to: endFolder },
@@ -45,7 +45,7 @@ module.exports = ( mode, loc, pluginSlug, buildFolder, baseDir ) => {
 				{ from: path.resolve( baseDir, 'woo-includes' ) + '/**', to: endFolder },
 				// { from: path.resolve( baseDir, 'vendor' ) + '/**', to: endFolder },
 				{ from: path.resolve( baseDir, 'readme.txt' ), to: endFolder },
-				{ from: path.resolve( baseDir, 'eaa2cp-blocks.php' ), to: endFolder }
+				{ from: path.resolve( baseDir, 'enhanced-ajax-add-to-cart-wc.php' ), to: endFolder }
 			]
 		} );
 	} else {
@@ -62,7 +62,7 @@ module.exports = ( mode, loc, pluginSlug, buildFolder, baseDir ) => {
 				{ from: path.resolve( baseDir, 'woo-includes' ) + '/**', to: devFolder },
 				// { from: path.resolve( baseDir, 'vendor' ) + '/**', to: devFolder },
 				{ from: path.resolve( baseDir, 'readme.txt' ), to: devFolder },
-				{ from: path.resolve( baseDir, 'eaa2cp-blocks.php' ), to: devFolder },
+				{ from: path.resolve( baseDir, 'enhanced-ajax-add-to-cart-wc.php' ), to: devFolder },
 			]
 		} )
 	}
