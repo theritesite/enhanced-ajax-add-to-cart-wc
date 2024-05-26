@@ -1,5 +1,5 @@
 const path = require( 'path' );
-const defaultConfig = require( "@wordpress/scripts/config/webpack.config" );
+// const defaultConfig = require( "@wordpress/scripts/config/webpack.config" );
 const DependencyExtractionWebpackPlugin = require( '@wordpress/dependency-extraction-webpack-plugin' );
 const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
 const CopyWebpackPlugin = require( 'copy-webpack-plugin' );
@@ -57,9 +57,9 @@ const config = env => {
 	};
 
 	const pluginList = [
-		...defaultConfig.plugins.filter(
-			plugin => plugin.constructor.name !== 'DependencyExtractionWebpackPlugin',
-		),
+		// ...defaultConfig.plugins.filter(
+		// 	plugin => plugin.constructor.name !== 'DependencyExtractionWebpackPlugin',
+		// ),
 		new DependencyExtractionWebpackPlugin( {
 			injectPolyfill: true,
 			requestToExternal,
@@ -87,7 +87,7 @@ const config = env => {
 			new CopyWebpackPlugin( {
 				patterns: [
 					{ from: path.resolve( __dirname, 'assets' ) + '/**', to: buildFolder },
-					{ from: path.resolve( __dirname, 'blocks' ) + '/**', to: buildFolder },
+					// { from: path.resolve( __dirname, 'blocks' ) + '/**', to: buildFolder },
 					{ from: path.resolve( __dirname, 'dist' ) + '/**', to: buildFolder },
 					{ from: path.resolve( __dirname, 'languages' ) + '/**', to: buildFolder },
 					{ from: path.resolve( __dirname, 'includes' ) + '/**', to: buildFolder },
@@ -97,7 +97,7 @@ const config = env => {
 					{ from: path.resolve( __dirname, '*.php' ), to: buildFolder },
 					/** Above is what will be zipped. Below is code for repositories **/
 					{ from: path.resolve( __dirname, 'assets' ) + '/**', to: endFolder },
-					{ from: path.resolve( __dirname, 'blocks' ) + '/**', to: endFolder },
+					// { from: path.resolve( __dirname, 'blocks' ) + '/**', to: endFolder },
 					{ from: path.resolve( __dirname, 'dist' ) + '/**', to: endFolder },
 					{ from: path.resolve( __dirname, 'languages' ) + '/**', to: endFolder },
 					{ from: path.resolve( __dirname, 'includes' ) + '/**', to: endFolder },
@@ -130,7 +130,7 @@ const config = env => {
 			new CopyWebpackPlugin( {
 				patterns: [
 					{ from: path.resolve( __dirname, 'assets' ) + '/**', to: devFolder },
-					{ from: path.resolve( __dirname, 'blocks' ) + '/**', to: devFolder },
+					// { from: path.resolve( __dirname, 'blocks' ) + '/**', to: devFolder },
 					{ from: path.resolve( __dirname, 'dist' ) + '/**', to: devFolder },
 					{ from: path.resolve( __dirname, 'languages' ) + '/**', to: devFolder },
 					{ from: path.resolve( __dirname, 'includes' ) + '/**', to: devFolder },
@@ -144,7 +144,7 @@ const config = env => {
 	};
 
 	return {
-		...defaultConfig,
+		// ...defaultConfig,
 		plugins: pluginList,
 		entry: {
 			...entryPoints
@@ -173,9 +173,9 @@ const config = env => {
 			},
 		},
 		module: {
-			...defaultConfig.module,
+			// ...defaultConfig.module,
 			rules: [
-				...defaultConfig.module.rules,
+				// ...defaultConfig.module.rules,
 				{
 					test: /\.(sa|sc|c)ss$/,
 					use: [

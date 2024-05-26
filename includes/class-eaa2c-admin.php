@@ -120,58 +120,59 @@ if ( ! class_exists( 'TRS\EAA2C\Admin' ) ) {
 		 */
 		public function register_a2cp_single() {
 
+			error_log("trying: " . (in_array( 'add-to-cart-pro/a2cp', get_dynamic_block_names()) ? 'true' : 'false' ));
 			// Skip block registration if Gutenberg is not enabled/merged.
 			if ( ! function_exists( 'register_block_type' ) || in_array( 'add-to-cart-pro/a2cp', get_dynamic_block_names() ) ) {
 				return;
 			}
 
-			$dir = plugin_dir_path( dirname( __FILE__ ) ) . 'dist/blocks/';
+			// $dir = plugin_dir_path( dirname( __FILE__ ) ) . 'dist/blocks/';
 
 			$index_js = 'a2cp.js';
-			wp_register_script(
-				'a2cp-block-editor',
-				plugins_url( $index_js, $dir .'blocks/' ),
-				array(
-					'wp-blocks',
-					'wp-i18n',
-					'wp-element',
-					'wp-components',
-					'wp-block-editor',
-					'wp-editor',
-				),
-				filemtime( "$dir/$index_js" )
-			);
+			// wp_register_script(
+			// 	'a2cp-block-editor',
+			// 	plugins_url( $index_js, $dir .'blocks/' ),
+			// 	array(
+			// 		'wp-blocks',
+			// 		'wp-i18n',
+			// 		'wp-element',
+			// 		'wp-components',
+			// 		'wp-block-editor',
+			// 		'wp-editor',
+			// 	),
+			// 	filemtime( "$dir/$index_js" )
+			// );
 
 			$buttonText = get_option( 'a2cp_default_text' );
 			$buttonText = empty( $buttonText ) || false == $buttonText ? __( 'Add to cart', 'woocommerce' ) : $buttonText;
 
-			wp_localize_script( 'a2cp-block-editor', 'A2C', array(
-				'ajax_url'			=> admin_url( 'admin-ajax.php' ),
-				'debug'				=> EAA2C_DEBUG,
-				'route'				=> get_site_url(),
-				'baseURL'			=> get_rest_url() ,
-				'nonce' 			=> wp_create_nonce( 'wp_rest' ),
-				'customClass'		=> get_option( 'a2cp_custom_class' ),
-				'buttonText'		=> $buttonText
-			) );
+			// wp_localize_script( 'a2cp-block-editor', 'A2C', array(
+			// 	'ajax_url'			=> admin_url( 'admin-ajax.php' ),
+			// 	'debug'				=> EAA2C_DEBUG,
+			// 	'route'				=> get_site_url(),
+			// 	'baseURL'			=> get_rest_url() ,
+			// 	'nonce' 			=> wp_create_nonce( 'wp_rest' ),
+			// 	'customClass'		=> get_option( 'a2cp_custom_class' ),
+			// 	'buttonText'		=> $buttonText
+			// ) );
 
-			$dir = plugin_dir_path( dirname( __FILE__ ) ) . 'blocks/a2cp/';
-			$editor_css = 'editor.css';
-			wp_register_style(
-				'a2cp-block-editor-style',
-				plugins_url( $editor_css, $dir . 'a2cp/' ),
-				array(),
-				filemtime( "$dir/$editor_css" )
-			);
+			// $dir = plugin_dir_path( dirname( __FILE__ ) ) . 'blocks/a2cp/';
+			// $editor_css = 'editor.css';
+			// wp_register_style(
+			// 	'a2cp-block-editor-style',
+			// 	plugins_url( $editor_css, $dir . 'a2cp/' ),
+			// 	array(),
+			// 	filemtime( "$dir/$editor_css" )
+			// );
 
-			$common_dir = plugin_dir_path( dirname( __FILE__ ) ) . 'blocks/common/assets/css/';
-			$style_css = 'style.css';
-			wp_register_style(
-				'a2cp-block',
-				plugins_url( $style_css, $common_dir . 'css/' ),
-				array(),
-				filemtime( "$common_dir/$style_css" )
-			);
+			// $common_dir = plugin_dir_path( dirname( __FILE__ ) ) . 'blocks/common/assets/css/';
+			// $style_css = 'style.css';
+			// wp_register_style(
+			// 	'a2cp-block',
+			// 	plugins_url( $style_css, $common_dir . 'css/' ),
+			// 	array(),
+			// 	filemtime( "$common_dir/$style_css" )
+			// );
 
 			$attributes = array(
 				'editMode' => array(
@@ -255,13 +256,15 @@ if ( ! class_exists( 'TRS\EAA2C\Admin' ) ) {
 				)
 			);
 
-			register_block_type( 'add-to-cart-pro/a2cp', array(
-				'editor_script' => 'a2cp-block-editor',
-				'editor_style'  => 'a2cp-block-editor-style',
-				'style'         => 'a2cp-block',
+			error_log("registering... " . plugin_dir_path( __DIR__ ) . 'dist/blocks/a2cp');
+			register_block_type( plugin_dir_path( __DIR__ ) . 'dist/blocks/a2cp'/*, array(
+				// 'editor_script' => 'a2cp-block-editor',
+				// 'editor_style'  => 'a2cp-block-editor-style',
+				// 'style'         => 'a2cp-block',
 				'attributes' 	=> $attributes,
 				'render_callback' => array( $this, 'render_from_block' ),
-			) );
+			) */);
+			error_log("after: " . (in_array( 'add-to-cart-pro/a2cp', get_dynamic_block_names()) ? 'true' : 'false' ));
 
 		}
 
