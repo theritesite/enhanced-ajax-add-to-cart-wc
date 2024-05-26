@@ -6,9 +6,6 @@ const pluginSlug = 'enhanced-ajax-add-to-cart-wc';
 
 const buildFolder  = path.resolve( __dirname, pluginSlug );
 
-var devFolder = '';
-var endPath = '';
-
 const config = env => {
 	console.log(env.NODE_ENV);
 	console.log(env.LOC);
