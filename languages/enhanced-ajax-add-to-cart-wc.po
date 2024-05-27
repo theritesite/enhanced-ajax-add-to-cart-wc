@@ -3,10 +3,86 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "X-Generator: babel-plugin-makepot\n"
 
-#: src/a2cp/edit.js:100
-msgid "A2cp – hello from the editor!"
+#: src/a2cp/a2cp-editor.jsx:308
+msgid "AJAX Add to Cart button"
 msgstr ""
 
-#: src/a2cp/edit.js:41
-msgid "Add to cart"
+#: src/a2cp/a2cp-editor.jsx:324
+msgid "Done"
+msgstr ""
+
+#: src/a2cp/a2cp-inspector.jsx:201
+msgid "Content"
+msgstr ""
+
+#: src/a2cp/edit.jsx:59
+msgid "Edit"
+msgstr ""
+
+#: src/a2cp/index.js:33
+msgid "Non-redirect add to cart button wherever you want!"
+msgstr ""
+
+#: src/common/product-control/search-list-control.jsx:26
+msgid "Clear all selected items"
+msgstr ""
+
+#: src/common/product-control/search-list-control.jsx:27
+msgid "Results"
+msgstr ""
+
+#: src/common/product-control/search-list-control.jsx:28
+msgid "No items found."
+msgstr ""
+
+#: src/common/product-control/search-list-control.jsx:29
+msgid "No results for %s"
+msgstr ""
+
+#: src/common/product-control/search-list-control.jsx:30
+msgid "Search for items"
+msgstr ""
+
+#: src/common/product-control/search-list-control.jsx:31
+msgid "%d item selected"
+msgid_plural "%d items selected"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/common/product-control/search-list-control.jsx:32
+msgid "Search results updated."
+msgstr ""
+
+#: src/common/product-control/search-list-control.jsx:340
+msgid "Clear all"
+msgstr ""
+
+#: src/common/product-control/view.jsx:17
+msgid "Clear all products"
+msgstr ""
+
+#: src/common/product-control/view.jsx:18
+msgid "Products"
+msgstr ""
+
+#: src/common/product-control/view.jsx:19
+msgid "Your store doesn't have any products."
+msgstr ""
+
+#: src/common/product-control/view.jsx:20
+msgid "Search for products to display"
+msgstr ""
+
+#: src/common/product-control/view.jsx:21
+msgid "%d product selected"
+msgid_plural "%d products selected"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/common/product-control/view.jsx:22
+msgid "Product search results updated."
+msgstr ""
+
+#: src/common/tag.jsx:70
+msgid "Remove %s"
 msgstr ""

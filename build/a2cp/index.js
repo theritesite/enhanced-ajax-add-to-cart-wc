@@ -78,10 +78,10 @@ function getSetting(name) {
 
 /***/ }),
 
-/***/ "./src/a2cp/a2cp-editor.js":
-/*!*********************************!*\
-  !*** ./src/a2cp/a2cp-editor.js ***!
-  \*********************************/
+/***/ "./src/a2cp/a2cp-editor.jsx":
+/*!**********************************!*\
+  !*** ./src/a2cp/a2cp-editor.jsx ***!
+  \**********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -95,8 +95,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./editor.scss */ "./src/a2cp/editor.scss");
-/* harmony import */ var _common_a2c_control__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../common/a2c-control */ "./src/common/a2c-control.js");
-/* harmony import */ var _common_product_control__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../common/product-control */ "./src/common/product-control/index.js");
+/* harmony import */ var _common_a2c_control__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../common/a2c-control */ "./src/common/a2c-control.jsx");
+/* harmony import */ var _common_product_control__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../common/product-control */ "./src/common/product-control/index.jsx");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_6__);
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
@@ -402,10 +402,10 @@ function A2cpEditor(attributes) {
 
 /***/ }),
 
-/***/ "./src/a2cp/a2cp-inspector.js":
-/*!************************************!*\
-  !*** ./src/a2cp/a2cp-inspector.js ***!
-  \************************************/
+/***/ "./src/a2cp/a2cp-inspector.jsx":
+/*!*************************************!*\
+  !*** ./src/a2cp/a2cp-inspector.jsx ***!
+  \*************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -418,7 +418,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./editor.scss */ "./src/a2cp/editor.scss");
-/* harmony import */ var _common_a2c_control__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../common/a2c-control */ "./src/common/a2c-control.js");
+/* harmony import */ var _common_a2c_control__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../common/a2c-control */ "./src/common/a2c-control.jsx");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
@@ -645,10 +645,10 @@ function A2cpInspector(attributes) {
 
 /***/ }),
 
-/***/ "./src/a2cp/a2cp-mockup.js":
-/*!*********************************!*\
-  !*** ./src/a2cp/a2cp-mockup.js ***!
-  \*********************************/
+/***/ "./src/a2cp/a2cp-mockup.jsx":
+/*!**********************************!*\
+  !*** ./src/a2cp/a2cp-mockup.jsx ***!
+  \**********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -756,10 +756,10 @@ function A2cpMockup(attributes, className) {
 
 /***/ }),
 
-/***/ "./src/a2cp/edit.js":
-/*!**************************!*\
-  !*** ./src/a2cp/edit.js ***!
-  \**************************/
+/***/ "./src/a2cp/edit.jsx":
+/*!***************************!*\
+  !*** ./src/a2cp/edit.jsx ***!
+  \***************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -779,9 +779,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! lodash */ "lodash");
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _a2cp_inspector__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./a2cp-inspector */ "./src/a2cp/a2cp-inspector.js");
-/* harmony import */ var _a2cp_editor__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./a2cp-editor */ "./src/a2cp/a2cp-editor.js");
-/* harmony import */ var _a2cp_mockup__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./a2cp-mockup */ "./src/a2cp/a2cp-mockup.js");
+/* harmony import */ var _a2cp_inspector__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./a2cp-inspector */ "./src/a2cp/a2cp-inspector.jsx");
+/* harmony import */ var _a2cp_editor__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./a2cp-editor */ "./src/a2cp/a2cp-editor.jsx");
+/* harmony import */ var _a2cp_mockup__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./a2cp-mockup */ "./src/a2cp/a2cp-mockup.jsx");
 
 
 /**
@@ -868,7 +868,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./style.scss */ "./src/a2cp/style.scss");
-/* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./edit */ "./src/a2cp/edit.js");
+/* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./edit */ "./src/a2cp/edit.jsx");
 /* harmony import */ var _block_json__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./block.json */ "./src/a2cp/block.json");
 /**
  * Registers a new block provided a unique name and an object defining its behavior.
@@ -915,10 +915,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./src/common/a2c-control.js":
-/*!***********************************!*\
-  !*** ./src/common/a2c-control.js ***!
-  \***********************************/
+/***/ "./src/common/a2c-control.jsx":
+/*!************************************!*\
+  !*** ./src/common/a2c-control.jsx ***!
+  \************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -1297,10 +1297,10 @@ function buildTermsTree(filteredList, list = filteredList) {
 
 /***/ }),
 
-/***/ "./src/common/icons/back.js":
-/*!**********************************!*\
-  !*** ./src/common/icons/back.js ***!
-  \**********************************/
+/***/ "./src/common/icons/back.jsx":
+/*!***********************************!*\
+  !*** ./src/common/icons/back.jsx ***!
+  \***********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -1331,10 +1331,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./src/common/icons/checkbox-checked.js":
-/*!**********************************************!*\
-  !*** ./src/common/icons/checkbox-checked.js ***!
-  \**********************************************/
+/***/ "./src/common/icons/checkbox-checked.jsx":
+/*!***********************************************!*\
+  !*** ./src/common/icons/checkbox-checked.jsx ***!
+  \***********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -1365,10 +1365,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./src/common/icons/checkbox-unchecked.js":
-/*!************************************************!*\
-  !*** ./src/common/icons/checkbox-unchecked.js ***!
-  \************************************************/
+/***/ "./src/common/icons/checkbox-unchecked.jsx":
+/*!*************************************************!*\
+  !*** ./src/common/icons/checkbox-unchecked.jsx ***!
+  \*************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -1414,11 +1414,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   IconRadioSelected: () => (/* reexport safe */ _radio_selected__WEBPACK_IMPORTED_MODULE_2__["default"]),
 /* harmony export */   IconRadioUnselected: () => (/* reexport safe */ _radio_unselected__WEBPACK_IMPORTED_MODULE_3__["default"])
 /* harmony export */ });
-/* harmony import */ var _checkbox_checked__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./checkbox-checked */ "./src/common/icons/checkbox-checked.js");
-/* harmony import */ var _checkbox_unchecked__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./checkbox-unchecked */ "./src/common/icons/checkbox-unchecked.js");
-/* harmony import */ var _radio_selected__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./radio-selected */ "./src/common/icons/radio-selected.js");
-/* harmony import */ var _radio_unselected__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./radio-unselected */ "./src/common/icons/radio-unselected.js");
-/* harmony import */ var _back__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./back */ "./src/common/icons/back.js");
+/* harmony import */ var _checkbox_checked__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./checkbox-checked */ "./src/common/icons/checkbox-checked.jsx");
+/* harmony import */ var _checkbox_unchecked__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./checkbox-unchecked */ "./src/common/icons/checkbox-unchecked.jsx");
+/* harmony import */ var _radio_selected__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./radio-selected */ "./src/common/icons/radio-selected.jsx");
+/* harmony import */ var _radio_unselected__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./radio-unselected */ "./src/common/icons/radio-unselected.jsx");
+/* harmony import */ var _back__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./back */ "./src/common/icons/back.jsx");
 // Export each icon as a named component.
 
 
@@ -1428,10 +1428,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./src/common/icons/radio-selected.js":
-/*!********************************************!*\
-  !*** ./src/common/icons/radio-selected.js ***!
-  \********************************************/
+/***/ "./src/common/icons/radio-selected.jsx":
+/*!*********************************************!*\
+  !*** ./src/common/icons/radio-selected.jsx ***!
+  \*********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -1462,10 +1462,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./src/common/icons/radio-unselected.js":
-/*!**********************************************!*\
-  !*** ./src/common/icons/radio-unselected.js ***!
-  \**********************************************/
+/***/ "./src/common/icons/radio-unselected.jsx":
+/*!***********************************************!*\
+  !*** ./src/common/icons/radio-unselected.jsx ***!
+  \***********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -1496,10 +1496,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./src/common/product-control/index.js":
-/*!*********************************************!*\
-  !*** ./src/common/product-control/index.js ***!
-  \*********************************************/
+/***/ "./src/common/product-control/index.jsx":
+/*!**********************************************!*\
+  !*** ./src/common/product-control/index.jsx ***!
+  \**********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -1509,7 +1509,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _view__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./view */ "./src/common/product-control/view.js");
+/* harmony import */ var _view__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./view */ "./src/common/product-control/view.jsx");
 /* harmony import */ var _state_reducer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./state/reducer */ "./src/common/product-control/state/reducer.js");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__);
@@ -1650,10 +1650,10 @@ class ProductControl extends _wordpress_element__WEBPACK_IMPORTED_MODULE_3__.Com
 
 /***/ }),
 
-/***/ "./src/common/product-control/search-list-control.js":
-/*!***********************************************************!*\
-  !*** ./src/common/product-control/search-list-control.js ***!
-  \***********************************************************/
+/***/ "./src/common/product-control/search-list-control.jsx":
+/*!************************************************************!*\
+  !*** ./src/common/product-control/search-list-control.jsx ***!
+  \************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -1682,8 +1682,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_transition_group__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! react-transition-group */ "./node_modules/react-transition-group/esm/CSSTransition.js");
 /* harmony import */ var _utils_local_storage__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../utils/local-storage */ "./src/common/utils/local-storage.js");
 /* harmony import */ var _hierarchy__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../hierarchy */ "./src/common/hierarchy.js");
-/* harmony import */ var _search_list_item__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./search-list-item */ "./src/common/product-control/search-list-item.js");
-/* harmony import */ var _tag__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../tag */ "./src/common/tag.js");
+/* harmony import */ var _search_list_item__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./search-list-item */ "./src/common/product-control/search-list-item.jsx");
+/* harmony import */ var _tag__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../tag */ "./src/common/tag.jsx");
 /* harmony import */ var _icons__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../icons */ "./src/common/icons/index.js");
 
 /**
@@ -2176,10 +2176,10 @@ SearchListControl.propTypes = {
 
 /***/ }),
 
-/***/ "./src/common/product-control/search-list-item.js":
-/*!********************************************************!*\
-  !*** ./src/common/product-control/search-list-item.js ***!
-  \********************************************************/
+/***/ "./src/common/product-control/search-list-item.jsx":
+/*!*********************************************************!*\
+  !*** ./src/common/product-control/search-list-item.jsx ***!
+  \*********************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -2725,10 +2725,10 @@ const DEFAULT_STATE = {
 
 /***/ }),
 
-/***/ "./src/common/product-control/view.js":
-/*!********************************************!*\
-  !*** ./src/common/product-control/view.js ***!
-  \********************************************/
+/***/ "./src/common/product-control/view.jsx":
+/*!*********************************************!*\
+  !*** ./src/common/product-control/view.jsx ***!
+  \*********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -2748,7 +2748,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_6__);
 /* harmony import */ var _state_actions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./state/actions */ "./src/common/product-control/state/actions.js");
-/* harmony import */ var _search_list_control__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./search-list-control */ "./src/common/product-control/search-list-control.js");
+/* harmony import */ var _search_list_control__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./search-list-control */ "./src/common/product-control/search-list-control.jsx");
 
 /**
  * External dependencies
@@ -3070,10 +3070,10 @@ const getProductVariations = ({
 
 /***/ }),
 
-/***/ "./src/common/tag.js":
-/*!***************************!*\
-  !*** ./src/common/tag.js ***!
-  \***************************/
+/***/ "./src/common/tag.jsx":
+/*!****************************!*\
+  !*** ./src/common/tag.jsx ***!
+  \****************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";

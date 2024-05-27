@@ -103,10 +103,10 @@ const config = env => {
 		// 		'react-spring': 'react-spring/web.cjs',
 		// 	},
 		// },
-		// module: {
-			// ...defaultConfig.module,
-			// rules: [
-				// ...defaultConfig.module.rules,
+		module: {
+			...defaultConfig.module,
+			rules: [
+				...defaultConfig.module.rules,
 				// {
 				// 	test: /\.(sa|sc|c)ss$/,
 				// 	use: [
@@ -117,37 +117,37 @@ const config = env => {
 				// 		// 'sass-loader',
 				// 	],
 				// },
-		// 		{
-		// 			test: /\.jsx?$/,
-		// 			loader: 'babel-loader',
-		// 			exclude: /node_modules/,
-		// 		},
-		// 		{
-		// 			test: /\.js?$/,
-		// 			use: {
-		// 				loader: 'babel-loader',
-		// 				options: {
-		// 					presets: [
-		// 						[
-		// 							'@babel/preset-env',
-		// 							{ loose: true, modules: 'commonjs' },
-		// 						],
-		// 					],
-		// 					plugins: [ 'transform-es2015-template-literals' ],
-		// 				},
-		// 			},
-		// 			include: new RegExp(
-		// 				'/node_modules/(' +
-		// 					'|acorn-jsx' +
-		// 					'|d3-array' +
-		// 					'|debug' +
-		// 					'|regexpu-core' +
-		// 					'|unicode-match-property-ecmascript' +
-		// 					'|unicode-match-property-value-ecmascript)/'
-		// 			),
-		// 		},
-		// 	],
-		// },
+				{
+					test: /\.jsx?$/,
+					loader: 'babel-loader',
+					exclude: /node_modules/,
+				},
+				{
+					test: /\.js?$/,
+					use: {
+						loader: 'babel-loader',
+						options: {
+							presets: [
+								[
+									'@babel/preset-env',
+									{ loose: true, modules: 'commonjs' },
+								],
+							],
+							plugins: [ 'transform-es2015-template-literals' ],
+						},
+					},
+					include: new RegExp(
+						'/node_modules/(' +
+							'|acorn-jsx' +
+							'|d3-array' +
+							'|debug' +
+							'|regexpu-core' +
+							'|unicode-match-property-ecmascript' +
+							'|unicode-match-property-value-ecmascript)/'
+					),
+				},
+			],
+		},
 	}
 }
 
