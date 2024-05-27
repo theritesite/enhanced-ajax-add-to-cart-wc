@@ -75,7 +75,7 @@ export class SearchListControl extends Component {
 	}
 
 	componentDidUpdate( prevProps ) {
-		const { onSearch, search, products, variations } = this.props;
+		const { onSearch, search, products, variations, selected } = this.props;
 		const persistedStateKey = 'eaa2c-product-control';
 		if ( search !== prevProps.search && typeof onSearch === 'function' ) {
 			onSearch( search );

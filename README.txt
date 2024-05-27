@@ -3,7 +3,7 @@ Contributors: theritesites
 Donate link: https://www.theritesites.com
 Tags: ajax button, add to cart, AJAX add to cart, shortcode, block, woocommerce
 Requires at least: 4.8.1
-Tested up to:      5.7
+Tested up to:      6.5
 Requires PHP:      5.6
 Stable tag:        trunk
 License: GPLv2 or later
@@ -238,6 +238,11 @@ At this point, no. This is designed to supplement your store to let the buttons 
 4. No title for quantity and button inputs
 
 == Changelog ==
+
+= 2.4.0 =
+* Updated to indicate compatibility with WooCommerce High Performance Order Storage!
+* Major upgrade to Block to catch up with updates in core WordPress
+* Minor bug fixes
 
 = 2.3.0 =
 * Added: New custom "View cart" text setting for the secondary button/link spawned after adding to cart.

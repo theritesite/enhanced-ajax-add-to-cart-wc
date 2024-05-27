@@ -125,53 +125,18 @@ if ( ! class_exists( 'TRS\EAA2C\Admin' ) ) {
 				return;
 			}
 
-			$dir = plugin_dir_path( dirname( __FILE__ ) ) . 'dist/blocks/';
-
-			$index_js = 'a2cp.js';
-			wp_register_script(
-				'a2cp-block-editor',
-				plugins_url( $index_js, $dir .'blocks/' ),
-				array(
-					'wp-blocks',
-					'wp-i18n',
-					'wp-element',
-					'wp-components',
-					'wp-block-editor',
-					'wp-editor',
-				),
-				filemtime( "$dir/$index_js" )
-			);
-
 			$buttonText = get_option( 'a2cp_default_text' );
 			$buttonText = empty( $buttonText ) || false == $buttonText ? __( 'Add to cart', 'woocommerce' ) : $buttonText;
 
-			wp_localize_script( 'a2cp-block-editor', 'A2C', array(
-				'ajax_url'			=> admin_url( 'admin-ajax.php' ),
-				'debug'				=> EAA2C_DEBUG,
-				'route'				=> get_site_url(),
-				'baseURL'			=> get_rest_url() ,
-				'nonce' 			=> wp_create_nonce( 'wp_rest' ),
-				'customClass'		=> get_option( 'a2cp_custom_class' ),
-				'buttonText'		=> $buttonText
-			) );
-
-			$dir = plugin_dir_path( dirname( __FILE__ ) ) . 'blocks/a2cp/';
-			$editor_css = 'editor.css';
-			wp_register_style(
-				'a2cp-block-editor-style',
-				plugins_url( $editor_css, $dir . 'a2cp/' ),
-				array(),
-				filemtime( "$dir/$editor_css" )
-			);
-
-			$common_dir = plugin_dir_path( dirname( __FILE__ ) ) . 'blocks/common/assets/css/';
-			$style_css = 'style.css';
-			wp_register_style(
-				'a2cp-block',
-				plugins_url( $style_css, $common_dir . 'css/' ),
-				array(),
-				filemtime( "$common_dir/$style_css" )
-			);
+			// wp_localize_script( 'a2cp-block-editor', 'A2C', array(
+			// 	'ajax_url'			=> admin_url( 'admin-ajax.php' ),
+			// 	'debug'				=> EAA2C_DEBUG,
+			// 	'route'				=> get_site_url(),
+			// 	'baseURL'			=> get_rest_url() ,
+			// 	'nonce' 			=> wp_create_nonce( 'wp_rest' ),
+			// 	'customClass'		=> get_option( 'a2cp_custom_class' ),
+			// 	'buttonText'		=> $buttonText
+			// ) );
 
 			$attributes = array(
 				'editMode' => array(
@@ -221,10 +186,10 @@ if ( ! class_exists( 'TRS\EAA2C\Admin' ) ) {
 					'default' => 'name',
 				),
 				'products' => array(
-					'type' => 'object',
+					'type' => 'array',
 					'default' => array(),
 					'items' => array (
-						'type'	=> 'array',
+						'type'	=> 'object',
 					),
 				),
 				'quantity' => array(
@@ -255,10 +220,12 @@ if ( ! class_exists( 'TRS\EAA2C\Admin' ) ) {
 				)
 			);
 
-			register_block_type( 'add-to-cart-pro/a2cp', array(
-				'editor_script' => 'a2cp-block-editor',
-				'editor_style'  => 'a2cp-block-editor-style',
-				'style'         => 'a2cp-block',
+			if ( /*WP_DEBUG ||*/ EAA2C_DEBUG ) {
+				error_log( "checking attributes in the block registration" );
+				error_log( wc_print_r( $attributes, true ) ) ;
+			}
+
+			register_block_type( plugin_dir_path( __DIR__ ) . 'build/a2cp/block.json', array(
 				'attributes' 	=> $attributes,
 				'render_callback' => array( $this, 'render_from_block' ),
 			) );

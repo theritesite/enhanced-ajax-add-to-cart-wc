@@ -38,8 +38,6 @@ export default class ProductControl extends Component {
 			// storageUtils.remove( persistedStateKey );
 			const serverState = { ...reducer.DEFAULT_STATE, selected };
 			const initialState = { ...serverState, ...persistedState };
-			// console.log( "this is initial state." );
-			// console.log( initialState );
 
 			const middlewares = [
 				thunk.withExtraArgument( args ),
@@ -102,7 +100,7 @@ export default class ProductControl extends Component {
 		// console.log( this.props );
 	
 		// if ( window.persistState ) {
-			storageUtils.setWithExpiry( persistedStateKey, { products, variations } );
+			// storageUtils.setWithExpiry( persistedStateKey, { products, variations } );
 			// storageUtils.setWithExpiry( persistedStateKey, state );
 			// console.log( "window.persistState is true and using storageUtils");
 			// console.log( storageUtils.getWithExpiry( persistedStateKey ) );
@@ -113,7 +111,6 @@ export default class ProductControl extends Component {
 	render() {
 		const { onChange, selected, multiple, onListRequest } = this.props;
 		const { products, variations } = this.state;
-		// console.log( "in view!" );
 		return (
 			<Provider store={ this.reduxStore }>
 				<ProductControler

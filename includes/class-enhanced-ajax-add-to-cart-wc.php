@@ -92,7 +92,11 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 			define( 'EAA2C_NAME', 'enhanced-ajax-add-to-cart-wc' );
 		}
 		if ( ! defined( 'EAA2C_DEBUG' ) ) {
-			$debug = get_option( 'eaa2c_debug', false );
+
+			$debug = get_option( 'a2cp_debug', false );
+			if ( $debug == '' ) {
+				$debug = get_option( 'eaa2c_debug', false );
+			}
 			if ( strcmp( $debug, 'true' ) === 0 || strcmp( $debug, 'on' ) === 0 ) {
 				$debug = true;
 			}
@@ -120,15 +124,15 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 	 */
 	private function load_dependencies() {
 
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/abstract-eaa2c-button.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/class-eaa2c-loader.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/class-eaa2c-settings.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/class-eaa2c-i18n.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/class-eaa2c-ajax.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/class-eaa2c-admin.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/class-eaa2c-public.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/class-eaa2c-single.php';
-		// require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/class-eaa2c-group.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/abstract-eaa2c-button.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-eaa2c-loader.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-eaa2c-settings.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-eaa2c-i18n.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-eaa2c-ajax.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-eaa2c-admin.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-eaa2c-public.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-eaa2c-single.php';
+		// require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-eaa2c-group.php';
 
 		$this->loader = new Loader();
 

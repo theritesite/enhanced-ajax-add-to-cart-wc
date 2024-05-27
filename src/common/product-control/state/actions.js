@@ -150,7 +150,9 @@ function shouldFetchProducts( state, selected, search, args ) {
 	} else if ( isLoading ) {
 		return false;
 	} else {
-		console.error( "there was an error with products fetching." );
+		if ( products.length <= 0 ) {
+			console.error( "there was an error with products fetching." );
+		}
 		return false;
 	}
 }

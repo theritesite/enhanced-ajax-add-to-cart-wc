@@ -62,7 +62,8 @@ if ( ! class_exists( 'TRS\EAA2C\Front' ) ) {
 
 			$plugin = defined( 'EAA2C_NAME' ) ? EAA2C_NAME : '';
 			$index_js = 'eaa2c-submit.js';
-			$js_file =  plugin_dir_url( __DIR__ ) . 'assets/js/enhanced-ajax-add-to-cart-wc-public.js';
+			$js_file =  plugin_dir_url( __DIR__ ) . 'build/request.js';
+			// $js_file =  plugin_dir_url( __DIR__ ) . 'assets/js/enhanced-ajax-add-to-cart-wc-public.js';
 
 			$path = realpath( dirname( __DIR__ ) ) . '/dist/request/';
 			if ( file_exists( $path . $index_js ) && ! ( EAA2C_DEBUG || WP_DEBUG ) ) {
