@@ -3,6 +3,10 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "X-Generator: babel-plugin-makepot\n"
 
-#: src/a2cp/edit.js:35
+#: src/a2cp/edit.js:100
 msgid "A2cp – hello from the editor!"
+msgstr ""
+
+#: src/a2cp/edit.js:41
+msgid "Add to cart"
 msgstr ""

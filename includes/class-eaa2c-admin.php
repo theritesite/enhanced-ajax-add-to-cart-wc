@@ -257,13 +257,13 @@ if ( ! class_exists( 'TRS\EAA2C\Admin' ) ) {
 			);
 
 			error_log("registering... " . plugin_dir_path( __DIR__ ) . 'build/a2cp');
-			register_block_type( plugin_dir_path( __DIR__ ) . 'build/a2cp/block.json'/*, array(
+			register_block_type( plugin_dir_path( __DIR__ ) . 'build/a2cp/block.json', array(
 				// 'editor_script' => 'a2cp-block-editor',
 				// 'editor_style'  => 'a2cp-block-editor-style',
 				// 'style'         => 'a2cp-block',
 				'attributes' 	=> $attributes,
 				'render_callback' => array( $this, 'render_from_block' ),
-			) */);
+			) );
 			error_log("after: " . (in_array( 'add-to-cart-pro/a2cp', get_dynamic_block_names()) ? 'true' : 'false' ));
 
 		}

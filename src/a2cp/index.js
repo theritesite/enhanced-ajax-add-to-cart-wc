@@ -3,6 +3,7 @@
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
  */
+import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
 
 /**
@@ -26,6 +27,17 @@ import metadata from './block.json';
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
  */
 registerBlockType( metadata.name, {
+	title: 'AJAX Add to Cart Block',
+	icon: 'cart',
+	category: 'widgets',
+	description: __(
+		'Non-redirect add to cart button wherever you want!',
+		'enhanced-ajax-add-to-cart-wc'
+	),
+	supports: {
+		html: false,
+		align: true,
+	},
 	/**
 	 * @see ./edit.js
 	 */

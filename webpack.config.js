@@ -1,4 +1,5 @@
 const path = require( 'path' );
+const DependencyExtractionWebpackPlugin = require( '@wordpress/dependency-extraction-webpack-plugin' );
 const defaultConfig = require( "@wordpress/scripts/config/webpack.config" );
 const getNewPreconfiguredPlugins = require("./shared-configs/webpack-configs/plugins.webpack-config")
 
@@ -10,30 +11,41 @@ const config = env => {
 	console.log(env.NODE_ENV);
 	console.log(env.LOC);
 
-	// const requestToExternal = request => {
-	// 	const wcDepMap = {
-	// 		'@wordpress/api-fetch':  [ 'window',  'wp', 'apiFetch' ],
-	// 		'@wordpress/blocks':  [ 'window',  'wp', 'blocks' ],
-	// 		'@wordpress/data':  [ 'window',  'wp', 'data' ],
-	// 		'@wordpress/editor':  [ 'window',  'wp', 'editor' ],
-	// 		'@wordpress/element':  [ 'window',  'wp', 'element' ],
-	// 		'@wordpress/hooks':  [ 'window',  'wp', 'hooks' ],
-	// 		'@wordpress/url':  [ 'window',  'wp', 'url' ],
-	// 		'@wordpress/html-entities':  [ 'window',  'wp', 'htmlEntities' ],
-	// 		'@wordpress/i18n':  [ 'window',  'wp', 'i18n' ],
-	// 		'@wordpress/keycodes':  [ 'window',  'wp', 'keycodes' ],
-	// 		react: 'React',
-	// 		lodash: 'lodash',
-	// 		'react-dom': 'ReactDOM',
-	// 	};
+	const requestToExternal = request => {
+		const wcDepMap = {
+			'@wordpress/api-fetch':  [ 'window',  'wp', 'apiFetch' ],
+			'@wordpress/blocks':  [ 'window',  'wp', 'blocks' ],
+			'@wordpress/data':  [ 'window',  'wp', 'data' ],
+			'@wordpress/editor':  [ 'window',  'wp', 'editor' ],
+			'@wordpress/element':  [ 'window',  'wp', 'element' ],
+			'@wordpress/hooks':  [ 'window',  'wp', 'hooks' ],
+			'@wordpress/url':  [ 'window',  'wp', 'url' ],
+			'@wordpress/html-entities':  [ 'window',  'wp', 'htmlEntities' ],
+			'@wordpress/i18n':  [ 'window',  'wp', 'i18n' ],
+			'@wordpress/keycodes':  [ 'window',  'wp', 'keycodes' ],
+			react: 'React',
+			lodash: 'lodash',
+			'react-dom': 'ReactDOM',
+		};
 
-	// 	if ( wcDepMap[ request ] ) {
-	// 		return wcDepMap[ request ];
-	// 	}
-	// };
+		if ( wcDepMap[ request ] ) {
+			return wcDepMap[ request ];
+		}
+	};
 
 	const requestToHandle = request => {
 	};
+
+	const pluginList = [
+		...defaultConfig.plugins.filter(
+			plugin => plugin.constructor.name !== 'DependencyExtractionWebpackPlugin',
+		),
+		new DependencyExtractionWebpackPlugin( {
+			injectPolyfill: true,
+			requestToExternal,
+			requestToHandle,
+		} ),
+	];
 
 	let newPluginsAvailable = getNewPreconfiguredPlugins(env.NODE_ENV, env.LOC, pluginSlug, buildFolder, __dirname)
 
@@ -51,7 +63,7 @@ const config = env => {
 
 	return {
 		...defaultConfig,
-		plugins: [...defaultConfig.plugins, newPluginsAvailable.definePlugin],
+		plugins: [...pluginList, newPluginsAvailable.definePlugin],
 		watchOptions: {
 			ignored: ['**/build/**', '**/node_modules'],
 		},

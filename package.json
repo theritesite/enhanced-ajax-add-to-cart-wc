@@ -52,7 +52,7 @@
     "start-m": "wp-scripts build --mode=development --env NODE_ENV=development --env LOC=mac --watch",
     "build-c": "wp-scripts build --mode=production --env NODE_ENV=production --env LOC=corsair",
     "build-m": "wp-scripts build --mode=production --env NODE_ENV=production --env LOC=mac",
-    "start-m1": "wp-scripts build --mode=development --env NODE_ENV=development --env LOC=m1 --watch",
+    "start-m1": "wp-scripts start --mode=development --env NODE_ENV=development --env LOC=m1 ",
     "start-m1-nw": "wp-scripts build --mode=development --env NODE_ENV=development --env LOC=m1",
     "build-m1": "wp-scripts build --mode=production --env NODE_ENV=production --env LOC=m1",
     "build": "wp-scripts build",
