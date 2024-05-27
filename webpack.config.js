@@ -10,7 +10,7 @@ const buildFolder  = path.resolve( __dirname, pluginSlug );
 const config = env => {
 	console.log(env.NODE_ENV);
 	console.log(env.LOC);
-
+	
 	const requestToExternal = request => {
 		const wcDepMap = {
 			'@wordpress/api-fetch':  [ 'window',  'wp', 'apiFetch' ],
@@ -54,12 +54,10 @@ const config = env => {
 		// 'a2cp-group',
 	];
 
-	// const entryPoints = {};
-	// A2CPackages.forEach( ( name ) => {
-	// 	entryPoints[ name ] = `./src/${ name }`;
-	// } );
-
-	// entryPoints['request'] = path.resolve(__dirname, 'assets/js', pluginSlug + '-public.js');
+	// console.log(defaultConfig.entry());
+	let entries = defaultConfig.entry()
+	entries['request'] = path.resolve(__dirname, 'assets/js', pluginSlug + '-public.js')
+	// console.log(entries);
 
 	return {
 		...defaultConfig,
@@ -67,16 +65,28 @@ const config = env => {
 		watchOptions: {
 			ignored: ['**/build/**', '**/node_modules'],
 		},
-		// entry: {
-		// 	...entryPoints
-		// },
+		entry: {
+			...entries,
+			// ...defaultConfig.entry,
+			// a2cp: path.resolve(__dirname, 'src/a2cp'),
+		},
+		// output: {
+		// 	...defaultConfig.output,
+		// 	filename: ( data ) => {
+		// 		console.log("sending file name: ", data)
+		// 		return A2CPackages.includes( data.chunk.name )
+		// 			? './build/a2cp/[name].js'
+		// 			: './build/[name]/a2c-submit.js';
+		// 	},
+		// }
 		// output: {
 		// 	filename: ( data ) => {
 		// 		return A2CPackages.includes( data.chunk.name )
 		// 			? './dist/blocks/[name].js'
 		// 			: './dist/[name]/a2c-submit.js';
 		// 	},
-		// 	path: __dirname,
+			// filename: 'build/[name].js'
+			// path: path.resolve( __dirname, 'build'),
 		// 	library: [ 'trs', '[modulename]' ],
 		// 	libraryTarget: 'this',
 		// },
