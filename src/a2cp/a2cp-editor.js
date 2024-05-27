@@ -21,31 +21,29 @@ import _ from 'lodash';
 
 export default function A2cpEditor( attributes ) {
 
-    const { contentOrder, setAttributes } = attributes;
+    const { contentOrder, setAttributes, products } = attributes;
     const [ list, setList ] = useState([]);
 	const [ selectedComponent, setSelectedComponent ] = useState('');
 	const [ editItem, setEditItem ] = useState('default');
 
     const onDone = () => {
         setAttributes( { editMode: false } );
-        debouncedSpeak(
-            __(
-                'Showing AJAX Add to Cart block preview.',
-                'enhanced-ajax-add-to-cart-wc'
-            )
-        );
+        // debouncedSpeak(
+        //     __(
+        //         'Showing AJAX Add to Cart block preview.',
+        //         'enhanced-ajax-add-to-cart-wc'
+        //     )
+        // );
     };
 
 	const getItemControls = ( item, index ) => {
 		const { contentVisibility, buttonText, quantity, titleAction, titleType } = attributes;
-		// const { editItem, selectedComponent } = this.state;
 		const itemClassList = contentVisibility[ item ] === true ? 'trs-inner-wrapper' : 'trs-inner-wrapper disabled-item';
 		const tempItem = editItem !== 'min' && editItem !== 'max' ? 'default' : editItem;
 
 		return (
-			<div key={ index } className={ itemClassList } onClick={ (e) => {  setSelectedComponent( item ) } }>
+			<div key={ index } className={ itemClassList } onClick={ (e) => { setSelectedComponent( item ) } }>
 				<span className="dashicons dashicons-menu-alt3"></span>
-				<p>control!</p>
 				<A2CControl
 					key={ index }
 					onChange={ ( value ) => {
@@ -297,8 +295,14 @@ export default function A2cpEditor( attributes ) {
 		);
 	}
 
-    console.log("in editor: ", attributes);
-    console.log("order: ", contentOrder);
+	const onChangeSelected = ( newSelected = [] ) => {
+		setAttributes({ products: newSelected });
+	}
+
+	const onListRequest = ( newList = [] ) => {
+		setList( newList );
+	}
+
     return (
         <Placeholder
 			label={ __(
@@ -312,15 +316,8 @@ export default function A2cpEditor( attributes ) {
 				
 				<ProductControl
 					selected={ attributes.products }
-					onChange={ ( value = [] ) => {
-						const selected = value;
-						// console.log( "about to set products attribute from selected products" );
-						setAttributes( { products: selected } );
-					} }
-					onListRequest={ (value = [] ) => {
-						const list = value;
-						setList( list );
-					} }
+					onChange={ onChangeSelected }
+					onListRequest={ onListRequest }
 					multiple={ false }
 				/>
 				<Button onClick={ onDone }>

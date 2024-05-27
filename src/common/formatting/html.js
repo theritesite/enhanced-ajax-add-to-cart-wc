@@ -1,4 +1,4 @@
-export const createValidHtml = ( inputHtml ) => {
+export const createValidHtml = ( {inputHtml} ) => {
 	if ( inputHtml.length ) {
 
 		var html = inputHtml;

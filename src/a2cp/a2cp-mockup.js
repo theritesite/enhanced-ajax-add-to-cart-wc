@@ -19,7 +19,6 @@ import { formatPrice } from '../common/formatting/price';
 export default function A2cpMockup( attributes, className ) {
 
 	const { buttonText, contentVisibility, contentOrder, products, quantity, titleType } = attributes;
-	console.log( "In render view mode." );
 
 	let customClass = '';
 
@@ -27,12 +26,8 @@ export default function A2cpMockup( attributes, className ) {
 		let customClassSetting = global.A2C.customClass;
 		customClass = customClassSetting.replace(/(<([^>]+)>)/ig,"");
 	}
-	console.log("in mockup: ", attributes);
-    console.log("className: ", className);
 	if ( products[0] ) {
-		// console.log( "product(s) 'exist'" );
 		if ( products[0].id > 0 ) {
-			// console.log( products );
 			const product = products[0];
 			const title = product[titleType];
 			return (

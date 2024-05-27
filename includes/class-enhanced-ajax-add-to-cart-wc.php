@@ -92,7 +92,11 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 			define( 'EAA2C_NAME', 'enhanced-ajax-add-to-cart-wc' );
 		}
 		if ( ! defined( 'EAA2C_DEBUG' ) ) {
-			$debug = get_option( 'eaa2c_debug', false );
+
+			$debug = get_option( 'a2cp_debug', false );
+			if ( $debug == '' ) {
+				$debug = get_option( 'eaa2c_debug', false );
+			}
 			if ( strcmp( $debug, 'true' ) === 0 || strcmp( $debug, 'on' ) === 0 ) {
 				$debug = true;
 			}
@@ -304,7 +308,6 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 
 		$this->plugin_admin = new Admin();
 
-		error_log("enqueueing");
 		$this->loader->add_action( 'init', $this->plugin_admin, 'register_a2cp_single', 9999 );
 		$this->loader->add_action( 'admin_enqueue_scripts', $this->plugin_admin, 'register_scripts' );
 

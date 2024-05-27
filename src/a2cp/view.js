@@ -21,5 +21,5 @@
  */
  
 /* eslint-disable no-console */
-console.log("Hello World! (from add-to-cart-pro-a2cp block)");
+// console.log("Hello World! (from add-to-cart-pro-a2cp block)");
 /* eslint-enable no-console */

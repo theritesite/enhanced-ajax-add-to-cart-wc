@@ -27,70 +27,6 @@ import A2cpInspector from './a2cp-inspector'
 import A2cpEditor from './a2cp-editor'
 import A2cpMockup from './a2cp-mockup'
 
-let trs_a2c_defaultContentOrder = [
-	'title',
-	'separator',
-	'price',
-	'quantity',
-	'button',
-];
-
-let trs_a2c_defaultContentVisibility = {
-	title: true,
-	separator: true,
-	price: true,
-	quantity: true,
-	button: true,
-}
-
-let trs_a2c_defaultButtonText = __( 'Add to cart', 'woocommerce' );
-
-let helpers={
-	editMode: {
-		type: 'boolean',
-		default: true,
-	},
-	isPreview: {
-		type: 'boolean',
-		default: false,
-	},
-	contentVisibility: {
-		type: 'object',
-		default: trs_a2c_defaultContentVisibility,
-	},
-	contentOrder: {
-		type: 'array',
-		default: trs_a2c_defaultContentOrder,
-	},
-	buttonText: {
-		type: 'string',
-		default: trs_a2c_defaultButtonText,
-	},
-	quantity: {
-		type: 'object',
-		default: {
-			default: 1,
-			min: 1,
-			max: -1,
-		},
-	},
-	titleAction: {
-		type: 'string',
-		default: '',
-	},
-	titleType: {
-		type: 'string',
-		default: 'full',
-	},
-	products: {
-		type: 'array',
-		default: [],
-	},
-	variations: {
-		type: 'array',
-		default: [],
-	},
-}
 /**
  * The edit function describes the structure of your block in the context of the
  * editor. This represents what the editor will render when the block is used.
@@ -112,10 +48,6 @@ export default function Edit( { attributes, setAttributes, className } ) {
 			<A2cpMockup {...attributes} className={className} />
 		)
 	}
-
-	console.log("rendering edit");
-	console.log(useBlockProps());
-	console.log(attributes);
 
 	const { editMode } = attributes;
 	return (

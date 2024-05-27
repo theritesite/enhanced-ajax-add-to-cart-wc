@@ -195,8 +195,6 @@ export default function A2cpInspector( attributes ) {
 		);
 	}
 
-    console.log("in inspector: ", attributes);
-    console.log("order: ", contentOrder);
     return (
         <InspectorControls>
             <PanelBody

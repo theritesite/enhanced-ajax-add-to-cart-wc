@@ -129,7 +129,8 @@ __webpack_require__.r(__webpack_exports__);
 function A2cpEditor(attributes) {
   const {
     contentOrder,
-    setAttributes
+    setAttributes,
+    products
   } = attributes;
   const [list, setList] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_6__.useState)([]);
   const [selectedComponent, setSelectedComponent] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_6__.useState)('');
@@ -138,7 +139,12 @@ function A2cpEditor(attributes) {
     setAttributes({
       editMode: false
     });
-    debouncedSpeak((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Showing AJAX Add to Cart block preview.', 'enhanced-ajax-add-to-cart-wc'));
+    // debouncedSpeak(
+    //     __(
+    //         'Showing AJAX Add to Cart block preview.',
+    //         'enhanced-ajax-add-to-cart-wc'
+    //     )
+    // );
   };
   const getItemControls = (item, index) => {
     const {
@@ -148,7 +154,6 @@ function A2cpEditor(attributes) {
       titleAction,
       titleType
     } = attributes;
-    // const { editItem, selectedComponent } = this.state;
     const itemClassList = contentVisibility[item] === true ? 'trs-inner-wrapper' : 'trs-inner-wrapper disabled-item';
     const tempItem = editItem !== 'min' && editItem !== 'max' ? 'default' : editItem;
     return (0,react__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
@@ -159,7 +164,7 @@ function A2cpEditor(attributes) {
       }
     }, (0,react__WEBPACK_IMPORTED_MODULE_1__.createElement)("span", {
       className: "dashicons dashicons-menu-alt3"
-    }), (0,react__WEBPACK_IMPORTED_MODULE_1__.createElement)("p", null, "control!"), (0,react__WEBPACK_IMPORTED_MODULE_1__.createElement)(_common_a2c_control__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    }), (0,react__WEBPACK_IMPORTED_MODULE_1__.createElement)(_common_a2c_control__WEBPACK_IMPORTED_MODULE_4__["default"], {
       key: index,
       onChange: value => {
         const temp = JSON.parse(JSON.stringify(contentVisibility));
@@ -372,8 +377,14 @@ function A2cpEditor(attributes) {
       ref: draggableProvided.innerRef
     }, draggableProvided.draggableProps, draggableProvided.dragHandleProps), item.component))), droppableProvided.placeholder))));
   };
-  console.log("in editor: ", attributes);
-  console.log("order: ", contentOrder);
+  const onChangeSelected = (newSelected = []) => {
+    setAttributes({
+      products: newSelected
+    });
+  };
+  const onListRequest = (newList = []) => {
+    setList(newList);
+  };
   return (0,react__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__.Placeholder, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('AJAX Add to Cart button', 'enhanced-ajax-add-to-cart-wc'),
     className: "a2cp-block-placeholder"
@@ -381,17 +392,8 @@ function A2cpEditor(attributes) {
     className: "a2cp-block"
   }, displayControls(), (0,react__WEBPACK_IMPORTED_MODULE_1__.createElement)(_common_product_control__WEBPACK_IMPORTED_MODULE_5__["default"], {
     selected: attributes.products,
-    onChange: (value = []) => {
-      const selected = value;
-      // console.log( "about to set products attribute from selected products" );
-      setAttributes({
-        products: selected
-      });
-    },
-    onListRequest: (value = []) => {
-      const list = value;
-      setList(list);
-    },
+    onChange: onChangeSelected,
+    onListRequest: onListRequest,
     multiple: false
   }), (0,react__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__.Button, {
     onClick: onDone
@@ -627,8 +629,6 @@ function A2cpInspector(attributes) {
       }
     }, "done"))) : '') : '');
   };
-  console.log("in inspector: ", attributes);
-  console.log("order: ", contentOrder);
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.InspectorControls, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.PanelBody, {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Content', 'enhanced-ajax-add-to-cart-wc'),
     className: "a2cp-content-container",
@@ -690,18 +690,13 @@ function A2cpMockup(attributes, className) {
     quantity,
     titleType
   } = attributes;
-  console.log("In render view mode.");
   let customClass = '';
   if (__webpack_require__.g.A2C && __webpack_require__.g.A2C.customClass !== undefined && __webpack_require__.g.A2C.customClass.length > 0) {
     let customClassSetting = __webpack_require__.g.A2C.customClass;
     customClass = customClassSetting.replace(/(<([^>]+)>)/ig, "");
   }
-  console.log("in mockup: ", attributes);
-  console.log("className: ", className);
   if (products[0]) {
-    // console.log( "product(s) 'exist'" );
     if (products[0].id > 0) {
-      // console.log( products );
       const product = products[0];
       const title = product[titleType];
       return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -817,61 +812,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-let trs_a2c_defaultContentOrder = ['title', 'separator', 'price', 'quantity', 'button'];
-let trs_a2c_defaultContentVisibility = {
-  title: true,
-  separator: true,
-  price: true,
-  quantity: true,
-  button: true
-};
-let trs_a2c_defaultButtonText = (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Add to cart', 'woocommerce');
-let helpers = {
-  editMode: {
-    type: 'boolean',
-    default: true
-  },
-  isPreview: {
-    type: 'boolean',
-    default: false
-  },
-  contentVisibility: {
-    type: 'object',
-    default: trs_a2c_defaultContentVisibility
-  },
-  contentOrder: {
-    type: 'array',
-    default: trs_a2c_defaultContentOrder
-  },
-  buttonText: {
-    type: 'string',
-    default: trs_a2c_defaultButtonText
-  },
-  quantity: {
-    type: 'object',
-    default: {
-      default: 1,
-      min: 1,
-      max: -1
-    }
-  },
-  titleAction: {
-    type: 'string',
-    default: ''
-  },
-  titleType: {
-    type: 'string',
-    default: 'full'
-  },
-  products: {
-    type: 'array',
-    default: []
-  },
-  variations: {
-    type: 'array',
-    default: []
-  }
-};
+
 /**
  * The edit function describes the structure of your block in the context of the
  * editor. This represents what the editor will render when the block is used.
@@ -895,9 +836,6 @@ function Edit({
       className: className
     }));
   };
-  console.log("rendering edit");
-  console.log((0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.useBlockProps)());
-  console.log(attributes);
   const {
     editMode
   } = attributes;
@@ -1194,7 +1132,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   createValidHtml: () => (/* binding */ createValidHtml)
 /* harmony export */ });
-const createValidHtml = inputHtml => {
+const createValidHtml = ({
+  inputHtml
+}) => {
   if (inputHtml.length) {
     var html = inputHtml;
     var div = document.createElement("div");
@@ -1626,9 +1566,6 @@ class ProductControl extends _wordpress_element__WEBPACK_IMPORTED_MODULE_3__.Com
         ...serverState,
         ...persistedState
       };
-      // console.log( "this is initial state." );
-      // console.log( initialState );
-
       const middlewares = [redux_thunk__WEBPACK_IMPORTED_MODULE_10__["default"].withExtraArgument(args), _utils_local_api_middleware__WEBPACK_IMPORTED_MODULE_6__["default"]];
       const enhancers = [(0,redux__WEBPACK_IMPORTED_MODULE_11__.applyMiddleware)(...middlewares)].filter(Boolean);
       const store = (0,redux__WEBPACK_IMPORTED_MODULE_11__.compose)(...enhancers)(redux__WEBPACK_IMPORTED_MODULE_11__.createStore)(_state_reducer__WEBPACK_IMPORTED_MODULE_2__["default"], initialState);
@@ -1679,10 +1616,7 @@ class ProductControl extends _wordpress_element__WEBPACK_IMPORTED_MODULE_3__.Com
     // console.log( this.props );
 
     // if ( window.persistState ) {
-    _utils_local_storage__WEBPACK_IMPORTED_MODULE_5__.setWithExpiry(persistedStateKey, {
-      products,
-      variations
-    });
+    // storageUtils.setWithExpiry( persistedStateKey, { products, variations } );
     // storageUtils.setWithExpiry( persistedStateKey, state );
     // console.log( "window.persistState is true and using storageUtils");
     // console.log( storageUtils.getWithExpiry( persistedStateKey ) );
@@ -1700,7 +1634,6 @@ class ProductControl extends _wordpress_element__WEBPACK_IMPORTED_MODULE_3__.Com
       products,
       variations
     } = this.state;
-    // console.log( "in view!" );
     return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_redux__WEBPACK_IMPORTED_MODULE_4__.Provider, {
       store: this.reduxStore
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_view__WEBPACK_IMPORTED_MODULE_1__["default"], {
@@ -1812,7 +1745,8 @@ class SearchListControl extends _wordpress_element__WEBPACK_IMPORTED_MODULE_3__.
       onSearch,
       search,
       products,
-      variations
+      variations,
+      selected
     } = this.props;
     const persistedStateKey = 'eaa2c-product-control';
     if (search !== prevProps.search && typeof onSearch === 'function') {
@@ -2577,7 +2511,9 @@ function shouldFetchProducts(state, selected, search, args) {
   } else if (isLoading) {
     return false;
   } else {
-    console.error("there was an error with products fetching.");
+    if (products.length <= 0) {
+      console.error("there was an error with products fetching.");
+    }
     return false;
   }
 }
@@ -2865,7 +2801,6 @@ class ProductControler extends _wordpress_element__WEBPACK_IMPORTED_MODULE_3__.C
     // if ( ! list ) {
     // 	this.setState({ list: products });
     // }
-    // console.log( "in render view" );
     if (error) {
       return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "error ", error.status);
     }

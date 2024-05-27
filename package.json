@@ -1,6 +1,6 @@
 {
   "name": "enhanced-ajax-add-to-cart-wc",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "Creates a shortcode or block for you to be able to add an AJAX button with an associated quantity for you WooCommerce Product",
   "main": "public/js/index.js",
   "author": "theritesites",

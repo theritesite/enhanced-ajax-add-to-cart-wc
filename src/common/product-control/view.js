@@ -61,7 +61,6 @@ export class ProductControler extends Component {
 		// if ( ! list ) {
 		// 	this.setState({ list: products });
 		// }
-		// console.log( "in render view" );
 		if ( error ) {
 			return <p>error { error.status }</p>;
 		}

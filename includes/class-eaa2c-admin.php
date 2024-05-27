@@ -186,10 +186,10 @@ if ( ! class_exists( 'TRS\EAA2C\Admin' ) ) {
 					'default' => 'name',
 				),
 				'products' => array(
-					'type' => 'object',
+					'type' => 'array',
 					'default' => array(),
 					'items' => array (
-						'type'	=> 'array',
+						'type'	=> 'object',
 					),
 				),
 				'quantity' => array(
@@ -219,6 +219,11 @@ if ( ! class_exists( 'TRS\EAA2C\Admin' ) ) {
 					),
 				)
 			);
+
+			if ( /*WP_DEBUG ||*/ EAA2C_DEBUG ) {
+				error_log( "checking attributes in the block registration" );
+				error_log( wc_print_r( $attributes, true ) ) ;
+			}
 
 			register_block_type( plugin_dir_path( __DIR__ ) . 'build/a2cp/block.json', array(
 				'attributes' 	=> $attributes,
