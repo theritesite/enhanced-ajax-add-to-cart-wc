@@ -1,7 +1,7 @@
 === Enhanced AJAX Add to Cart for WooCommerce ===
 Contributors: theritesites
 Donate link: https://www.theritesites.com
-Tags: ajax button, add to cart, AJAX add to cart, shortcode, block, woocommerce
+Tags: add to cart, AJAX add to cart, shortcode, block, woocommerce
 Requires at least: 4.8.1
 Tested up to:      6.5
 Requires PHP:      5.6

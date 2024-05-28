@@ -25,29 +25,31 @@ module.exports = ( mode, loc, pluginSlug, buildFolder, baseDir ) => {
 		console.log("build folder:" + buildFolder)
 		definePlugin = new CopyWebpackPlugin( {
 			patterns: [
-				// { from: path.resolve( baseDir, 'assets' ) + '/**', to: buildFolder },
+				{ from: path.resolve( baseDir, 'assets' ) + '/**', to: buildFolder },
 				// { from: path.resolve( baseDir, 'blocks' ) + '/**', to: buildFolder },
 				// { from: path.resolve( baseDir, 'dist' ) + '/**', to: buildFolder },
 				{ from: path.resolve( baseDir, 'build' ) + '/**', to: buildFolder },
 				{ from: path.resolve( baseDir, 'languages' ) + '/**', to: buildFolder },
 				{ from: path.resolve( baseDir, 'includes' ) + '/**', to: buildFolder },
-				{ from: path.resolve( baseDir, 'src' ) + '/**', to: buildFolder },
+				// { from: path.resolve( baseDir, 'src' ) + '/**', to: buildFolder },
 				{ from: path.resolve( baseDir, 'woo-includes' ) + '/**', to: buildFolder },
 				// { from: path.resolve( baseDir, 'vendor' ) + '/**', to: buildFolder },
-				{ from: path.resolve( baseDir, 'readme.txt' ), to: buildFolder },
-				{ from: path.resolve( baseDir, 'enhanced-ajax-add-to-cart-wc.php' ), to: buildFolder },
+				{ from: path.resolve( baseDir, 'README.txt' ), to: buildFolder },
+				{ from: path.resolve( baseDir, 'LICENSE.txt' ), to: buildFolder },
+				{ from: path.resolve( baseDir, '*.php' ), to: buildFolder },
 				/** Above is what will be zipped. Below is code for repositories **/
-				// { from: path.resolve( baseDir, 'assets' ) + '/**', to: endFolder },
+				{ from: path.resolve( baseDir, 'assets' ) + '/**', to: endFolder },
 				// { from: path.resolve( baseDir, 'blocks' ) + '/**', to: endFolder },
 				// { from: path.resolve( baseDir, 'dist' ) + '/**', to: endFolder },
 				{ from: path.resolve( baseDir, 'build' ) + '/**', to: endFolder },
 				{ from: path.resolve( baseDir, 'languages' ) + '/**', to: endFolder },
 				{ from: path.resolve( baseDir, 'includes' ) + '/**', to: endFolder },
-				{ from: path.resolve( baseDir, 'src' ) + '/**', to: endFolder },
+				// { from: path.resolve( baseDir, 'src' ) + '/**', to: endFolder },
 				{ from: path.resolve( baseDir, 'woo-includes' ) + '/**', to: endFolder },
 				// { from: path.resolve( baseDir, 'vendor' ) + '/**', to: endFolder },
-				{ from: path.resolve( baseDir, 'readme.txt' ), to: endFolder },
-				{ from: path.resolve( baseDir, 'enhanced-ajax-add-to-cart-wc.php' ), to: endFolder }
+				{ from: path.resolve( baseDir, 'README.txt' ), to: endFolder },
+				{ from: path.resolve( baseDir, 'LICENSE.txt' ), to: endFolder },
+				{ from: path.resolve( baseDir, '*.php' ), to: endFolder }
 			]
 		} );
 	} else {
@@ -55,7 +57,7 @@ module.exports = ( mode, loc, pluginSlug, buildFolder, baseDir ) => {
 		console.log("dev folder: " + devFolder );
 		definePlugin = new CopyWebpackPlugin( {
 			patterns: [
-				// { from: path.resolve( baseDir, 'assets' ) + '/**', to: devFolder },
+				{ from: path.resolve( baseDir, 'assets' ) + '/**', to: devFolder },
 				// { from: path.resolve( baseDir, 'blocks' ) + '/**', to: devFolder },
 				// { from: path.resolve( baseDir, 'dist' ) + '/**', to: devFolder },
 				{ from: path.resolve( baseDir, 'build' ) + '/**', to: devFolder },
@@ -64,8 +66,9 @@ module.exports = ( mode, loc, pluginSlug, buildFolder, baseDir ) => {
 				{ from: path.resolve( baseDir, 'src' ) + '/**', to: devFolder },
 				{ from: path.resolve( baseDir, 'woo-includes' ) + '/**', to: devFolder },
 				// { from: path.resolve( baseDir, 'vendor' ) + '/**', to: devFolder },
-				{ from: path.resolve( baseDir, 'readme.txt' ), to: devFolder },
-				{ from: path.resolve( baseDir, 'enhanced-ajax-add-to-cart-wc.php' ), to: devFolder },
+				{ from: path.resolve( baseDir, 'README.txt' ), to: devFolder },
+				{ from: path.resolve( baseDir, 'LICENSE.txt' ), to: devFolder },
+				{ from: path.resolve( baseDir, '*.php' ), to: devFolder },
 			]
 		} )
 	}

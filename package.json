@@ -7,10 +7,12 @@
   "license": "GPLv2",
   "private": true,
   "files": [
+      "assets",
       "woo-includes",
       "includes",
       "build",
       "languages",
+      "index.php",
       "enhanced-ajax-add-to-cart-wc.php",
       "LICENSE.txt",
       "README.txt",

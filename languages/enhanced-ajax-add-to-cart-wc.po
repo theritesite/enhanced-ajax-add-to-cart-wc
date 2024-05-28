@@ -23,38 +23,38 @@ msgstr ""
 msgid "Non-redirect add to cart button wherever you want!"
 msgstr ""
 
-#: src/common/product-control/search-list-control.jsx:26
+#: src/common/product-control/search-list-control.jsx:34
 msgid "Clear all selected items"
 msgstr ""
 
-#: src/common/product-control/search-list-control.jsx:27
+#: src/common/product-control/search-list-control.jsx:35
 msgid "Results"
 msgstr ""
 
-#: src/common/product-control/search-list-control.jsx:28
+#: src/common/product-control/search-list-control.jsx:354
+msgid "Clear all"
+msgstr ""
+
+#: src/common/product-control/search-list-control.jsx:36
 msgid "No items found."
 msgstr ""
 
-#: src/common/product-control/search-list-control.jsx:29
+#: src/common/product-control/search-list-control.jsx:37
 msgid "No results for %s"
 msgstr ""
 
-#: src/common/product-control/search-list-control.jsx:30
+#: src/common/product-control/search-list-control.jsx:38
 msgid "Search for items"
 msgstr ""
 
-#: src/common/product-control/search-list-control.jsx:31
+#: src/common/product-control/search-list-control.jsx:41
 msgid "%d item selected"
 msgid_plural "%d items selected"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/common/product-control/search-list-control.jsx:32
+#: src/common/product-control/search-list-control.jsx:49
 msgid "Search results updated."
-msgstr ""
-
-#: src/common/product-control/search-list-control.jsx:340
-msgid "Clear all"
 msgstr ""
 
 #: src/common/product-control/view.jsx:17
@@ -69,20 +69,20 @@ msgstr ""
 msgid "Your store doesn't have any products."
 msgstr ""
 
-#: src/common/product-control/view.jsx:20
+#: src/common/product-control/view.jsx:23
 msgid "Search for products to display"
 msgstr ""
 
-#: src/common/product-control/view.jsx:21
+#: src/common/product-control/view.jsx:29
 msgid "%d product selected"
 msgid_plural "%d products selected"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/common/product-control/view.jsx:22
+#: src/common/product-control/view.jsx:37
 msgid "Product search results updated."
 msgstr ""
 
-#: src/common/tag.jsx:70
+#: src/common/tag.jsx:77
 msgid "Remove %s"
 msgstr ""

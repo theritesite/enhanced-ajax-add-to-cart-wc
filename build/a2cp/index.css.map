@@ -1,1 +1,0 @@
-{"version":3,"file":"a2cp/index.css","mappings":";;;AAAA;;;;EAAA,C","sources":["webpack://enhanced-ajax-add-to-cart-wc/./src/a2cp/editor.scss"],"sourcesContent":["/**\n * The following styles get applied inside the editor only.\n *\n * Replace them with your own styles or remove the file completely.\n */\n\n.wp-block-add-to-cart-pro-a2cp {\n}\n"],"names":[],"sourceRoot":""}
