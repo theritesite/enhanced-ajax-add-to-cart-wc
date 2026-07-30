@@ -258,8 +258,42 @@ class Enhanced_Ajax_Add_To_Cart_Wc {
 	public function get_all_products_and_variations( WP_REST_Request $request ) {
 		$params = $request->get_params();
 
-		$q = `SELECT p.post_parent as pp, GROUP_CONCAT(DISTINCT p.ID) FROM wp_posts as p WHERE p.post_type = 'product_variation' AND p.post_status = 'publish' GROUP BY pp;`;
-		
+		// UNFINISHED. This endpoint is a stub: it returns true, not data.
+		//
+		// The intent was a parent-product -> variation-IDs map, so a caller could
+		// resolve every published variation in one request instead of one per
+		// product. Preserved here because the query is the useful part:
+		//
+		//   global $wpdb;
+		//   $rows = $wpdb->get_results(
+		//       "SELECT p.post_parent AS pp, GROUP_CONCAT(DISTINCT p.ID) AS ids
+		//          FROM {$wpdb->posts} p
+		//         WHERE p.post_type = 'product_variation'
+		//           AND p.post_status = 'publish'
+		//         GROUP BY pp"
+		//   );
+		//
+		// Two corrections are already folded into that sketch:
+		//
+		//   1. Use {$wpdb->posts}, not a literal `wp_posts`. The original
+		//      hardcoded the table name, so it would have missed the table prefix
+		//      on any install not using the default.
+		//   2. It must be a STRING passed to $wpdb, not a backtick-quoted literal.
+		//      The original was written with backticks, which in PHP is the SHELL
+		//      EXECUTION operator - so it never queried anything. It forked a
+		//      process per request to run "SELECT p.post_parent ..." as a shell
+		//      command, which failed to parse, put NULL in $q, and was never read.
+		//      Verified: PHP returns NULL and sh reports a syntax error.
+		//
+		// Not injectable as written - the string was fixed, with no request data
+		// in it - but a shell call on an HTTP-reachable path is what a
+		// wordpress.org review or a security scanner flags, so the call is gone
+		// while the design note stays.
+		//
+		// Before this returns real product data, tighten the route: it is
+		// registered with ALLMETHODS and gated on edit_posts || edit_pages, which
+		// a Contributor satisfies.
+
 		if ( WP_DEBUG || EAA2C_DEBUG ) {
 			error_log( 'parameters to get all products and variations: ' . wc_print_r( $params, true ) );
 		}
