@@ -31,7 +31,7 @@ export default function A2cpEditor( attributes ) {
         // debouncedSpeak(
         //     __(
         //         'Showing AJAX Add to Cart block preview.',
-        //         'enhanced-ajax-add-to-cart-wc'
+        //         'enhanced-ajax-add-to-cart-for-woocommerce'
         //     )
         // );
     };
@@ -307,7 +307,7 @@ export default function A2cpEditor( attributes ) {
         <Placeholder
 			label={ __(
 				'AJAX Add to Cart button',
-				'enhanced-ajax-add-to-cart-wc'
+				'enhanced-ajax-add-to-cart-for-woocommerce'
 			) }
 			className="a2cp-block-placeholder"
 		>
@@ -321,7 +321,7 @@ export default function A2cpEditor( attributes ) {
 					multiple={ false }
 				/>
 				<Button onClick={ onDone }>
-					{ __( 'Done', 'enhanced-ajax-add-to-cart-wc' ) }
+					{ __( 'Done', 'enhanced-ajax-add-to-cart-for-woocommerce' ) }
 				</Button>
 			</div>
 		</Placeholder>

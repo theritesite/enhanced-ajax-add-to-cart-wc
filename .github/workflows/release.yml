@@ -1,0 +1,31 @@
+# Release this plugin.
+#
+# All the logic lives in theritesite/wp-plugin-build so that seven plugins do
+# not each carry a copy of a file that keeps growing. Everything this needs is
+# read from the trsPackage block in package.json.
+#
+#   push a tag v*   -> build, verify, publish a GitHub Release with <slug>.zip
+#   workflow_dispatch -> build and verify only, uploading a plain artifact.
+#                        Also verifies versions, so it is the cheap way to find
+#                        version drift without cutting a tag.
+#
+# A suffixed tag (v2.2.4-rc1) compares as its base version and publishes as a
+# prerelease, so the release path can be exercised without minting a
+# customer-visible version.
+
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  release:
+    # contents: write is required to create the release. A reusable workflow
+    # cannot grant itself more permission than its caller has, so it is set
+    # here rather than there.
+    permissions:
+      contents: write
+    uses: theritesite/wp-plugin-build/.github/workflows/plugin-release.yml@main

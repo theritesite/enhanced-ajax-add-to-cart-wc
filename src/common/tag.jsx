@@ -74,7 +74,7 @@ const Tag = ( {
 					icon={ <Dashicon icon="dismiss" size={ 20 } /> }
 					onClick={ remove( item ) }
 					label={ sprintf(
-						__( 'Remove %s', 'enhanced-ajax-add-to-cart-wc' ),
+						__( 'Remove %s', 'enhanced-ajax-add-to-cart-for-woocommerce' ),
 						label
 					) }
 					aria-describedby={ labelId }

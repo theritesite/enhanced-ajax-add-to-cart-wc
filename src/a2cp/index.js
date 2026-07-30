@@ -32,7 +32,7 @@ registerBlockType( metadata.name, {
 	category: 'widgets',
 	description: __(
 		'Non-redirect add to cart button wherever you want!',
-		'enhanced-ajax-add-to-cart-wc'
+		'enhanced-ajax-add-to-cart-for-woocommerce'
 	),
 	supports: {
 		html: false,
