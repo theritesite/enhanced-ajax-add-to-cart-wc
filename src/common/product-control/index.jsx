@@ -4,7 +4,7 @@ import { Component } from '@wordpress/element';
 
 import { Provider } from 'react-redux'
 import { applyMiddleware, createStore, compose } from 'redux';
-import thunk from 'redux-thunk';
+import { thunk } from 'redux-thunk';
 
 import * as storageUtils from '../utils/local-storage';
 import localApiMiddleware from '../utils/local-api-middleware';

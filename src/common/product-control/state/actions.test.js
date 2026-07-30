@@ -3,7 +3,7 @@
 // This file was brought from another project and will not work. It is for reference.
 import '@babel/polyfill'
 import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
+import { thunk } from 'redux-thunk';
 import promiseMiddleware from 'redux-promise-middleware';
 import { connectStartNew, processOrders, requestOrders  } from './actions';
 import expectExport from 'expect';

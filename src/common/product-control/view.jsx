@@ -14,15 +14,15 @@ import * as ProductControlActions from './state/actions';
 import SearchListControl from './search-list-control';
 
 const messages = {
-	clear: __( 'Clear all products', 'enhanced-ajax-add-to-cart-wc' ),
-	list: __( 'Products', 'enhanced-ajax-add-to-cart-wc' ),
+	clear: __( 'Clear all products', 'enhanced-ajax-add-to-cart-for-woocommerce' ),
+	list: __( 'Products', 'enhanced-ajax-add-to-cart-for-woocommerce' ),
 	noItems: __(
 		"Your store doesn't have any products.",
-		'enhanced-ajax-add-to-cart-wc'
+		'enhanced-ajax-add-to-cart-for-woocommerce'
 	),
 	search: __(
 		'Search for products to display',
-		'enhanced-ajax-add-to-cart-wc'
+		'enhanced-ajax-add-to-cart-for-woocommerce'
 	),
 	selected: ( n ) =>
 		sprintf(
@@ -30,13 +30,13 @@ const messages = {
 				'%d product selected',
 				'%d products selected',
 				n,
-				'enhanced-ajax-add-to-cart-wc'
+				'enhanced-ajax-add-to-cart-for-woocommerce'
 			),
 			n
 		),
 	updated: __(
 		'Product search results updated.',
-		'enhanced-ajax-add-to-cart-wc'
+		'enhanced-ajax-add-to-cart-for-woocommerce'
 	),
 };
 

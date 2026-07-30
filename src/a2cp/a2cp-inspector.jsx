@@ -198,7 +198,7 @@ export default function A2cpInspector( attributes ) {
     return (
         <InspectorControls>
             <PanelBody
-                title={ __( 'Content', 'enhanced-ajax-add-to-cart-wc' ) }
+                title={ __( 'Content', 'enhanced-ajax-add-to-cart-for-woocommerce' ) }
                 className="a2cp-content-container"
                 initialOpen
             >
@@ -207,7 +207,7 @@ export default function A2cpInspector( attributes ) {
                         <label className="content-element " htmlFor={"content-order-form-" + item}>
                             { __(
                                 _.startCase( _.lowerCase( item ) ),
-                                'enhanced-ajax-add-to-cart-wc'
+                                'enhanced-ajax-add-to-cart-for-woocommerce'
                             ) }
                         </label>
                         { getItemInspectorControls( item, index ) }
