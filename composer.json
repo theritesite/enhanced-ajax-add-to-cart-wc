@@ -1,0 +1,28 @@
+{
+	"name": "theritesites/enhanced-ajax-add-to-cart-wc",
+	"description": "Creates a shortcode or block for you to be able to add an AJAX button with an associated quantity for your WooCommerce Product",
+	"keywords": ["wordpress", "plugin", "woocommerce", "ajax", "add-to-cart"],
+	"homepage": "https://www.theritesites.com/plugins/enhanced-ajax-add-to-cart-wc",
+	"license": "GPL-2.0-or-later",
+	"authors": [
+	{
+		"name": "TheRiteSites",
+		"homepage": "https://www.theritesites.com"
+	}
+	],
+	"type": "wordpress-plugin",
+	"autoload": {
+		"classmap": ["enhanced-ajax-add-to-cart-wc.php", "includes/", "woo-includes/"]
+	},
+	"require": {
+		"php": ">=7.0"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "^9.6",
+		"yoast/phpunit-polyfills": "^1.1"
+	},
+	"scripts": {
+		"test": "phpunit",
+		"test:setup": "bin/setup-tests.sh"
+	}
+}

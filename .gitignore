@@ -1,3 +1,11 @@
 node_modules
 yarn-error.log
 enhanced-ajax-add-to-cart-wc
+
+### Composer (PHPUnit) ###
+# Composer dependencies for the test harness. Not part of the plugin's
+# release payload, so vendor/ does not belong in git - composer.lock still
+# does, so `composer install` reproduces the exact tree that was tested.
+vendor/
+# PHPUnit run cache - local state, not source.
+.phpunit.result.cache
