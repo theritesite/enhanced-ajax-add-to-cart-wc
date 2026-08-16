@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	PHPUnit configuration for enhanced-ajax-add-to-cart-wc.
+
+	The suite needs the WordPress test library, a MySQL database and a
+	WooCommerce to load against. Run bin/setup-tests.sh once, then
+	`composer test`.
+
+	convertErrorsToExceptions and its siblings were removed here: they were
+	dropped in PHPUnit 10, and their PHPUnit 9 defaults already match what this
+	suite wants, so leaving them out means a later move to 10 does not need this
+	file rewritten.
+
+	beStrictAboutTestsThatDoNotTestAnything is on deliberately. A suite that
+	cannot notice an assertTrue( true ) placeholder is not protecting anything.
+-->
+<phpunit
+	bootstrap="tests/bootstrap.php"
+	backupGlobals="false"
+	colors="true"
+	beStrictAboutTestsThatDoNotTestAnything="true"
+	failOnWarning="true"
+	failOnRisky="true"
+	>
+	<testsuites>
+		<testsuite name="enhanced-ajax-add-to-cart-wc">
+			<directory suffix=".php">./tests/unit-tests/</directory>
+		</testsuite>
+	</testsuites>
+</phpunit>
