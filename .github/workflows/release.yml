@@ -1,6 +1,6 @@
 # Release this plugin.
 #
-# All the logic lives in theritesite/wp-plugin-build so that seven plugins do
+# All the logic lives in Pitch-Midnight/wp-plugin-build so that seven plugins do
 # not each carry a copy of a file that keeps growing. Everything this needs is
 # read from the trsPackage block in package.json.
 #
@@ -28,4 +28,4 @@ jobs:
     # here rather than there.
     permissions:
       contents: write
-    uses: theritesite/wp-plugin-build/.github/workflows/plugin-release.yml@main
+    uses: Pitch-Midnight/wp-plugin-build/.github/workflows/plugin-release.yml@main
